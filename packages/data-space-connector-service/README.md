@@ -1,11 +1,11 @@
-# Federated Catalogue Service
+# Data Space Connector Service
 
-Federated Catalogue contract implementation and REST endpoint definitions.
+Data Space Connector contract implementation and REST endpoint definitions.
 
 ## Installation
 
 ```shell
-npm install @twin.org/federated-catalogue-service
+npm install @twin.org/data-space-connector-service
 ```
 
 ## Examples
