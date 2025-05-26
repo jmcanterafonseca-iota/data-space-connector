@@ -1,14 +1,18 @@
 # Interface: IDataSpaceConnector
 
-Data Space Connector service interface
+Data Space Connector service interface.
+
+## Extends
+
+- `IComponent`
 
 ## Methods
 
-### notify()
+### notifyActivity()
 
-> **notify**(`activity`): `Promise`\<`void`\>
+> **notifyActivity**(`activity`): `Promise`\<`string`\>
 
-Notify an Activity.
+Notify an Activity to the DS Connector Activity Stream.
 
 #### Parameters
 
@@ -20,15 +24,41 @@ The Activity notified.
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<`string`\>
 
-void
+The Activity's identifier.
+
+***
+
+### getActivityLogEntry()
+
+> **getActivityLogEntry**(`logEntryId`): `Promise`\<[`IActivityLogEntry`](IActivityLogEntry.md)\>
+
+Returns Activity Log Entry which contains the Activity processing details.
+
+#### Parameters
+
+##### logEntryId
+
+`string`
+
+The Id of the Activity Log Entry (a URI).
+
+#### Returns
+
+`Promise`\<[`IActivityLogEntry`](IActivityLogEntry.md)\>
+
+the Activity Log Entry with the processing details.
+
+#### Throws
+
+NotFoundError if activity log entry is not known.
 
 ***
 
 ### subscribe()
 
-> **subscribe**(`subscription`): `Promise`\<`void`\>
+> **subscribe**(`subscription`): `Promise`\<`string`\>
 
 Subscribe to the Data Space Connector.
 
@@ -42,28 +72,82 @@ The subscription
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<`string`\>
 
-void
+The Subscription Entry identifier.
+
+***
+
+### getSubscriptionEntry()
+
+> **getSubscriptionEntry**(`entryId`): `Promise`\<[`ISubscription`](ISubscription.md)\>
+
+Returns a subscription entry.
+
+#### Parameters
+
+##### entryId
+
+`string`
+
+The entry Id (a URI)
+
+#### Returns
+
+`Promise`\<[`ISubscription`](ISubscription.md)\>
+
+The subscription entry with all Subscription details
 
 ***
 
 ### getData()
 
-> **getData**(`serviceOfferingId`): `Promise`\<`IJsonLdDocument`\>
+> **getData**(`dataResourceId`, `serviceOfferingId?`, `query?`): `Promise`\<`IJsonLdDocument`\>
 
 Gets data associated with a Service Offering.
 
 #### Parameters
 
-##### serviceOfferingId
+##### dataResourceId
 
 `string`
 
-The Service Offering Id as registered on the Fed Catalogue.
+The corresponding Data Resource as registered on the Federated Catalogue.
+
+##### serviceOfferingId?
+
+`string`
+
+The Service Offering Id as registered on the Federated Catalogue.
+
+##### query?
+
+[`IDataSpaceQuery`](IDataSpaceQuery.md)
+
+The Data Space Connector query.
 
 #### Returns
 
 `Promise`\<`IJsonLdDocument`\>
 
 a JSON-LD document with the data
+
+***
+
+### registerDataSpaceConnectorApp()
+
+> **registerDataSpaceConnectorApp**(`app`): `void`
+
+Registers a Data Space Connector App.
+
+#### Parameters
+
+##### app
+
+[`IDataSpaceConnectorApp`](IDataSpaceConnectorApp.md)
+
+The App to be registered.
+
+#### Returns
+
+`void`

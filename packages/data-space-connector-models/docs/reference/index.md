@@ -4,13 +4,24 @@
 
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
 - [IActivity](interfaces/IActivity.md)
+- [IActivityLogEntry](interfaces/IActivityLogEntry.md)
+- [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
+- [IDataSpaceConnectorCallback](interfaces/IDataSpaceConnectorCallback.md)
+- [IDataSpaceQuery](interfaces/IDataSpaceQuery.md)
 - [ISubscription](interfaces/ISubscription.md)
+- [IActivityLogEntryGetRequest](interfaces/IActivityLogEntryGetRequest.md)
+- [IActivityLogEntryGetResponse](interfaces/IActivityLogEntryGetResponse.md)
+- [IActivityStreamRequest](interfaces/IActivityStreamRequest.md)
+- [ISubscriptionCreateRequest](interfaces/ISubscriptionCreateRequest.md)
 
 ## Type Aliases
 
-- [GaiaXContexts](type-aliases/GaiaXContexts.md)
+- [ActivityStreamsContexts](type-aliases/ActivityStreamsContexts.md)
 - [ActivityStreamsLdContextType](type-aliases/ActivityStreamsLdContextType.md)
 - [ActivityStreamsTypes](type-aliases/ActivityStreamsTypes.md)
+- [ISubscriptionEntry](type-aliases/ISubscriptionEntry.md)
+- [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
+- [ActivityType](type-aliases/ActivityType.md)
 
 ## Variables
 

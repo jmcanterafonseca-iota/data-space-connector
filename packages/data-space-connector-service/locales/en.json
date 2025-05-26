@@ -1,0 +1,11 @@
+{
+	"error": {
+		"dataSpaceConnectorService": {
+			"activityLogEntryNotFound": "Activity Log Entry has not been found",
+			"subscriptionEntryNotFound": "Subscription Entry has not been found"
+		}
+	},
+	"info": {
+		"dataSpaceConnectorService": {}
+	}
+}

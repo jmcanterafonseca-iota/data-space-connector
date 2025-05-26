@@ -6,6 +6,6 @@ A subscription.
 
 ### @context
 
-> **@context**: `IJsonLdContextDefinition`
+> **@context**: `IJsonLdContextDefinitionElement`
 
 The LD Context.

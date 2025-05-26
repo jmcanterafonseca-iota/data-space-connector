@@ -48,7 +48,8 @@
 		"release-please": "17.0.0"
 	},
 	"workspaces": [
-		"packages/data-space-connector-models"
+		"packages/data-space-connector-models",
+		"packages/data-space-connector-service"
 	],
 	"type": "module"
 }

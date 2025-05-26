@@ -10,12 +10,12 @@ import type { ActivityStreamsContexts } from "./activityStreamsContexts";
 export type ActivityStreamsLdContextType =
 	| typeof ActivityStreamsContexts.ActivityStreamsLdContext
 	| [
-		...IJsonLdContextDefinitionElement[],
-		typeof ActivityStreamsContexts.ActivityStreamsLdContext,
-		IJsonLdContextDefinitionElement
-	]
+			...IJsonLdContextDefinitionElement[],
+			typeof ActivityStreamsContexts.ActivityStreamsLdContext,
+			IJsonLdContextDefinitionElement
+	  ]
 	| [
-		IJsonLdContextDefinitionElement,
-		typeof ActivityStreamsContexts.ActivityStreamsLdContext,
-		...IJsonLdContextDefinitionElement[]
-	];
+			IJsonLdContextDefinitionElement,
+			typeof ActivityStreamsContexts.ActivityStreamsLdContext,
+			...IJsonLdContextDefinitionElement[]
+	  ];

@@ -3,13 +3,44 @@
 
 /**
  * The types concerning Activity Streams.
+ * @see https://www.w3.org/ns/activitystreams
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const ActivityStreamsTypes = {
 	/**
-	 * Activity
+	 * Activity base class
+	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-activity
 	 */
-	Activity: "Activity"
+	Activity: "Activity",
+
+	/**
+	 * Activity Create
+	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-create
+	 */
+	Create: "Create",
+
+	/**
+	 * Activity Add
+	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-add
+	 */
+	Add: "Add",
+
+	/**
+	 * Activity Update
+	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-update
+	 */
+	Update: "Add",
+
+	/**
+	 * Activity Remove
+	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-remove
+	 */
+	Remove: "Remove",
+
+	/**
+	 * Activity Delete
+	 */
+	Delete: "Delete"
 } as const;
 
 /**
