@@ -1,16 +1,23 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import { Is, NotFoundError, StringHelper } from "@twin.org/core";
-import type { IJsonLdDocument } from "@twin.org/data-json-ld";
-import type {
-	IActivity,
-	IDataSpaceConnector,
-	IDataSpaceConnectorApp,
-	IActivityLogEntry,
-	ISubscription,
-	ISubscriptionEntry,
-	IDataSpaceQuery
+import {
+	Is,
+	type IValidationFailure,
+	NotFoundError,
+	StringHelper,
+	Validation
+} from "@twin.org/core";
+import { JsonLdHelper, type IJsonLdDocument } from "@twin.org/data-json-ld";
+import {
+	type IActivity,
+	type IDataSpaceConnector,
+	type IDataSpaceConnectorApp,
+	type IActivityLogEntry,
+	type ISubscription,
+	type ISubscriptionEntry,
+	type IDataSpaceQuery,
+	DataSpaceConnectorDataTypes
 } from "@twin.org/data-space-connector-models";
 import {
 	EntityStorageConnectorFactory,
@@ -64,15 +71,17 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			options?.loggingConnectorType ?? "logging"
 		);
 
-		this._entityStorageSubscriptions = EntityStorageConnectorFactory.get<
-			IEntityStorageConnector<SubscriptionEntry>
-		>(options.subscriptionEntityStorageType ?? StringHelper.kebabCase(nameof<SubscriptionEntry>()));
-
 		this._entityStorageActivityLogs = EntityStorageConnectorFactory.get<
 			IEntityStorageConnector<ActivityLogEntry>
 		>(options.activityLogEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityLogEntry>()));
 
+		this._entityStorageSubscriptions = EntityStorageConnectorFactory.get<
+			IEntityStorageConnector<SubscriptionEntry>
+		>(options.subscriptionEntityStorageType ?? StringHelper.kebabCase(nameof<SubscriptionEntry>()));
+
 		this._handlerRegistry = new HandlerRegistry();
+
+		DataSpaceConnectorDataTypes.registerTypes();
 	}
 
 	/**
@@ -81,6 +90,11 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @returns The Activity's Log Entry identifier.
 	 */
 	public async notifyActivity(activity: IActivity): Promise<string> {
+		const validationFailures: IValidationFailure[] = [];
+		const result = await JsonLdHelper.validate(activity, validationFailures);
+
+		console.log(JSON.stringify(validationFailures), null, 2);
+		Validation.asValidationError(this.CLASS_NAME, nameof(activity), validationFailures);
 		return "";
 	}
 

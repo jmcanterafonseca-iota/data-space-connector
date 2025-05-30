@@ -11,7 +11,7 @@ export class SubscriptionEntry {
 	/**
 	 * The LD Context
 	 */
-	@property({ type: "string", format: "json", isPrimary: true })
+	@property({ type: "string", format: "json" })
 	public "@context"!: IJsonLdContextDefinition;
 
 	/**

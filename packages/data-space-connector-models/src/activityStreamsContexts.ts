@@ -19,7 +19,12 @@ export const ActivityStreamsContexts = {
 	/**
 	 * Linked Data Platform Vocabulary.
 	 */
-	LdpLdContext: "http://www.w3.org/ns/ldp#"
+	LdpLdContext: "http://www.w3.org/ns/ldp#",
+
+	/**
+	 * The Activity Streams namespace.
+	 */
+	ActivityStreamsNamespace: "https://www.w3.org/ns/activitystreams#"
 } as const;
 
 /**

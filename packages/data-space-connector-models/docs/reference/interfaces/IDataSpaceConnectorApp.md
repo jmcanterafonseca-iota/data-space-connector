@@ -34,7 +34,7 @@ Handles an Activity and report about results through the Data Space Connector Ca
 
 ##### activity
 
-[`IActivity`](IActivity.md)
+[`IActivity`](../type-aliases/IActivity.md)
 
 The Activity to be handled
 

@@ -23,3 +23,9 @@ XML Schema LD Context.
 > `readonly` **LdpLdContext**: `"http://www.w3.org/ns/ldp#"` = `"http://www.w3.org/ns/ldp#"`
 
 Linked Data Platform Vocabulary.
+
+### ActivityStreamsNamespace
+
+> `readonly` **ActivityStreamsNamespace**: `"https://www.w3.org/ns/activitystreams#"` = `"https://www.w3.org/ns/activitystreams#"`
+
+The Activity Streams namespace.

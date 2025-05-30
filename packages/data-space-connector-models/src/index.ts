@@ -24,3 +24,7 @@ export * from "./models/api/IActivityLogEntryGetResponse";
 
 export * from "./models/api/IActivityStreamRequest";
 export * from "./models/api/ISubscriptionCreateRequest";
+
+export * from "./dataTypes/dataSpaceConnectorDataTypes";
+
+export * from "./models/IActivityData";

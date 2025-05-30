@@ -1,0 +1,41 @@
+{
+	"anyOf": [
+		{
+			"type": "string",
+			"const": "https://www.w3.org/ns/activitystreams"
+		},
+		{
+			"type": "array",
+			"minItems": 2,
+			"items": [
+				{
+					"type": "string",
+					"const": "https://www.w3.org/ns/activitystreams"
+				},
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
+				}
+			],
+			"additionalItems": {
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
+			}
+		},
+		{
+			"type": "array",
+			"minItems": 2,
+			"items": [
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
+				},
+				{
+					"type": "string",
+					"const": "https://www.w3.org/ns/activitystreams"
+				}
+			],
+			"additionalItems": {
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
+			}
+		}
+	],
+	"description": "The Activity Streams JSON-LD context type."
+}
