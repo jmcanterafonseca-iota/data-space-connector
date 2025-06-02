@@ -27,8 +27,10 @@
 - [ISubscriptionEntry](type-aliases/ISubscriptionEntry.md)
 - [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 - [ActivityType](type-aliases/ActivityType.md)
+- [ActivityTypeJsonLd](type-aliases/ActivityTypeJsonLd.md)
 
 ## Variables
 
 - [ActivityStreamsContexts](variables/ActivityStreamsContexts.md)
 - [ActivityStreamsTypes](variables/ActivityStreamsTypes.md)
+- [ACTIVITY\_STREAMS\_TYPE\_LIST](variables/ACTIVITY_STREAMS_TYPE_LIST.md)

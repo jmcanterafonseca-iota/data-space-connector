@@ -17,18 +17,10 @@ import type { SubscriptionEntry } from "../src/entities/subscriptionEntry";
 import type { IDataSpaceConnectorServiceConstructorOptions } from "../src/models/IDataSpaceConnectorServiceConstructorOptions";
 import { initSchema } from "../src/schema";
 
-// import { ActivityStreamsLdContextTypeSchema } from "@twin.org/data-space-connector-models"
-
 let activityLogStore: MemoryEntityStorageConnector<ActivityLogEntry>;
 let subscriptionStore: MemoryEntityStorageConnector<SubscriptionEntry>;
 
 let options: IDataSpaceConnectorServiceConstructorOptions;
-
-/*
-const schemas = {
-	ActivityStreamsLdContextType: ActivityStreamsLdContextTypeSchema
-}
-*/
 
 describe("data-space-connector-tests", () => {
 	beforeAll(async () => {
@@ -40,30 +32,7 @@ describe("data-space-connector-tests", () => {
 			.mockImplementation(async (module, method, args) =>
 				ModuleHelper.execModuleMethod(module, method, args)
 			);
-		/*
-			globalThis.fetch = vi
-			.fn()
-			.mockImplementation(
-				async (request: Request | URL | string, opts: RequestInit | undefined) => {
-					const url = new URL(extractURL(request));
 
-					const filePath = url.pathname;
-					const domainName = url.host;
-					if (url.pathname.includes("data-space-connector")) {
-
-					}
-					const pathToFile = path.join(__dirname, "published-datasets", domainName, filePath);
-					const contentBuffer = await fs.readFileSync(pathToFile);
-					const content = contentBuffer.toString();
-					return {
-						status: 200,
-						ok: true,
-						headers: { "Content-Type": "application/json", "Content-Length": content.length },
-						json: async () => new Promise(resolve => resolve(JSON.parse(content)))
-					};
-				}
-			);
-*/
 		addAllContextsToDocumentCache();
 
 		initSchema();
@@ -97,9 +66,9 @@ describe("data-space-connector-tests", () => {
 		);
 	});
 
-	const activity: IActivity = {
+	const canonicalActivity: IActivity = {
 		"@context": ActivityStreamsContexts.ActivityStreamsLdContext,
-		type: "Add",
+		"@type": "Create",
 		actor: {
 			id: "did:iota:testnet:0x123456"
 		},
@@ -108,13 +77,42 @@ describe("data-space-connector-tests", () => {
 			"@type": "Consignment",
 			globalId: "24KEP051219453I002610796"
 		},
-		updated: "3456"
+		updated: "02-06-2025T12:00:00Z"
 	};
 
-	test("It should receive an Activity in the Activity Stream", async () => {
+	const extendedActivity: unknown = {
+		"@context": [
+			ActivityStreamsContexts.ActivityStreamsLdContext,
+			{
+				MyCreate: "https://twin.example.org/MyExample",
+				Crear: `${ActivityStreamsContexts.ActivityStreamsNamespace}Create`
+			}
+		],
+		type: ["MyCreate", "Crear"],
+		actor: {
+			id: "did:iota:testnet:0x123456"
+		},
+		object: {
+			"@context": "https://vocabulary.uncefact.org",
+			"@type": "Consignment",
+			globalId: "24KEP051219453I002610796"
+		},
+		updated: "02-06-2025T12:00:00Z"
+	};
+
+	test("It should receive an Activity in the Activity Stream - canonical", async () => {
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
 
-		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(activity);
+		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(canonicalActivity);
+		expect(activityLogEntryId).toBeTypeOf("string");
+	});
+
+	test("It should receive an Activity in the Activity Stream - type extension", async () => {
+		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+
+		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(
+			extendedActivity as IActivity
+		);
 		expect(activityLogEntryId).toBeTypeOf("string");
 	});
 });

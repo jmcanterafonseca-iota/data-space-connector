@@ -38,7 +38,7 @@ https://www.w3.org/TR/activitystreams-vocabulary/#dfn-add
 
 ### Update
 
-> `readonly` **Update**: `"Add"` = `"Add"`
+> `readonly` **Update**: `"Update"` = `"Update"`
 
 Activity Update
 

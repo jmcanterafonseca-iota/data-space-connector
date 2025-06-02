@@ -6,9 +6,15 @@ import {
 	type IValidationFailure,
 	NotFoundError,
 	StringHelper,
-	Validation
+	Validation,
+	ValidationError
 } from "@twin.org/core";
-import { JsonLdHelper, type IJsonLdDocument } from "@twin.org/data-json-ld";
+import {
+	JsonLdHelper,
+	JsonLdProcessor,
+	type IJsonLdDocument,
+	JsonLdDataTypes
+} from "@twin.org/data-json-ld";
 import {
 	type IActivity,
 	type IDataSpaceConnector,
@@ -17,7 +23,10 @@ import {
 	type ISubscription,
 	type ISubscriptionEntry,
 	type IDataSpaceQuery,
-	DataSpaceConnectorDataTypes
+	DataSpaceConnectorDataTypes,
+	ActivityStreamsContexts,
+	ACTIVITY_STREAMS_TYPE_LIST,
+	type ActivityStreamsTypes
 } from "@twin.org/data-space-connector-models";
 import {
 	EntityStorageConnectorFactory,
@@ -81,6 +90,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 
 		this._handlerRegistry = new HandlerRegistry();
 
+		JsonLdDataTypes.registerTypes();
 		DataSpaceConnectorDataTypes.registerTypes();
 	}
 
@@ -91,10 +101,40 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 */
 	public async notifyActivity(activity: IActivity): Promise<string> {
 		const validationFailures: IValidationFailure[] = [];
-		const result = await JsonLdHelper.validate(activity, validationFailures);
 
-		console.log(JSON.stringify(validationFailures), null, 2);
-		Validation.asValidationError(this.CLASS_NAME, nameof(activity), validationFailures);
+		// Avoid using terms not defined in any Ld Context
+		const compactedObj = await JsonLdProcessor.compact(
+			activity,
+			activity["@context"] ?? ActivityStreamsContexts.ActivityStreamsLdContext
+		);
+
+		// Type checking
+		const expandedObjForType = await JsonLdProcessor.expand({
+			"@context": compactedObj["@context"],
+			"@type": compactedObj.type ?? compactedObj["@type"]
+		});
+		const expandedTypes = expandedObjForType[0]["@type"];
+		if (!Is.arrayValue(expandedTypes)) {
+			throw new ValidationError(this.CLASS_NAME, nameof(activity), [
+				{ property: "type", reason: "empty" }
+			]);
+		}
+		if (
+			expandedTypes.some(item => ACTIVITY_STREAMS_TYPE_LIST.includes(item as ActivityStreamsTypes))
+		) {
+			await JsonLdHelper.validate(compactedObj, validationFailures);
+			console.log(validationFailures);
+			Validation.asValidationError(this.CLASS_NAME, nameof(activity), validationFailures);
+
+			// Generating an Activity log entry
+			/* const activityProcessing: IActivityLogEntry = {
+				id: "1234"
+			};*/
+		} else {
+			throw new ValidationError(this.CLASS_NAME, nameof(activity), [
+				{ property: "type", reason: "invalid" }
+			]);
+		}
 		return "";
 	}
 

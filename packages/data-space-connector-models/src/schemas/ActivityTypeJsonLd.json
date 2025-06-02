@@ -1,0 +1,32 @@
+{
+	"anyOf": [
+		{
+			"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
+		},
+		{
+			"type": "array",
+			"minItems": 1,
+			"items": [
+				{
+					"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
+				}
+			],
+			"additionalItems": {
+				"type": "string"
+			}
+		},
+		{
+			"type": "array",
+			"minItems": 1,
+			"items": [
+				{
+					"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
+				}
+			],
+			"additionalItems": {
+				"type": "string"
+			}
+		}
+	],
+	"description": "Activity Type JSON-LD"
+}

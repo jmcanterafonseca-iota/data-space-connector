@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IJsonLdKeyword, IJsonLdObject } from "@twin.org/data-json-ld";
+import type { IJsonLdObject } from "@twin.org/data-json-ld";
 import type { ActivityStreamsLdContextType } from "../activityStreamsLdContextType";
-import type { ActivityType } from "./activityType";
+import type { ActivityTypeJsonLd } from "./activityType";
 import type { IActivityData } from "./IActivityData";
 
 /**
@@ -17,8 +17,8 @@ export type IActivity =
 				 * The LD Context.
 				 */
 				"@context": ActivityStreamsLdContextType;
-				type: ActivityType | [ActivityType, ...IJsonLdKeyword["@type"][]];
-				"@type"?: ActivityType | [ActivityType, ...IJsonLdKeyword["@type"][]];
+				type: ActivityTypeJsonLd;
+				"@type"?: ActivityTypeJsonLd;
 			})
 	| (IJsonLdObject &
 			IActivityData & {
@@ -26,6 +26,6 @@ export type IActivity =
 				 * The LD Context.
 				 */
 				"@context": ActivityStreamsLdContextType;
-				"@type"?: ActivityType | [ActivityType, ...IJsonLdKeyword["@type"][]];
-				type?: ActivityType | [ActivityType, ...IJsonLdKeyword["@type"][]];
+				"@type"?: ActivityTypeJsonLd;
+				type?: ActivityTypeJsonLd;
 			});

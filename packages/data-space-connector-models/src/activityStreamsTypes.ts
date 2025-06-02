@@ -1,6 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
+import { ActivityStreamsContexts } from "./activityStreamsContexts";
+
 /**
  * The types concerning Activity Streams.
  * @see https://www.w3.org/ns/activitystreams
@@ -29,7 +31,7 @@ export const ActivityStreamsTypes = {
 	 * Activity Update
 	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-update
 	 */
-	Update: "Add",
+	Update: "Update",
 
 	/**
 	 * Activity Remove
@@ -42,6 +44,15 @@ export const ActivityStreamsTypes = {
 	 */
 	Delete: "Delete"
 } as const;
+
+export const ACTIVITY_STREAMS_TYPE_LIST = [
+	`${ActivityStreamsContexts.ActivityStreamsNamespace}${ActivityStreamsTypes.Activity}`,
+	`${ActivityStreamsContexts.ActivityStreamsNamespace}${ActivityStreamsTypes.Create}`,
+	`${ActivityStreamsContexts.ActivityStreamsNamespace}${ActivityStreamsTypes.Add}`,
+	`${ActivityStreamsContexts.ActivityStreamsNamespace}${ActivityStreamsTypes.Update}`,
+	`${ActivityStreamsContexts.ActivityStreamsNamespace}${ActivityStreamsTypes.Remove}`,
+	`${ActivityStreamsContexts.ActivityStreamsNamespace}${ActivityStreamsTypes.Delete}`
+];
 
 /**
  * The types concerning Gaia-X.
