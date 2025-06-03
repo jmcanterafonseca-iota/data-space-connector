@@ -1,602 +1,178 @@
 {
-	"anyOf": [
-		{
-			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"@context": {
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionRoot"
+	"type": "object",
+	"properties": {
+		"@context": {
+			"$ref": "https://schema.twindev.org/data-space-connector/ActivityStreamsLdContextType",
+			"description": "The LD Context."
+		},
+		"@id": {
+			"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+		},
+		"@included": {
+			"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+		},
+		"@graph": {
+			"anyOf": [
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
 				},
-				"type": {
-					"$ref": "https://schema.twindev.org/data-space-connector/ActivityTypeJsonLd"
-				},
-				"@type": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						}
-					]
-				},
-				"generator": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						}
-					],
-					"description": "The generator of the Activity."
-				},
-				"actor": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						}
-					],
-					"description": "The Actor behind the Activity."
-				},
-				"object": {
-					"type": "object",
-					"properties": {
-						"@context": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionRoot"
-						},
-						"@id": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@included": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
-						},
-						"@graph": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-									}
-								}
-							]
-						},
-						"@nest": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-									}
-								}
-							]
-						},
-						"@type": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@reverse": {
-							"type": "object",
-							"additionalProperties": {
-								"type": "string"
-							}
-						},
-						"@index": {
-							"type": "string"
-						}
-					},
-					"description": "The object affected by the Activity."
-				},
-				"target": {
-					"type": "object",
-					"properties": {
-						"@context": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionRoot"
-						},
-						"@id": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@included": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
-						},
-						"@graph": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-									}
-								}
-							]
-						},
-						"@nest": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-									}
-								}
-							]
-						},
-						"@type": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@reverse": {
-							"type": "object",
-							"additionalProperties": {
-								"type": "string"
-							}
-						},
-						"@index": {
-							"type": "string"
-						}
-					},
-					"description": "The target of the Activity."
-				},
-				"summary": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdLanguageMap"
-						}
-					],
-					"description": "Summary of the Activity."
-				},
-				"result": {
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject",
-					"description": "Result of the Activity."
-				},
-				"origin": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						}
-					],
-					"description": "Activity's origin."
-				},
-				"updated": {
-					"type": "string",
-					"description": "The date and time at which the object was updated."
-				},
-				"@id": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						}
-					]
-				},
-				"@included": {
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
-				},
-				"@graph": {
-					"anyOf": [
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						},
-						{
-							"type": "array",
-							"items": {
-								"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-							}
-						}
-					]
-				},
-				"@nest": {
-					"anyOf": [
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-						},
-						{
-							"type": "array",
-							"items": {
-								"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-							}
-						}
-					]
-				},
-				"@reverse": {
-					"type": "object",
-					"additionalProperties": {
-						"type": "string"
+				{
+					"type": "array",
+					"items": {
+						"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
 					}
-				},
-				"@index": {
-					"type": "string"
 				}
-			},
-			"required": [
-				"@context",
-				"actor",
-				"object",
-				"type",
-				"updated"
 			]
 		},
-		{
+		"@nest": {
+			"anyOf": [
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
+				},
+				{
+					"type": "array",
+					"items": {
+						"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
+					}
+				}
+			]
+		},
+		"@type": {
+			"anyOf": [
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+				},
+				{
+					"type": "array",
+					"items": {
+						"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+					}
+				}
+			]
+		},
+		"@reverse": {
 			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"@context": {
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionRoot"
+			"additionalProperties": {
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+			}
+		},
+		"@index": {
+			"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+		},
+		"type": {
+			"$ref": "https://schema.twindev.org/data-space-connector/ActivityTypeJsonLd",
+			"description": "Activity Type."
+		},
+		"generator": {
+			"anyOf": [
+				{
+					"type": "string"
 				},
-				"@type": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						}
-					]
-				},
-				"type": {
-					"$ref": "https://schema.twindev.org/data-space-connector/ActivityTypeJsonLd"
-				},
-				"generator": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						}
-					],
-					"description": "The generator of the Activity."
-				},
-				"actor": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						}
-					],
-					"description": "The Actor behind the Activity."
-				},
-				"object": {
-					"type": "object",
-					"properties": {
-						"@context": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionRoot"
-						},
-						"@id": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@included": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
-						},
-						"@graph": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-									}
-								}
-							]
-						},
-						"@nest": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-									}
-								}
-							]
-						},
-						"@type": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@reverse": {
-							"type": "object",
-							"additionalProperties": {
-								"type": "string"
-							}
-						},
-						"@index": {
-							"type": "string"
-						}
-					},
-					"description": "The object affected by the Activity."
-				},
-				"target": {
-					"type": "object",
-					"properties": {
-						"@context": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionRoot"
-						},
-						"@id": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@included": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
-						},
-						"@graph": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-									}
-								}
-							]
-						},
-						"@nest": {
-							"anyOf": [
-								{
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-								},
-								{
-									"type": "array",
-									"items": {
-										"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-									}
-								}
-							]
-						},
-						"@type": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							]
-						},
-						"@reverse": {
-							"type": "object",
-							"additionalProperties": {
-								"type": "string"
-							}
-						},
-						"@index": {
-							"type": "string"
-						}
-					},
-					"description": "The target of the Activity."
-				},
-				"summary": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdLanguageMap"
-						}
-					],
-					"description": "Summary of the Activity."
-				},
-				"result": {
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject",
-					"description": "Result of the Activity."
-				},
-				"origin": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						}
-					],
-					"description": "Activity's origin."
-				},
-				"updated": {
-					"type": "string",
-					"description": "The date and time at which the object was updated."
-				},
-				"@id": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						}
-					]
-				},
-				"@included": {
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
-				},
-				"@graph": {
-					"anyOf": [
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-						},
-						{
-							"type": "array",
-							"items": {
-								"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
-							}
-						}
-					]
-				},
-				"@nest": {
-					"anyOf": [
-						{
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-						},
-						{
-							"type": "array",
-							"items": {
-								"$ref": "https://schema.twindev.org/json-ld/JsonLdJsonObject"
-							}
-						}
-					]
-				},
-				"@reverse": {
-					"type": "object",
-					"additionalProperties": {
+				{
+					"type": "array",
+					"items": {
 						"type": "string"
 					}
 				},
-				"@index": {
-					"type": "string"
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
 				}
-			},
-			"required": [
-				"@context",
-				"actor",
-				"object",
-				"updated"
-			]
+			],
+			"description": "The generator of the Activity."
+		},
+		"actor": {
+			"anyOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
+				}
+			],
+			"description": "The Actor behind the Activity."
+		},
+		"object": {
+			"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject",
+			"description": "The object affected by the Activity."
+		},
+		"target": {
+			"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject",
+			"description": "The target of the Activity."
+		},
+		"summary": {
+			"anyOf": [
+				{
+					"type": "string"
+				},
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdLanguageMap"
+				}
+			],
+			"description": "Summary of the Activity."
+		},
+		"result": {
+			"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject",
+			"description": "Result of the Activity."
+		},
+		"origin": {
+			"anyOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				{
+					"$ref": "https://schema.twindev.org/json-ld/JsonLdNodeObject"
+				}
+			],
+			"description": "Activity's origin."
+		},
+		"updated": {
+			"type": "string",
+			"description": "The date and time at which the object was updated."
 		}
+	},
+	"required": [
+		"@context",
+		"type",
+		"actor",
+		"object",
+		"updated"
 	],
+	"additionalProperties": {
+		"anyOf": [
+			{
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdNodePrimitive"
+			},
+			{
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdLanguageMap"
+			},
+			{
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdIndexMap"
+			},
+			{
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
+			},
+			{
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdIdMap"
+			},
+			{
+				"$ref": "https://schema.twindev.org/json-ld/JsonLdTypeMap"
+			},
+			{
+				"type": "array"
+			}
+		]
+	},
 	"description": "A W3C Activity from Activity Streams"
 }

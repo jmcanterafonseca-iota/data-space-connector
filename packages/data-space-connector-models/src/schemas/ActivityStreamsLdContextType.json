@@ -6,27 +6,17 @@
 		},
 		{
 			"type": "array",
-			"minItems": 2,
-			"items": [
-				{
-					"type": "string",
-					"const": "https://www.w3.org/ns/activitystreams"
-				},
-				{
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
-				}
-			],
-			"additionalItems": {
-				"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
-			}
+			"items": {
+				"type": "string",
+				"const": "https://www.w3.org/ns/activitystreams"
+			},
+			"minItems": 1,
+			"maxItems": 1
 		},
 		{
 			"type": "array",
-			"minItems": 2,
+			"minItems": 1,
 			"items": [
-				{
-					"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
-				},
 				{
 					"type": "string",
 					"const": "https://www.w3.org/ns/activitystreams"

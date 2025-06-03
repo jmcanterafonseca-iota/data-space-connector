@@ -7,7 +7,7 @@
 ## Interfaces
 
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
-- [IActivityData](interfaces/IActivityData.md)
+- [IActivity](interfaces/IActivity.md)
 - [IActivityLogEntry](interfaces/IActivityLogEntry.md)
 - [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
 - [IDataSpaceConnectorCallback](interfaces/IDataSpaceConnectorCallback.md)
@@ -23,7 +23,6 @@
 - [ActivityStreamsContexts](type-aliases/ActivityStreamsContexts.md)
 - [ActivityStreamsLdContextType](type-aliases/ActivityStreamsLdContextType.md)
 - [ActivityStreamsTypes](type-aliases/ActivityStreamsTypes.md)
-- [IActivity](type-aliases/IActivity.md)
 - [ISubscriptionEntry](type-aliases/ISubscriptionEntry.md)
 - [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 - [ActivityType](type-aliases/ActivityType.md)

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 import { StringHelper } from "@twin.org/core";
+import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import { ActivityStreamsContexts, type IActivity } from "@twin.org/data-space-connector-models";
 import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
@@ -41,6 +42,24 @@ describe("data-space-connector-tests", () => {
 			loggingConnectorType: "console",
 			config: {}
 		};
+
+		DataTypeHandlerFactory.register("https://twin.example.org/MyCreate", () => ({
+			context: "https://twin.example.org/",
+			type: "MyCreate",
+			defaultValue: {},
+			jsonSchema: async () => ({
+				type: "object"
+			})
+		}));
+
+		DataTypeHandlerFactory.register("https://vocabulary.uncefact.org/Consignment", () => ({
+			context: "https://vocabulary.uncefact.org/",
+			type: "Consignment",
+			defaultValue: {},
+			jsonSchema: async () => ({
+				type: "object"
+			})
+		}));
 	});
 
 	afterAll(async () => {
@@ -68,32 +87,36 @@ describe("data-space-connector-tests", () => {
 
 	const canonicalActivity: IActivity = {
 		"@context": ActivityStreamsContexts.ActivityStreamsLdContext,
-		"@type": "Create",
+		type: "Create",
 		actor: {
 			id: "did:iota:testnet:0x123456"
 		},
 		object: {
-			"@context": "https://vocabulary.uncefact.org",
+			"@context": "https://vocabulary.uncefact.org/unece-context-D23B.jsonld",
 			"@type": "Consignment",
 			globalId: "24KEP051219453I002610796"
 		},
 		updated: "02-06-2025T12:00:00Z"
 	};
 
-	const extendedActivity: unknown = {
+	const activityLdContextArray: IActivity = {
+		...canonicalActivity,
+		"@context": [ActivityStreamsContexts.ActivityStreamsLdContext]
+	};
+
+	const extendedActivity: IActivity = {
 		"@context": [
-			ActivityStreamsContexts.ActivityStreamsLdContext,
 			{
-				MyCreate: "https://twin.example.org/MyExample",
-				Crear: `${ActivityStreamsContexts.ActivityStreamsNamespace}Create`
-			}
+				MyCreate: "https://twin.example.org/MyCreate"
+			},
+			ActivityStreamsContexts.ActivityStreamsLdContext
 		],
-		type: ["MyCreate", "Crear"],
+		type: ["Create", "MyCreate"],
 		actor: {
 			id: "did:iota:testnet:0x123456"
 		},
 		object: {
-			"@context": "https://vocabulary.uncefact.org",
+			"@context": "https://vocabulary.uncefact.org/unece-context-D23B.jsonld",
 			"@type": "Consignment",
 			globalId: "24KEP051219453I002610796"
 		},
@@ -107,12 +130,18 @@ describe("data-space-connector-tests", () => {
 		expect(activityLogEntryId).toBeTypeOf("string");
 	});
 
+	test("It should receive an Activity in the Activity Stream - canonical LD Context Array", async () => {
+		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+
+		const activityLogEntryId =
+			await dataSpaceConnectorService.notifyActivity(activityLdContextArray);
+		expect(activityLogEntryId).toBeTypeOf("string");
+	});
+
 	test("It should receive an Activity in the Activity Stream - type extension", async () => {
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
 
-		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(
-			extendedActivity as IActivity
-		);
+		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(extendedActivity);
 		expect(activityLogEntryId).toBeTypeOf("string");
 	});
 });

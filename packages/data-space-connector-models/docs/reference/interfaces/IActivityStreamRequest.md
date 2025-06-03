@@ -6,6 +6,6 @@ Activity Stream Request.
 
 ### body
 
-> **body**: [`IActivity`](../type-aliases/IActivity.md)
+> **body**: [`IActivity`](IActivity.md)
 
 The Activity sent to the Stream.

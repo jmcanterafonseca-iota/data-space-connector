@@ -6,9 +6,9 @@ import {
 	type IValidationFailure,
 	NotFoundError,
 	StringHelper,
-	Validation,
-	ValidationError
+	Validation
 } from "@twin.org/core";
+import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import {
 	JsonLdHelper,
 	JsonLdProcessor,
@@ -23,10 +23,7 @@ import {
 	type ISubscription,
 	type ISubscriptionEntry,
 	type IDataSpaceQuery,
-	DataSpaceConnectorDataTypes,
-	ActivityStreamsContexts,
-	ACTIVITY_STREAMS_TYPE_LIST,
-	type ActivityStreamsTypes
+	DataSpaceConnectorDataTypes
 } from "@twin.org/data-space-connector-models";
 import {
 	EntityStorageConnectorFactory,
@@ -92,6 +89,39 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 
 		JsonLdDataTypes.registerTypes();
 		DataSpaceConnectorDataTypes.registerTypes();
+
+		// Workaround to overcome issue of ts-to-schema bad generation
+		DataTypeHandlerFactory.register("https://schema.twindev.org/json-ld/JsonLdNodeObject", () => ({
+			context: "https://schema.twindev.org/json-ld/",
+			type: "JsonLdNodeObject",
+			defaultValue: {},
+			jsonSchema: async () => ({
+				type: "object"
+			})
+		}));
+
+		// Workaround to overcome issue of ts-to-schema bad generation
+		DataTypeHandlerFactory.register(
+			"https://schema.twindev.org/data-space-connector/ActivityStreamsLdContextType",
+			() => ({
+				context: "https://schema.twindev.org/data-space-connector/",
+				type: "ActivityStreamsLdContextType",
+				defaultValue: {},
+				jsonSchema: async () => ({
+					anyOf: [
+						{
+							type: "object"
+						},
+						{
+							type: "array"
+						},
+						{
+							type: "string"
+						}
+					]
+				})
+			})
+		);
 	}
 
 	/**
@@ -101,40 +131,19 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 */
 	public async notifyActivity(activity: IActivity): Promise<string> {
 		const validationFailures: IValidationFailure[] = [];
+		await JsonLdHelper.validate(activity, validationFailures, { failOnMissingType: true });
+
+		console.log(JSON.stringify(validationFailures, null, 2));
+
+		Validation.asValidationError(this.CLASS_NAME, nameof(activity), validationFailures);
 
 		// Avoid using terms not defined in any Ld Context
-		const compactedObj = await JsonLdProcessor.compact(
-			activity,
-			activity["@context"] ?? ActivityStreamsContexts.ActivityStreamsLdContext
-		);
+		const compactedObj = await JsonLdProcessor.compact(activity, activity["@context"]);
 
-		// Type checking
-		const expandedObjForType = await JsonLdProcessor.expand({
-			"@context": compactedObj["@context"],
-			"@type": compactedObj.type ?? compactedObj["@type"]
-		});
-		const expandedTypes = expandedObjForType[0]["@type"];
-		if (!Is.arrayValue(expandedTypes)) {
-			throw new ValidationError(this.CLASS_NAME, nameof(activity), [
-				{ property: "type", reason: "empty" }
-			]);
-		}
-		if (
-			expandedTypes.some(item => ACTIVITY_STREAMS_TYPE_LIST.includes(item as ActivityStreamsTypes))
-		) {
-			await JsonLdHelper.validate(compactedObj, validationFailures);
-			console.log(validationFailures);
-			Validation.asValidationError(this.CLASS_NAME, nameof(activity), validationFailures);
+		const canonical = JsonLdProcessor.canonize(compactedObj);
 
-			// Generating an Activity log entry
-			/* const activityProcessing: IActivityLogEntry = {
-				id: "1234"
-			};*/
-		} else {
-			throw new ValidationError(this.CLASS_NAME, nameof(activity), [
-				{ property: "type", reason: "invalid" }
-			]);
-		}
+		
+
 		return "";
 	}
 

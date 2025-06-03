@@ -3,7 +3,6 @@
 
 import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IActivity } from "./IActivity";
-import type { IDataSpaceConnectorCallback } from "./IDataSpaceConnectorCallback";
 import type { IDataSpaceQuery } from "./IDataSpaceQuery";
 
 /**
@@ -14,17 +13,33 @@ export interface IDataSpaceConnectorApp {
 	 * The types handled by this Data Space Connector App.
 	 */
 	handledTypes: {
+		/**
+		 * FQN of the activity types handled.
+		 */
+		activityTypes?: [];
+
+		/**
+		 * FQN of the activity object types handled.
+		 */
 		activityObjectTypes?: string[];
+
+		/**
+		 * FQN of the activity target types handled.
+		 */
 		activityTargetTypes?: string[];
+
+		/**
+		 * FQN of the data resource asset types handled.
+		 */
 		dataResourceAssetTypes?: string[];
 	};
 
 	/**
 	 * Handles an Activity and report about results through the Data Space Connector Callback
 	 * @param activity The Activity to be handled
-	 * @param callback The Callback.
+	 * @returns The result of executing the Activity.
 	 */
-	handleActivity(activity: IActivity, callback: IDataSpaceConnectorCallback): void;
+	handleActivity<T>(activity: IActivity): Promise<T>;
 
 	/**
 	 * Handles a data resource.

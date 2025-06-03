@@ -5,15 +5,11 @@
 		},
 		{
 			"type": "array",
+			"items": {
+				"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
+			},
 			"minItems": 1,
-			"items": [
-				{
-					"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
-				}
-			],
-			"additionalItems": {
-				"type": "string"
-			}
+			"maxItems": 1
 		},
 		{
 			"type": "array",

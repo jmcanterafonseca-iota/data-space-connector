@@ -1,4 +1,4 @@
-# Interface: IActivityData
+# Interface: IActivity
 
 A W3C Activity from Activity Streams
 
@@ -6,7 +6,35 @@ A W3C Activity from Activity Streams
 
 https://www.w3.org/TR/activitystreams-core/#activities
 
+## Extends
+
+- `IJsonLdNodeObject`
+
+## Indexable
+
+\[`key`: `string`\]: `undefined` \| `null` \| `string` \| `number` \| `boolean` \| `string`[] \| `IJsonLdContextDefinition` \| `IJsonLdContextDefinitionElement`[] \| `IJsonLdIdMap` \| `IJsonLdNodeObject` \| `IJsonLdListObject` \| `object` & `object` \| `object` & `object` \| `object` & `object` \| `IJsonLdSetObject` \| `IJsonLdJsonObject` \| `IJsonLdIndexMap` \| `IJsonLdLanguageMap` \| `IJsonLdGraphObject` \| `IJsonLdNodeObject`[] \| `IJsonLdJsonObject`[] \| \{[`key`: `string`]: `string`; \} \| `IJsonLdTypeMap` \| `IJsonLdNodePrimitive`[]
+
 ## Properties
+
+### @context
+
+> **@context**: [`ActivityStreamsLdContextType`](../type-aliases/ActivityStreamsLdContextType.md)
+
+The LD Context.
+
+#### Overrides
+
+`IJsonLdNodeObject.@context`
+
+***
+
+### type
+
+> **type**: [`ActivityTypeJsonLd`](../type-aliases/ActivityTypeJsonLd.md)
+
+Activity Type.
+
+***
 
 ### generator?
 
@@ -30,7 +58,7 @@ https://www.w3.org/TR/activitystreams-vocabulary/#dfn-actor
 
 ### object
 
-> **object**: `IJsonLdObject` & `object`
+> **object**: `IJsonLdNodeObject`
 
 The object affected by the Activity.
 
@@ -42,7 +70,7 @@ https://www.w3.org/TR/activitystreams-vocabulary/#dfn-object
 
 ### target?
 
-> `optional` **target**: `IJsonLdObject` & `object`
+> `optional` **target**: `IJsonLdNodeObject`
 
 The target of the Activity.
 

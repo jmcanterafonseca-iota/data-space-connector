@@ -21,5 +21,7 @@ export type ActivityType =
  */
 export type ActivityTypeJsonLd =
 	| ActivityType
+	| [ActivityType]
 	| [ActivityType, ...IJsonLdKeyword["@type"][]]
-	| [...IJsonLdKeyword["@type"][], ActivityType];
+	// Workaround for the buggy ts-to-schema behaviour
+	| [ActivityType, ...string[]];
