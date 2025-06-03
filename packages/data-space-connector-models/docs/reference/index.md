@@ -33,3 +33,4 @@
 - [ActivityStreamsContexts](variables/ActivityStreamsContexts.md)
 - [ActivityStreamsTypes](variables/ActivityStreamsTypes.md)
 - [ACTIVITY\_STREAMS\_TYPE\_LIST](variables/ACTIVITY_STREAMS_TYPE_LIST.md)
+- [ActivityProcessingStatus](variables/ActivityProcessingStatus.md)

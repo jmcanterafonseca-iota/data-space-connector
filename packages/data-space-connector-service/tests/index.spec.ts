@@ -3,7 +3,11 @@
 
 import { StringHelper } from "@twin.org/core";
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
-import { ActivityStreamsContexts, type IActivity } from "@twin.org/data-space-connector-models";
+import {
+	ActivityProcessingStatus,
+	ActivityStreamsContexts,
+	type IActivity
+} from "@twin.org/data-space-connector-models";
 import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
 
@@ -128,6 +132,9 @@ describe("data-space-connector-tests", () => {
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(canonicalActivity);
 		expect(activityLogEntryId).toBeTypeOf("string");
+
+		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
+		expect(entry.status).toBe(ActivityProcessingStatus.Pending);
 	});
 
 	test("It should receive an Activity in the Activity Stream - canonical LD Context Array", async () => {
@@ -136,6 +143,10 @@ describe("data-space-connector-tests", () => {
 		const activityLogEntryId =
 			await dataSpaceConnectorService.notifyActivity(activityLdContextArray);
 		expect(activityLogEntryId).toBeTypeOf("string");
+		console.log(activityLogEntryId);
+
+		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
+		expect(entry.status).toBe(ActivityProcessingStatus.Pending);
 	});
 
 	test("It should receive an Activity in the Activity Stream - type extension", async () => {
@@ -143,5 +154,22 @@ describe("data-space-connector-tests", () => {
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(extendedActivity);
 		expect(activityLogEntryId).toBeTypeOf("string");
+
+		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
+		expect(entry.status).toBe(ActivityProcessingStatus.Pending);
+	});
+
+	test("It should report an error if Activity is duplicated", async () => {
+		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+
+		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(canonicalActivity);
+
+		await expect(dataSpaceConnectorService.notifyActivity(canonicalActivity)).rejects.toMatchObject(
+			{
+				name: "ConflictError",
+				message: "dataSpaceConnector.activityAlreadyNotified",
+				properties: { conflictId: activityLogEntryId }
+			}
+		);
 	});
 });

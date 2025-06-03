@@ -53,6 +53,6 @@ export const ACTIVITY_STREAMS_TYPE_LIST = [
 ];
 
 /**
- * The types concerning Gaia-X.
+ * The types concerning Activity.
  */
 export type ActivityStreamsTypes = (typeof ActivityStreamsTypes)[keyof typeof ActivityStreamsTypes];

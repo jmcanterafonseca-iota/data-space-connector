@@ -60,7 +60,7 @@ export const tagsDataSpaceConnector: ITag[] = [
 
 const activityExample: IActivity = {
 	"@context": ActivityStreamsContexts.ActivityStreamsLdContext,
-	"@type": "Add",
+	type: "Add",
 	actor: {
 		id: "did:iota:testnet:0x123456"
 	},

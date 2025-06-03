@@ -6,14 +6,18 @@ import {
 	type IValidationFailure,
 	NotFoundError,
 	StringHelper,
-	Validation
+	Validation,
+	Converter,
+	ConflictError
 } from "@twin.org/core";
+import { Blake2b } from "@twin.org/crypto";
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import {
 	JsonLdHelper,
 	JsonLdProcessor,
 	type IJsonLdDocument,
-	JsonLdDataTypes
+	JsonLdDataTypes,
+	type IJsonLdNodeObject
 } from "@twin.org/data-json-ld";
 import {
 	type IActivity,
@@ -23,7 +27,8 @@ import {
 	type ISubscription,
 	type ISubscriptionEntry,
 	type IDataSpaceQuery,
-	DataSpaceConnectorDataTypes
+	DataSpaceConnectorDataTypes,
+	ActivityProcessingStatus
 } from "@twin.org/data-space-connector-models";
 import {
 	EntityStorageConnectorFactory,
@@ -130,21 +135,43 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @returns The Activity's Log Entry identifier.
 	 */
 	public async notifyActivity(activity: IActivity): Promise<string> {
+		// Validate that the Activity notified is encoded using the representation format expected by the Connector
 		const validationFailures: IValidationFailure[] = [];
 		await JsonLdHelper.validate(activity, validationFailures, { failOnMissingType: true });
-
-		console.log(JSON.stringify(validationFailures, null, 2));
-
 		Validation.asValidationError(this.CLASS_NAME, nameof(activity), validationFailures);
 
 		// Avoid using terms not defined in any Ld Context
 		const compactedObj = await JsonLdProcessor.compact(activity, activity["@context"]);
 
-		const canonical = JsonLdProcessor.canonize(compactedObj);
+		// Calculate Activity Log Entry Id
+		const canonical = await JsonLdProcessor.canonize(compactedObj);
+		const canonicalBytes = new TextEncoder().encode(canonical);
+		const activityLogId = Converter.bytesToHex(Blake2b.sum256(canonicalBytes));
+		const activityLogEntryId = `urn:x-activity-log:${activityLogId}`;
 
-		
+		// Avoid duplicates
+		const entryExists = !Is.undefined(
+			await this._entityStorageActivityLogs.get(activityLogEntryId)
+		);
+		if (entryExists) {
+			throw new ConflictError(
+				this.CLASS_NAME,
+				"dataSpaceConnector.activityAlreadyNotified",
+				activityLogEntryId
+			);
+		}
 
-		return "";
+		const logEntry: IActivityLogEntry = {
+			id: activityLogEntryId,
+			generator:
+				(activity.generator as string) ?? ((activity.actor as IJsonLdNodeObject).id as string),
+			status: ActivityProcessingStatus.Pending,
+			dateCreated: new Date().toISOString(),
+			dateUpdated: new Date().toISOString()
+		};
+
+		await this._entityStorageActivityLogs.set(logEntry);
+		return activityLogEntryId;
 	}
 
 	/**
@@ -156,7 +183,11 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	public async getActivityLogEntry(logEntryId: string): Promise<IActivityLogEntry> {
 		const result = await this._entityStorageActivityLogs.get(logEntryId);
 		if (Is.undefined(result)) {
-			throw new NotFoundError(this.CLASS_NAME, "activityLogEntryNotFound", logEntryId);
+			throw new NotFoundError(
+				this.CLASS_NAME,
+				"dataSpaceConnector.activityLogEntryNotFound",
+				logEntryId
+			);
 		}
 
 		return result;
@@ -179,7 +210,11 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	public async getSubscriptionEntry(entryId: string): Promise<ISubscriptionEntry> {
 		const result = await this._entityStorageSubscriptions.get(entryId);
 		if (Is.undefined(result)) {
-			throw new NotFoundError(this.CLASS_NAME, "subscriptionEntryNotFound", entryId);
+			throw new NotFoundError(
+				this.CLASS_NAME,
+				"dataSpaceConnector.subscriptionEntryNotFound",
+				entryId
+			);
 		}
 
 		return result;

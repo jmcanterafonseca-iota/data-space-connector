@@ -1,5 +1,5 @@
 # Type Alias: ActivityProcessingStatus
 
-> **ActivityProcessingStatus** = `"pending"` \| `"running"` \| `"completed"` \| `"failed"` \| `"error"`
+> **ActivityProcessingStatus** = *typeof* [`ActivityProcessingStatus`](../variables/ActivityProcessingStatus.md)\[keyof *typeof* [`ActivityProcessingStatus`](../variables/ActivityProcessingStatus.md)\]
 
-Activity processing statuses.
+The type exported.
