@@ -7,6 +7,8 @@
 		}
 	},
 	"info": {
-		"dataSpaceConnectorService": {}
+		"dataSpaceConnectorService": {
+			"taskScheduled": "Task scheduled: \"{taskId}\" for Data Space Connector App \"{dataSpaceConnectorAppId}\""
+		}
 	}
 }

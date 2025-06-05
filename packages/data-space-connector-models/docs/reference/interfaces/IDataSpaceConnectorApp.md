@@ -4,29 +4,23 @@ Interface that must be implemented by a Data Space Connector App.
 
 ## Properties
 
+### id
+
+> **id**: `string`
+
+A URI that denotes the identifier of the App.
+
+***
+
 ### handledTypes
 
 > **handledTypes**: `object`
 
 The types handled by this Data Space Connector App.
 
-#### activityTypes?
+#### activityObjectTargetTriples
 
-> `optional` **activityTypes**: \[\]
-
-FQN of the activity types handled.
-
-#### activityObjectTypes?
-
-> `optional` **activityObjectTypes**: `string`[]
-
-FQN of the activity object types handled.
-
-#### activityTargetTypes?
-
-> `optional` **activityTargetTypes**: `string`[]
-
-FQN of the activity target types handled.
+> **activityObjectTargetTriples**: [`IActivityObjectTargetTriple`](IActivityObjectTargetTriple.md)[]
 
 #### dataResourceAssetTypes?
 
@@ -38,15 +32,9 @@ FQN of the data resource asset types handled.
 
 ### handleActivity()
 
-> **handleActivity**\<`T`\>(`activity`): `Promise`\<`T`\>
+> **handleActivity**(`activity`): `Promise`\<`unknown`\>
 
 Handles an Activity and report about results through the Data Space Connector Callback
-
-#### Type Parameters
-
-##### T
-
-`T`
 
 #### Parameters
 
@@ -58,7 +46,7 @@ The Activity to be handled
 
 #### Returns
 
-`Promise`\<`T`\>
+`Promise`\<`unknown`\>
 
 The result of executing the Activity.
 

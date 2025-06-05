@@ -1,7 +1,11 @@
 {
 	"baseUrl": "https://schema.twindev.org/data-space-connector/",
-	"sources": ["./src/models/**/*.ts"],
-	"types": ["IActivity", "ActivityStreamsLdContextType", "ActivityType", "ActivityTypeJsonLd"],
+	"types": [
+		"./src/models/IActivity.ts",
+		"./src/ActivityStreamsLdContextType.ts",
+		"./src/models/ActivityType.ts",
+		"./src/models/ActivityTypeJsonLd.ts"
+	],
 	"externalReferences": {
 		"IJsonLd(.*)": "https://schema.twindev.org/json-ld/JsonLd$1"
 	}

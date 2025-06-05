@@ -33,4 +33,10 @@ export interface IDataSpaceConnectorServiceConstructorOptions {
 	 * @default subscription-entry
 	 */
 	subscriptionEntityStorageType?: string;
+
+	/**
+	 * Background task connector.
+	 * @default background-task-4-data-space
+	 */
+	backgroundTaskConnectorType?: string;
 }

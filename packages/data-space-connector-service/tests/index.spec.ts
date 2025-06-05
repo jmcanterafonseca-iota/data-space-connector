@@ -1,12 +1,22 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
+import {
+	EntityStorageBackgroundTaskConnector,
+	type BackgroundTask,
+	initSchema as initSchemaBackgroundTask
+} from "@twin.org/background-task-connector-entity-storage";
+import { BackgroundTaskConnectorFactory } from "@twin.org/background-task-models";
 import { StringHelper } from "@twin.org/core";
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
+import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import {
 	ActivityProcessingStatus,
 	ActivityStreamsContexts,
-	type IActivity
+	type IDataSpaceConnectorApp,
+	type IDataSpaceQuery,
+	type IActivity,
+	type IActivityLogEntry
 } from "@twin.org/data-space-connector-models";
 import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
@@ -27,6 +37,18 @@ let subscriptionStore: MemoryEntityStorageConnector<SubscriptionEntry>;
 
 let options: IDataSpaceConnectorServiceConstructorOptions;
 
+let backgroundTaskStorage: MemoryEntityStorageConnector<BackgroundTask>;
+let backgroundTaskConnectorEntityStorage: EntityStorageBackgroundTaskConnector;
+
+/**
+ * Asserts Activity Log.
+ * @param entry Entry to be asserted
+ */
+function assertActivityLog(entry: IActivityLogEntry): void {
+	expect(entry.status).toBe(ActivityProcessingStatus.Pending);
+	expect(entry.associatedTasks.length).toBe(1);
+}
+
 describe("data-space-connector-tests", () => {
 	beforeAll(async () => {
 		await setupTestEnv();
@@ -41,6 +63,7 @@ describe("data-space-connector-tests", () => {
 		addAllContextsToDocumentCache();
 
 		initSchema();
+		initSchemaBackgroundTask();
 
 		options = {
 			loggingConnectorType: "console",
@@ -87,6 +110,17 @@ describe("data-space-connector-tests", () => {
 			StringHelper.kebabCase(nameof<SubscriptionEntry>()),
 			() => subscriptionStore
 		);
+
+		backgroundTaskStorage = new MemoryEntityStorageConnector<BackgroundTask>({
+			entitySchema: nameof<BackgroundTask>()
+		});
+		EntityStorageConnectorFactory.register("background-task", () => backgroundTaskStorage);
+
+		backgroundTaskConnectorEntityStorage = new EntityStorageBackgroundTaskConnector();
+		BackgroundTaskConnectorFactory.register(
+			"background-task-4-data-space",
+			() => backgroundTaskConnectorEntityStorage
+		);
 	});
 
 	const canonicalActivity: IActivity = {
@@ -127,36 +161,83 @@ describe("data-space-connector-tests", () => {
 		updated: "02-06-2025T12:00:00Z"
 	};
 
+	/**
+	 * Test App.
+	 */
+	class TestApp implements IDataSpaceConnectorApp {
+		// eslint-disable-next-line no-restricted-syntax
+		public id = "https://twn.example.org/app1";
+
+		// eslint-disable-next-line no-restricted-syntax
+		public handledTypes = {
+			activityObjectTargetTriples: [{ objectType: "https://vocabulary.uncefact.org/Consignment" }]
+		};
+
+		/**
+		 * Handle Activity.
+		 * @param act Activity
+		 * @returns Activity processing result
+		 */
+		public async handleActivity(act: IActivity): Promise<unknown> {
+			return "hello";
+		}
+
+		/**
+		 * Handle a Data Resource.
+		 * @param dataResourceId Data Resource Id.
+		 * @param query Query.
+		 * @returns Data.
+		 */
+		public async handleDataResource(
+			dataResourceId: string,
+			query?: IDataSpaceQuery
+		): Promise<IJsonLdNodeObject> {
+			return {};
+		}
+	}
+
 	test("It should receive an Activity in the Activity Stream - canonical", async () => {
+		await backgroundTaskConnectorEntityStorage.start("");
+
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+		const testApp = new TestApp();
+		dataSpaceConnectorService.registerDataSpaceConnectorApp(testApp);
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(canonicalActivity);
-		expect(activityLogEntryId).toBeTypeOf("string");
-
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
-		expect(entry.status).toBe(ActivityProcessingStatus.Pending);
+		assertActivityLog(entry);
 	});
 
 	test("It should receive an Activity in the Activity Stream - canonical LD Context Array", async () => {
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+		const testApp = new TestApp();
+		dataSpaceConnectorService.registerDataSpaceConnectorApp(testApp);
 
 		const activityLogEntryId =
 			await dataSpaceConnectorService.notifyActivity(activityLdContextArray);
-		expect(activityLogEntryId).toBeTypeOf("string");
-		console.log(activityLogEntryId);
-
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
-		expect(entry.status).toBe(ActivityProcessingStatus.Pending);
+		assertActivityLog(entry);
 	});
 
 	test("It should receive an Activity in the Activity Stream - type extension", async () => {
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+		const testApp = new TestApp();
+		dataSpaceConnectorService.registerDataSpaceConnectorApp(testApp);
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(extendedActivity);
-		expect(activityLogEntryId).toBeTypeOf("string");
-
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
-		expect(entry.status).toBe(ActivityProcessingStatus.Pending);
+		assertActivityLog(entry);
+	});
+
+	test("It should not start any task if there is no registered DS Connector App", async () => {
+		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+
+		const activityLogEntryId =
+			await dataSpaceConnectorService.notifyActivity(activityLdContextArray);
+		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
+
+		expect(entry.status).toBe(ActivityProcessingStatus.Completed);
+		expect(entry.associatedTasks.length).toBe(0);
 	});
 
 	test("It should report an error if Activity is duplicated", async () => {

@@ -10,6 +10,7 @@ export const ActivityProcessingStatus = {
 	 * Pending: Activity Processing has not started yet.
 	 */
 	Pending: "pending",
+
 	/**
 	 * Running Activity processing is running.
 	 */

@@ -9,6 +9,8 @@
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
 - [IActivity](interfaces/IActivity.md)
 - [IActivityLogEntry](interfaces/IActivityLogEntry.md)
+- [IActivityObjectTargetTriple](interfaces/IActivityObjectTargetTriple.md)
+- [IActivityTask](interfaces/IActivityTask.md)
 - [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
 - [IDataSpaceConnectorCallback](interfaces/IDataSpaceConnectorCallback.md)
 - [IDataSpaceQuery](interfaces/IDataSpaceQuery.md)

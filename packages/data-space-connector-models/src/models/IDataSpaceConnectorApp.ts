@@ -3,6 +3,7 @@
 
 import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type { IActivity } from "./IActivity";
+import type { IActivityObjectTargetTriple } from "./IActivityObjectTargetTriple";
 import type { IDataSpaceQuery } from "./IDataSpaceQuery";
 
 /**
@@ -10,23 +11,15 @@ import type { IDataSpaceQuery } from "./IDataSpaceQuery";
  */
 export interface IDataSpaceConnectorApp {
 	/**
+	 * A URI that denotes the identifier of the App.
+	 */
+	id: string;
+
+	/**
 	 * The types handled by this Data Space Connector App.
 	 */
 	handledTypes: {
-		/**
-		 * FQN of the activity types handled.
-		 */
-		activityTypes?: [];
-
-		/**
-		 * FQN of the activity object types handled.
-		 */
-		activityObjectTypes?: string[];
-
-		/**
-		 * FQN of the activity target types handled.
-		 */
-		activityTargetTypes?: string[];
+		activityObjectTargetTriples: IActivityObjectTargetTriple[];
 
 		/**
 		 * FQN of the data resource asset types handled.
@@ -39,7 +32,7 @@ export interface IDataSpaceConnectorApp {
 	 * @param activity The Activity to be handled
 	 * @returns The result of executing the Activity.
 	 */
-	handleActivity<T>(activity: IActivity): Promise<T>;
+	handleActivity(activity: IActivity): Promise<unknown>;
 
 	/**
 	 * Handles a data resource.

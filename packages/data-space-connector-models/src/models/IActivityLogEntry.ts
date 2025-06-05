@@ -1,7 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
+import type { IError } from "@twin.org/core";
 import type { ActivityProcessingStatus } from "./activityProcessingStatus";
+import type { IActivityTask } from "./IActivityTask";
 
 /**
  * The details related to the processing of an Activity
@@ -38,22 +40,27 @@ export interface IActivityLogEntry {
 	dateUpdated: string;
 
 	/**
-	 * Activity processing start time (filled if it has actually started).
+	 * The tasks this activity log entry is in association with.
 	 */
-	startTime?: string;
+	associatedTasks: IActivityTask[];
 
 	/**
-	 * Activity's end time (filled if it has actually finished).
+	 * The tasks that have already finalized.
 	 */
-	endTime?: string;
+	finalizedTasks: (IActivityTask & {
+		/**
+		 * The task result.
+		 */
+		result: string;
+	})[];
 
 	/**
-	 * The result of processing the Activity.
+	 * The tasks that are in error.
 	 */
-	processingResult?: unknown;
-
-	/**
-	 * Error resulting from processing the Activity.
-	 */
-	processingError?: Error;
+	inErrorTasks: (IActivityTask & {
+		/**
+		 * The error that happened
+		 */
+		error: IError;
+	})[];
 }

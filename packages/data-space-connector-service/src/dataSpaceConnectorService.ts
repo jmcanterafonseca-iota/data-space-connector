@@ -1,6 +1,14 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
+import path from "node:path";
+
+import {
+	BackgroundTaskConnectorFactory,
+	TaskStatus,
+	type IBackgroundTask,
+	type IBackgroundTaskConnector
+} from "@twin.org/background-task-models";
 import {
 	Is,
 	type IValidationFailure,
@@ -8,10 +16,10 @@ import {
 	StringHelper,
 	Validation,
 	Converter,
-	ConflictError
+	ConflictError,
+	type IError
 } from "@twin.org/core";
 import { Blake2b } from "@twin.org/crypto";
-import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import {
 	JsonLdHelper,
 	JsonLdProcessor,
@@ -28,7 +36,9 @@ import {
 	type ISubscriptionEntry,
 	type IDataSpaceQuery,
 	DataSpaceConnectorDataTypes,
-	ActivityProcessingStatus
+	ActivityProcessingStatus,
+	type IActivityObjectTargetTriple,
+	type IActivityTask
 } from "@twin.org/data-space-connector-models";
 import {
 	EntityStorageConnectorFactory,
@@ -36,15 +46,22 @@ import {
 } from "@twin.org/entity-storage-models";
 import { LoggingConnectorFactory, type ILoggingConnector } from "@twin.org/logging-models";
 import { nameof } from "@twin.org/nameof";
+import { AppRegistry } from "./appRegistry";
 import type { ActivityLogEntry } from "./entities/activityLogEntry";
 import type { SubscriptionEntry } from "./entities/subscriptionEntry";
-import { HandlerRegistry } from "./handlerRegistry";
+import type { IExecutionPayload } from "./IExecutionPayload";
 import type { IDataSpaceConnectorServiceConstructorOptions } from "./models/IDataSpaceConnectorServiceConstructorOptions";
 
 /**
  * Data Space Connector Service.
  */
 export class DataSpaceConnectorService implements IDataSpaceConnector {
+	/**
+	 * DS Connector Task Type.
+	 * @internal
+	 */
+	private static readonly _DS_CONNECTOR_TASK_TYPE: string = "dataSpaceConnectorTask";
+
 	/**
 	 * Runtime name for the class.
 	 */
@@ -70,8 +87,15 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 
 	/**
 	 * Handler registry of Data Space Connector Apps.
+	 * @internal
 	 */
-	private readonly _handlerRegistry: HandlerRegistry;
+	private readonly _appRegistry: AppRegistry;
+
+	/**
+	 * Background Task Connector
+	 * @internal
+	 */
+	private readonly _backgroundTaskConnector: IBackgroundTaskConnector;
 
 	/**
 	 * Create a new instance of FederatedCatalogue service.
@@ -90,43 +114,22 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			IEntityStorageConnector<SubscriptionEntry>
 		>(options.subscriptionEntityStorageType ?? StringHelper.kebabCase(nameof<SubscriptionEntry>()));
 
-		this._handlerRegistry = new HandlerRegistry();
+		this._backgroundTaskConnector = BackgroundTaskConnectorFactory.get(
+			options?.backgroundTaskConnectorType ?? "background-task-4-data-space"
+		);
+		this._appRegistry = new AppRegistry();
+
+		this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
+			DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
+			`file://${path.join(__dirname, "dataSpaceConnectorTask.js")}`,
+			"execute",
+			async task => {
+				await this.finaliseTask(task);
+			}
+		);
 
 		JsonLdDataTypes.registerTypes();
 		DataSpaceConnectorDataTypes.registerTypes();
-
-		// Workaround to overcome issue of ts-to-schema bad generation
-		DataTypeHandlerFactory.register("https://schema.twindev.org/json-ld/JsonLdNodeObject", () => ({
-			context: "https://schema.twindev.org/json-ld/",
-			type: "JsonLdNodeObject",
-			defaultValue: {},
-			jsonSchema: async () => ({
-				type: "object"
-			})
-		}));
-
-		// Workaround to overcome issue of ts-to-schema bad generation
-		DataTypeHandlerFactory.register(
-			"https://schema.twindev.org/data-space-connector/ActivityStreamsLdContextType",
-			() => ({
-				context: "https://schema.twindev.org/data-space-connector/",
-				type: "ActivityStreamsLdContextType",
-				defaultValue: {},
-				jsonSchema: async () => ({
-					anyOf: [
-						{
-							type: "object"
-						},
-						{
-							type: "array"
-						},
-						{
-							type: "string"
-						}
-					]
-				})
-			})
-		);
 	}
 
 	/**
@@ -161,16 +164,55 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			);
 		}
 
+		const triples = await this.calculateTriple(compactedObj);
+
+		const tasksScheduled: IActivityTask[] = [];
+		for (const triple of triples) {
+			const dataSpaceConnectorApps = this._appRegistry.getAppForActivityObjectTargetTriple(triple);
+
+			for (const dataSpaceConnectorApp of dataSpaceConnectorApps) {
+				const payload: IExecutionPayload = {
+					activityLogEntryId,
+					activity: compactedObj,
+					executorApp: dataSpaceConnectorApp
+				};
+				const taskId = await this._backgroundTaskConnector.create<IExecutionPayload>(
+					DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
+					payload
+				);
+				tasksScheduled.push({
+					taskId,
+					dataSpaceConnectorAppId: dataSpaceConnectorApp.id
+				});
+
+				await this._loggingService?.log({
+					level: "info",
+					source: this.CLASS_NAME,
+					message: "dataSpaceConnector.scheduledTask",
+					data: {
+						taskId,
+						dataSpaceConnectorAppId: dataSpaceConnectorApp.id
+					}
+				});
+			}
+		}
+
 		const logEntry: IActivityLogEntry = {
 			id: activityLogEntryId,
 			generator:
 				(activity.generator as string) ?? ((activity.actor as IJsonLdNodeObject).id as string),
-			status: ActivityProcessingStatus.Pending,
+			status:
+				tasksScheduled.length > 0
+					? ActivityProcessingStatus.Pending
+					: ActivityProcessingStatus.Completed,
 			dateCreated: new Date().toISOString(),
-			dateUpdated: new Date().toISOString()
+			dateUpdated: new Date().toISOString(),
+			associatedTasks: tasksScheduled,
+			finalizedTasks: [],
+			inErrorTasks: []
 		};
-
 		await this._entityStorageActivityLogs.set(logEntry);
+
 		return activityLogEntryId;
 	}
 
@@ -242,12 +284,116 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param app The App to be registered.
 	 */
 	public registerDataSpaceConnectorApp(app: IDataSpaceConnectorApp): void {
-		const objectTypes = app.handledTypes.activityObjectTypes;
+		const activityObjectTargetTriples = app.handledTypes.activityObjectTargetTriples;
 
-		if (Is.arrayValue(objectTypes)) {
-			for (const objectType of objectTypes) {
-				this._handlerRegistry.setHandlerForActivityObjectType(objectType, app);
+		if (Is.arrayValue(activityObjectTargetTriples)) {
+			for (const triple of activityObjectTargetTriples) {
+				this._appRegistry.setAppForActivityObjectTargetTriple(triple, app);
 			}
 		}
+	}
+
+	/**
+	 * Process activity task finalization.
+	 * @param proofEntity The proof entity to process.
+	 * @internal
+	 */
+	private async finaliseTask(task: IBackgroundTask<IExecutionPayload, unknown>): Promise<void> {
+		console.log("task finalized");
+		if (Is.object(task.payload) && Is.object(task.result)) {
+			const payload = task.payload;
+
+			const activityLogEntry = await this._entityStorageActivityLogs.get(
+				payload.activityLogEntryId
+			);
+
+			if (Is.undefined(activityLogEntry)) {
+				this._loggingService?.log({
+					level: "error",
+					source: this.CLASS_NAME,
+					message: "dataSpaceConnector.unknownActivityLogEntryId",
+					data: activityLogEntry
+				});
+
+				return;
+			}
+
+			if (task.status === TaskStatus.Success) {
+				if (!Is.undefined(activityLogEntry?.finalizedTasks)) {
+					activityLogEntry.finalizedTasks = [];
+				}
+
+				activityLogEntry.finalizedTasks.push({
+					taskId: task.id,
+					dataSpaceConnectorAppId: task.payload.executorApp.id,
+					result: JSON.stringify(task.result)
+				});
+
+				if (activityLogEntry.finalizedTasks.length === activityLogEntry.associatedTasks.length) {
+					activityLogEntry.status = ActivityProcessingStatus.Completed;
+				}
+			} else if (task.status === TaskStatus.Failed) {
+				if (!Is.undefined(activityLogEntry?.inErrorTasks)) {
+					activityLogEntry.inErrorTasks = [];
+				}
+
+				activityLogEntry.inErrorTasks.push({
+					taskId: task.id,
+					dataSpaceConnectorAppId: task.payload.executorApp.id,
+					error: task.error as IError
+				});
+
+				activityLogEntry.status = ActivityProcessingStatus.Error;
+			}
+
+			await this._entityStorageActivityLogs.set(activityLogEntry);
+		}
+	}
+
+	/**
+	 * Calculates the (Activity, Object, Target, Triple).
+	 * @param compactedObj The compactObj representing the Activity.
+	 * @returns the Activity, Object, Target, triple.
+	 */
+	private async calculateTriple(compactedObj: IActivity): Promise<IActivityObjectTargetTriple[]> {
+		const expanded = await JsonLdProcessor.expand({
+			"@context": compactedObj["@context"],
+			"@type": compactedObj.type
+		});
+		const expandedDoc = expanded[0];
+		const activityTypes = expandedDoc["@type"] as string[];
+
+		if (Is.undefined(compactedObj.object["@context"])) {
+			compactedObj.object["@context"] = compactedObj["@context"];
+		}
+		const objectExpanded = await JsonLdProcessor.expand(compactedObj.object);
+		const objectTypes = objectExpanded[0]["@type"] as string[];
+
+		let targetTypes: string[] | null[] = [null];
+		if (Is.object(compactedObj.target)) {
+			if (Is.undefined(compactedObj.target["@context"])) {
+				compactedObj.target["@context"] = compactedObj["@context"];
+			}
+			const targetExpanded = await JsonLdProcessor.expand(compactedObj.target);
+			targetTypes = targetExpanded[0]["@type"] as string[];
+		}
+
+		const result: IActivityObjectTargetTriple[] = [];
+
+		for (const activityType of activityTypes) {
+			for (const objectType of objectTypes) {
+				for (const targetType of targetTypes) {
+					const triple: IActivityObjectTargetTriple = {
+						activityType,
+						objectType,
+						targetType: Is.null(targetType) ? undefined : targetType
+					};
+
+					result.push(triple);
+				}
+			}
+		}
+
+		return result;
 	}
 }

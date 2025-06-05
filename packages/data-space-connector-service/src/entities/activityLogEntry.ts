@@ -1,6 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import type { ActivityProcessingStatus } from "@twin.org/data-space-connector-models";
+import type { IError } from "@twin.org/core";
+import type {
+	ActivityProcessingStatus,
+	IActivityTask
+} from "@twin.org/data-space-connector-models";
 import { entity, property, SortDirection } from "@twin.org/entity";
 
 /**
@@ -45,26 +49,20 @@ export class ActivityLogEntry {
 	public dateUpdated!: string;
 
 	/**
-	 * The start time.
+	 * The associated tasks
 	 */
-	@property({ type: "string", optional: true, format: "date-time" })
-	public startTime?: string;
+	@property({ type: "array", format: "json" })
+	public associatedTasks!: IActivityTask[];
 
 	/**
-	 * The end time.
+	 * The finalized tasks
 	 */
-	@property({ type: "string", optional: true, format: "date-time" })
-	public endTime?: string;
+	@property({ type: "array", format: "json" })
+	public finalizedTasks!: (IActivityTask & { result: string })[];
 
 	/**
-	 * The processing result.
+	 * The in error tasks.
 	 */
-	@property({ type: "string", optional: true, format: "json" })
-	public processingResult?: unknown;
-
-	/**
-	 * The processing error.
-	 */
-	@property({ type: "string", optional: true, format: "json" })
-	public processingError?: Error;
+	@property({ type: "array", format: "json" })
+	public inErrorTasks!: (IActivityTask & { error: IError })[];
 }

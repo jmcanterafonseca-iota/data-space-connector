@@ -52,32 +52,24 @@ The last update date of this object.
 
 ***
 
-### startTime?
+### associatedTasks
 
-> `optional` **startTime**: `string`
+> **associatedTasks**: [`IActivityTask`](IActivityTask.md)[]
 
-Activity processing start time (filled if it has actually started).
-
-***
-
-### endTime?
-
-> `optional` **endTime**: `string`
-
-Activity's end time (filled if it has actually finished).
+The tasks this activity log entry is in association with.
 
 ***
 
-### processingResult?
+### finalizedTasks
 
-> `optional` **processingResult**: `unknown`
+> **finalizedTasks**: [`IActivityTask`](IActivityTask.md) & `object`[]
 
-The result of processing the Activity.
+The tasks that have already finalized.
 
 ***
 
-### processingError?
+### inErrorTasks
 
-> `optional` **processingError**: `Error`
+> **inErrorTasks**: [`IActivityTask`](IActivityTask.md) & `object`[]
 
-Error resulting from processing the Activity.
+The tasks that are in error.

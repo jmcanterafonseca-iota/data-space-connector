@@ -40,7 +40,8 @@
 		"@twin.org/standards-w3c-did": "next",
 		"@twin.org/standards-gaia-x": "next",
 		"@twin.org/standards-schema-org": "next",
-		"@twin.org/standards-w3c-odrl": "next"
+		"@twin.org/standards-w3c-odrl": "next",
+		"@twin.org/background-task-models": "next"
 	},
 	"devDependencies": {
 		"@rollup/plugin-json": "6.1.0",
