@@ -1,5 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+
 import path from "node:path";
 import { EnvHelper, RandomHelper } from "@twin.org/core";
 import * as dotenv from "dotenv";

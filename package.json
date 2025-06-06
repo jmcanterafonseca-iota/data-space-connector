@@ -49,7 +49,8 @@
 	},
 	"workspaces": [
 		"packages/data-space-connector-models",
-		"packages/data-space-connector-service"
+		"packages/data-space-connector-service",
+		"packages/data-space-connector-test-app"
 	],
 	"type": "module"
 }

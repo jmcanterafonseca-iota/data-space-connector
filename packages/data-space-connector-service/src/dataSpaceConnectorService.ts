@@ -1,8 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import path from "node:path";
-
 import {
 	BackgroundTaskConnectorFactory,
 	TaskStatus,
@@ -49,8 +47,8 @@ import { nameof } from "@twin.org/nameof";
 import { AppRegistry } from "./appRegistry";
 import type { ActivityLogEntry } from "./entities/activityLogEntry";
 import type { SubscriptionEntry } from "./entities/subscriptionEntry";
-import type { IExecutionPayload } from "./IExecutionPayload";
 import type { IDataSpaceConnectorServiceConstructorOptions } from "./models/IDataSpaceConnectorServiceConstructorOptions";
+import type { IExecutionPayload } from "../../data-space-connector-models/src/models/IExecutionPayload";
 
 /**
  * Data Space Connector Service.
@@ -119,15 +117,6 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		);
 		this._appRegistry = new AppRegistry();
 
-		this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
-			DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
-			`file://${path.join(__dirname, "dataSpaceConnectorTask.js")}`,
-			"execute",
-			async task => {
-				await this.finaliseTask(task);
-			}
-		);
-
 		JsonLdDataTypes.registerTypes();
 		DataSpaceConnectorDataTypes.registerTypes();
 	}
@@ -174,10 +163,10 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				const payload: IExecutionPayload = {
 					activityLogEntryId,
 					activity: compactedObj,
-					executorApp: dataSpaceConnectorApp
+					executorApp: dataSpaceConnectorApp.id
 				};
 				const taskId = await this._backgroundTaskConnector.create<IExecutionPayload>(
-					DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
+					dataSpaceConnectorApp.id,
 					payload
 				);
 				tasksScheduled.push({
@@ -291,6 +280,15 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				this._appRegistry.setAppForActivityObjectTargetTriple(triple, app);
 			}
 		}
+
+		this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
+			app.id,
+			app.moduleName,
+			"executeTask",
+			async task => {
+				await this.finaliseTask(task);
+			}
+		);
 	}
 
 	/**
@@ -299,55 +297,68 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @internal
 	 */
 	private async finaliseTask(task: IBackgroundTask<IExecutionPayload, unknown>): Promise<void> {
-		console.log("task finalized");
-		if (Is.object(task.payload) && Is.object(task.result)) {
-			const payload = task.payload;
+		console.log(task);
+		const payload = task.payload;
 
-			const activityLogEntry = await this._entityStorageActivityLogs.get(
-				payload.activityLogEntryId
-			);
+		if (Is.undefined(payload)) {
+			return;
+		}
 
-			if (Is.undefined(activityLogEntry)) {
-				this._loggingService?.log({
-					level: "error",
-					source: this.CLASS_NAME,
-					message: "dataSpaceConnector.unknownActivityLogEntryId",
-					data: activityLogEntry
-				});
+		const activityLogEntry = await this._entityStorageActivityLogs.get(payload.activityLogEntryId);
 
-				return;
-			}
+		if (Is.undefined(activityLogEntry)) {
+			this._loggingService?.log({
+				level: "error",
+				source: this.CLASS_NAME,
+				message: "dataSpaceConnector.unknownActivityLogEntryId",
+				data: activityLogEntry
+			});
+			return;
+		}
 
-			if (task.status === TaskStatus.Success) {
-				if (!Is.undefined(activityLogEntry?.finalizedTasks)) {
-					activityLogEntry.finalizedTasks = [];
+		let nextStatus: ActivityProcessingStatus = activityLogEntry.status;
+		switch (task.status) {
+			case TaskStatus.Processing:
+				if (activityLogEntry.status === ActivityProcessingStatus.Pending) {
+					nextStatus = ActivityProcessingStatus.Running;
 				}
+				break;
+			case TaskStatus.Success:
+				if (Is.object(task.payload) && Is.object(task.result)) {
+					if (!Is.undefined(activityLogEntry?.finalizedTasks)) {
+						activityLogEntry.finalizedTasks = [];
+					}
+					activityLogEntry.finalizedTasks.push({
+						taskId: task.id,
+						dataSpaceConnectorAppId: task.payload.executorApp,
+						result: JSON.stringify(task.result)
+					});
 
-				activityLogEntry.finalizedTasks.push({
-					taskId: task.id,
-					dataSpaceConnectorAppId: task.payload.executorApp.id,
-					result: JSON.stringify(task.result)
-				});
-
-				if (activityLogEntry.finalizedTasks.length === activityLogEntry.associatedTasks.length) {
-					activityLogEntry.status = ActivityProcessingStatus.Completed;
+					if (
+						activityLogEntry.finalizedTasks.length === activityLogEntry.associatedTasks.length &&
+						activityLogEntry.status !== ActivityProcessingStatus.Error
+					) {
+						nextStatus = ActivityProcessingStatus.Completed;
+					}
 				}
-			} else if (task.status === TaskStatus.Failed) {
+				break;
+			case TaskStatus.Failed:
 				if (!Is.undefined(activityLogEntry?.inErrorTasks)) {
 					activityLogEntry.inErrorTasks = [];
 				}
 
 				activityLogEntry.inErrorTasks.push({
 					taskId: task.id,
-					dataSpaceConnectorAppId: task.payload.executorApp.id,
+					dataSpaceConnectorAppId: payload.executorApp,
 					error: task.error as IError
 				});
-
-				activityLogEntry.status = ActivityProcessingStatus.Error;
-			}
-
-			await this._entityStorageActivityLogs.set(activityLogEntry);
+				nextStatus = ActivityProcessingStatus.Error;
+				break;
 		}
+
+		activityLogEntry.status = nextStatus;
+
+		await this._entityStorageActivityLogs.set(activityLogEntry);
 	}
 
 	/**

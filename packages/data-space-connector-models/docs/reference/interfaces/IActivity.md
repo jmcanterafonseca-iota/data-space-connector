@@ -12,7 +12,7 @@ https://www.w3.org/TR/activitystreams-core/#activities
 
 ## Indexable
 
-\[`key`: `string`\]: `undefined` \| `null` \| `string` \| `number` \| `boolean` \| `string`[] \| `IJsonLdContextDefinition` \| `IJsonLdContextDefinitionElement`[] \| `IJsonLdIdMap` \| `IJsonLdNodeObject` \| `IJsonLdListObject` \| `object` & `object` \| `object` & `object` \| `object` & `object` \| `IJsonLdSetObject` \| `IJsonLdJsonObject` \| `IJsonLdIndexMap` \| `IJsonLdLanguageMap` \| `IJsonLdGraphObject` \| `IJsonLdNodeObject`[] \| `IJsonLdJsonObject`[] \| \{[`key`: `string`]: `string`; \} \| `IJsonLdTypeMap` \| `IJsonLdNodePrimitive`[]
+\[`key`: `string`\]: `undefined` \| `null` \| `string` \| `number` \| `boolean` \| `IJsonLdContextDefinition` \| `IJsonLdNodeObject` \| `IJsonLdGraphObject` \| `object` & `object` \| `object` & `object` \| `object` & `object` \| `IJsonLdListObject` \| `IJsonLdSetObject` \| `IJsonLdNodePrimitive`[] \| `IJsonLdLanguageMap` \| `IJsonLdIndexMap` \| `IJsonLdNodeObject`[] \| `IJsonLdIdMap` \| `IJsonLdTypeMap` \| `string`[] \| `IJsonLdContextDefinitionElement`[] \| `IJsonLdJsonObject` \| `IJsonLdJsonObject`[] \| \{[`key`: `string`]: `string`; \}
 
 ## Properties
 
@@ -38,7 +38,7 @@ Activity Type.
 
 ### generator?
 
-> `optional` **generator**: `string` \| `string`[] \| `IJsonLdNodeObject`
+> `optional` **generator**: `string` \| `IJsonLdNodeObject` \| `string`[]
 
 The generator of the Activity.
 
@@ -46,7 +46,7 @@ The generator of the Activity.
 
 ### actor
 
-> **actor**: `string` \| `string`[] \| `IJsonLdNodeObject`
+> **actor**: `string` \| `IJsonLdNodeObject` \| `string`[]
 
 The Actor behind the Activity.
 
@@ -106,7 +106,7 @@ https://www.w3.org/TR/activitystreams-vocabulary/#dfn-result
 
 ### origin?
 
-> `optional` **origin**: `string` \| `string`[] \| `IJsonLdNodeObject`
+> `optional` **origin**: `string` \| `IJsonLdNodeObject` \| `string`[]
 
 Activity's origin.
 

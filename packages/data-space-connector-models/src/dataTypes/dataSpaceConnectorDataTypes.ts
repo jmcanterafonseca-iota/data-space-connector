@@ -3,8 +3,8 @@
 
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import type { JSONSchema7 } from "json-schema";
-import { ActivityStreamsContexts } from "../activityStreamsContexts";
-import { ACTIVITY_STREAMS_TYPE_LIST } from "../activityStreamsTypes";
+import { ActivityStreamsContexts } from "../models/activity-streams/activityStreamsContexts";
+import { ACTIVITY_STREAMS_TYPE_LIST } from "../models/activity-streams/activityStreamsTypes";
 import ActivitySchema from "../schemas/Activity.json";
 import ActivityStreamsLdContextTypeSchema from "../schemas/ActivityStreamsLdContextType.json";
 import ActivityTypeSchema from "../schemas/ActivityType.json";

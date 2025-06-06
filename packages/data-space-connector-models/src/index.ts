@@ -1,23 +1,25 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-export * from "./models/IActivity";
-export * from "./models/activityType";
+export * from "./models/activity-streams/IActivity";
+export * from "./models/activity-streams/activityType";
 export * from "./models/activityProcessingStatus";
 
 export * from "./models/ISubscription";
 
 export * from "./models/IActivityLogEntry";
 export * from "./models/ISubscriptionEntry";
-export * from "./models/IDataSpaceConnectorApp";
-export * from "./models/IDataSpaceConnectorCallback";
+export * from "./models/app/IDataSpaceConnectorApp";
+export * from "./models/app/IActivityHandler";
+export * from "./models/app/IDataResourceHandler";
+
 export * from "./models/IDataSpaceQuery";
 
 export * from "./IDataSpaceConnector";
 
-export * from "./activityStreamsContexts";
-export * from "./activityStreamsTypes";
-export * from "./activityStreamsLdContextType";
+export * from "./models/activity-streams/activityStreamsContexts";
+export * from "./models/activity-streams/activityStreamsTypes";
+export * from "./models/activity-streams/activityStreamsLdContextType";
 
 export * from "./models/api/IActivityLogEntryGetRequest";
 export * from "./models/api/IActivityLogEntryGetResponse";
@@ -30,3 +32,5 @@ export * from "./dataTypes/dataSpaceConnectorDataTypes";
 export * from "./models/IActivityObjectTargetTriple";
 
 export * from "./models/IActivityTask";
+
+export * from "./models/IExecutionPayload";

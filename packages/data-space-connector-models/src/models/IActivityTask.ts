@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 import type { IBackgroundTask } from "@twin.org/background-task-models";
-import type { IDataSpaceConnectorApp } from "./IDataSpaceConnectorApp";
+import type { IDataSpaceConnectorApp } from "./app/IDataSpaceConnectorApp";
 
 /**
  * Denotes a task associated with an Activity

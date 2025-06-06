@@ -46,7 +46,8 @@
 		"@twin.org/crypto": "next",
 		"@twin.org/data-json-ld": "next",
 		"@twin.org/background-task-models": "next",
-		"@twin.org/background-task-connector-entity-storage": "next"
+		"@twin.org/background-task-connector-entity-storage": "next",
+		"@twin.org/engine-models": "next"
 	},
 	"devDependencies": {
 		"@twin.org/standards-ld-contexts": "next",
@@ -64,8 +65,7 @@
 		"typedoc": "0.28.2",
 		"typedoc-plugin-markdown": "4.6.2",
 		"typescript": "5.8.3",
-		"vitest": "3.1.1",
-		"http-server": "^14.1.1"
+		"vitest": "3.1.1"
 	},
 	"main": "./dist/cjs/index.cjs",
 	"module": "./dist/esm/index.mjs",

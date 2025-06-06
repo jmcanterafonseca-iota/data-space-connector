@@ -7,28 +7,30 @@
 ## Interfaces
 
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
-- [IActivity](interfaces/IActivity.md)
 - [IActivityLogEntry](interfaces/IActivityLogEntry.md)
 - [IActivityObjectTargetTriple](interfaces/IActivityObjectTargetTriple.md)
 - [IActivityTask](interfaces/IActivityTask.md)
-- [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
-- [IDataSpaceConnectorCallback](interfaces/IDataSpaceConnectorCallback.md)
 - [IDataSpaceQuery](interfaces/IDataSpaceQuery.md)
+- [IExecutionPayload](interfaces/IExecutionPayload.md)
 - [ISubscription](interfaces/ISubscription.md)
+- [IActivity](interfaces/IActivity.md)
 - [IActivityLogEntryGetRequest](interfaces/IActivityLogEntryGetRequest.md)
 - [IActivityLogEntryGetResponse](interfaces/IActivityLogEntryGetResponse.md)
 - [IActivityStreamRequest](interfaces/IActivityStreamRequest.md)
 - [ISubscriptionCreateRequest](interfaces/ISubscriptionCreateRequest.md)
+- [IActivityHandler](interfaces/IActivityHandler.md)
+- [IDataResourceHandler](interfaces/IDataResourceHandler.md)
+- [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
 
 ## Type Aliases
 
+- [ISubscriptionEntry](type-aliases/ISubscriptionEntry.md)
 - [ActivityStreamsContexts](type-aliases/ActivityStreamsContexts.md)
 - [ActivityStreamsLdContextType](type-aliases/ActivityStreamsLdContextType.md)
 - [ActivityStreamsTypes](type-aliases/ActivityStreamsTypes.md)
-- [ISubscriptionEntry](type-aliases/ISubscriptionEntry.md)
-- [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 - [ActivityType](type-aliases/ActivityType.md)
 - [ActivityTypeJsonLd](type-aliases/ActivityTypeJsonLd.md)
+- [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 
 ## Variables
 

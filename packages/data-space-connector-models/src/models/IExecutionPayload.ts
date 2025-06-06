@@ -1,7 +1,8 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IActivity, IDataSpaceConnectorApp } from "@twin.org/data-space-connector-models";
+import type { IActivity } from "./activity-streams/IActivity";
+import type { IDataSpaceConnectorApp } from "./app/IDataSpaceConnectorApp";
 
 /**
  * Execution payload.
@@ -20,5 +21,5 @@ export interface IExecutionPayload {
 	/**
 	 * The executor App.
 	 */
-	executorApp: IDataSpaceConnectorApp;
+	executorApp: IDataSpaceConnectorApp["id"];
 }

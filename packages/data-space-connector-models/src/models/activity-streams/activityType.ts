@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 import type { IJsonLdKeyword } from "@twin.org/data-json-ld";
-import type { ActivityStreamsTypes } from "../activityStreamsTypes";
+import type { ActivityStreamsTypes } from "./activityStreamsTypes";
 
 /**
  * Activity Type.

@@ -3,9 +3,9 @@
 
 import type { IComponent } from "@twin.org/core";
 import type { IJsonLdDocument } from "@twin.org/data-json-ld";
-import type { IActivity } from "./models/IActivity";
+import type { IActivity } from "./models/activity-streams/IActivity";
+import type { IDataSpaceConnectorApp } from "./models/app/IDataSpaceConnectorApp";
 import type { IActivityLogEntry } from "./models/IActivityLogEntry";
-import type { IDataSpaceConnectorApp } from "./models/IDataSpaceConnectorApp";
 import type { IDataSpaceQuery } from "./models/IDataSpaceQuery";
 import type { ISubscription } from "./models/ISubscription";
 import type { ISubscriptionEntry } from "./models/ISubscriptionEntry";

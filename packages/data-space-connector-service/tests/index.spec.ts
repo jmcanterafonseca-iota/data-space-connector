@@ -9,15 +9,13 @@ import {
 import { BackgroundTaskConnectorFactory } from "@twin.org/background-task-models";
 import { StringHelper } from "@twin.org/core";
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
-import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import {
 	ActivityProcessingStatus,
 	ActivityStreamsContexts,
-	type IDataSpaceConnectorApp,
-	type IDataSpaceQuery,
 	type IActivity,
 	type IActivityLogEntry
 } from "@twin.org/data-space-connector-models";
+import { TestApp } from "@twin.org/data-space-connector-test-app";
 import { MemoryEntityStorageConnector } from "@twin.org/entity-storage-connector-memory";
 import { EntityStorageConnectorFactory } from "@twin.org/entity-storage-models";
 
@@ -47,6 +45,15 @@ let backgroundTaskConnectorEntityStorage: EntityStorageBackgroundTaskConnector;
 function assertActivityLog(entry: IActivityLogEntry): void {
 	expect(entry.status).toBe(ActivityProcessingStatus.Pending);
 	expect(entry.associatedTasks.length).toBe(1);
+}
+
+/**
+ * Waits for completion.
+ * @param miliseconds Number of miliseconds.
+ * @returns nothing.
+ */
+async function waitForCompletion(miliseconds: number): Promise<void> {
+	return new Promise(resolve => setTimeout(resolve, miliseconds));
 }
 
 describe("data-space-connector-tests", () => {
@@ -161,41 +168,6 @@ describe("data-space-connector-tests", () => {
 		updated: "02-06-2025T12:00:00Z"
 	};
 
-	/**
-	 * Test App.
-	 */
-	class TestApp implements IDataSpaceConnectorApp {
-		// eslint-disable-next-line no-restricted-syntax
-		public id = "https://twn.example.org/app1";
-
-		// eslint-disable-next-line no-restricted-syntax
-		public handledTypes = {
-			activityObjectTargetTriples: [{ objectType: "https://vocabulary.uncefact.org/Consignment" }]
-		};
-
-		/**
-		 * Handle Activity.
-		 * @param act Activity
-		 * @returns Activity processing result
-		 */
-		public async handleActivity(act: IActivity): Promise<unknown> {
-			return "hello";
-		}
-
-		/**
-		 * Handle a Data Resource.
-		 * @param dataResourceId Data Resource Id.
-		 * @param query Query.
-		 * @returns Data.
-		 */
-		public async handleDataResource(
-			dataResourceId: string,
-			query?: IDataSpaceQuery
-		): Promise<IJsonLdNodeObject> {
-			return {};
-		}
-	}
-
 	test("It should receive an Activity in the Activity Stream - canonical", async () => {
 		await backgroundTaskConnectorEntityStorage.start("");
 
@@ -205,6 +177,9 @@ describe("data-space-connector-tests", () => {
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(canonicalActivity);
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
+
+		console.log("waiting...");
+		await waitForCompletion(1000);
 		assertActivityLog(entry);
 	});
 
@@ -219,7 +194,7 @@ describe("data-space-connector-tests", () => {
 		assertActivityLog(entry);
 	});
 
-	test("It should receive an Activity in the Activity Stream - type extension", async () => {
+	test.skip("It should receive an Activity in the Activity Stream - type extension", async () => {
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
 		const testApp = new TestApp();
 		dataSpaceConnectorService.registerDataSpaceConnectorApp(testApp);

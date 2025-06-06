@@ -3,5 +3,9 @@
 	"compilerOptions": {
 		"types": ["vitest/globals"]
 	},
-	"include": ["./**/*.ts"]
+	"include": [
+		"./**/*.ts",
+		"../../data-space-connector-test-app/src/testApp.ts",
+		"../../data-space-connector-test-app/src/testTask.ts"
+	]
 }
