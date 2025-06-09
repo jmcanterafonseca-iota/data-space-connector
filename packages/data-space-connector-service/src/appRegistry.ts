@@ -4,7 +4,7 @@
 import { Is } from "@twin.org/core";
 import type {
 	IActivityObjectTargetTriple,
-	IDataSpaceConnectorApp
+	IDataSpaceConnectorAppDescriptor
 } from "@twin.org/data-space-connector-models";
 
 /**
@@ -17,7 +17,7 @@ export class AppRegistry {
 	 */
 	private readonly _activityObjectApps: {
 		activityObjectTargetTriple: IActivityObjectTargetTriple;
-		dataSpaceConnectorApp: IDataSpaceConnectorApp;
+		dataSpaceConnectorApp: IDataSpaceConnectorAppDescriptor;
 	}[];
 
 	/**
@@ -34,8 +34,8 @@ export class AppRegistry {
 	 */
 	public getAppForActivityObjectTargetTriple(
 		activityObjectTargetTriple: IActivityObjectTargetTriple
-	): IDataSpaceConnectorApp[] {
-		const matchingElements: IDataSpaceConnectorApp[] = [];
+	): IDataSpaceConnectorAppDescriptor[] {
+		const matchingElements: IDataSpaceConnectorAppDescriptor[] = [];
 
 		for (const handlerApp of this._activityObjectApps) {
 			const appTriple = handlerApp.activityObjectTargetTriple;
@@ -60,7 +60,7 @@ export class AppRegistry {
 	 */
 	public setAppForActivityObjectTargetTriple(
 		activityObjectTargetTriple: IActivityObjectTargetTriple,
-		dataSpaceConnectorApp: IDataSpaceConnectorApp
+		dataSpaceConnectorApp: IDataSpaceConnectorAppDescriptor
 	): void {
 		this._activityObjectApps.push({ activityObjectTargetTriple, dataSpaceConnectorApp });
 	}

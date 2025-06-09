@@ -2,6 +2,10 @@
 
 Activity Handler.
 
+## Extended by
+
+- [`IDataSpaceConnectorApp`](IDataSpaceConnectorApp.md)
+
 ## Methods
 
 ### handleActivity()

@@ -24,7 +24,8 @@
 	},
 	"dependencies": {
 		"@twin.org/data-space-connector-models": "0.0.1-next.1",
-		"@twin.org/engine-models": "next"
+		"@twin.org/engine-models": "next",
+		"@twin.org/data-json-ld": "next"
 	},
 	"devDependencies": {
 		"@twin.org/nameof-transformer": "next",

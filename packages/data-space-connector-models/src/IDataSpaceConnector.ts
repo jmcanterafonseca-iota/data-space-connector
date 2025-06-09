@@ -4,7 +4,7 @@
 import type { IComponent } from "@twin.org/core";
 import type { IJsonLdDocument } from "@twin.org/data-json-ld";
 import type { IActivity } from "./models/activity-streams/IActivity";
-import type { IDataSpaceConnectorApp } from "./models/app/IDataSpaceConnectorApp";
+import type { IDataSpaceConnectorAppDescriptor } from "./models/app/IDataSpaceConnectorAppDescriptor";
 import type { IActivityLogEntry } from "./models/IActivityLogEntry";
 import type { IDataSpaceQuery } from "./models/IDataSpaceQuery";
 import type { ISubscription } from "./models/ISubscription";
@@ -58,7 +58,7 @@ export interface IDataSpaceConnector extends IComponent {
 
 	/**
 	 * Registers a Data Space Connector App.
-	 * @param app The App to be registered.
+	 * @param app The descriptor of the App to be registered.
 	 */
-	registerDataSpaceConnectorApp(app: IDataSpaceConnectorApp): void;
+	registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): void;
 }

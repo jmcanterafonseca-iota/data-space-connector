@@ -1,6 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
+import fs from "node:fs";
 import path from "node:path";
 import { EnvHelper, RandomHelper } from "@twin.org/core";
 import * as dotenv from "dotenv";
@@ -31,5 +32,6 @@ export async function setupTestEnv(): Promise<void> {
  */
 export async function cleanupTestEnv(): Promise<void> {
 	try {
+		fs.rmdirSync(path.join(__dirname, ".tmp"), { recursive: true });
 	} catch {}
 }

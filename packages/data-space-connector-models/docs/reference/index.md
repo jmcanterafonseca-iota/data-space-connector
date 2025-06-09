@@ -7,12 +7,14 @@
 ## Interfaces
 
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
+- [IActivityLogDetails](interfaces/IActivityLogDetails.md)
 - [IActivityLogEntry](interfaces/IActivityLogEntry.md)
 - [IActivityObjectTargetTriple](interfaces/IActivityObjectTargetTriple.md)
 - [IActivityTask](interfaces/IActivityTask.md)
 - [IDataSpaceQuery](interfaces/IDataSpaceQuery.md)
 - [IExecutionPayload](interfaces/IExecutionPayload.md)
 - [ISubscription](interfaces/ISubscription.md)
+- [ITaskApp](interfaces/ITaskApp.md)
 - [IActivity](interfaces/IActivity.md)
 - [IActivityLogEntryGetRequest](interfaces/IActivityLogEntryGetRequest.md)
 - [IActivityLogEntryGetResponse](interfaces/IActivityLogEntryGetResponse.md)
@@ -21,6 +23,7 @@
 - [IActivityHandler](interfaces/IActivityHandler.md)
 - [IDataResourceHandler](interfaces/IDataResourceHandler.md)
 - [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
+- [IDataSpaceConnectorAppDescriptor](interfaces/IDataSpaceConnectorAppDescriptor.md)
 
 ## Type Aliases
 

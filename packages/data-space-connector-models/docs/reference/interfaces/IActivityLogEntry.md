@@ -2,6 +2,10 @@
 
 The details related to the processing of an Activity
 
+## Extends
+
+- [`IActivityLogDetails`](IActivityLogDetails.md)
+
 ## Properties
 
 ### id
@@ -9,6 +13,10 @@ The details related to the processing of an Activity
 > **id**: `string`
 
 The Id of the Activity Log entry.
+
+#### Inherited from
+
+[`IActivityLogDetails`](IActivityLogDetails.md).[`id`](IActivityLogDetails.md#id)
 
 ***
 
@@ -18,6 +26,10 @@ The Id of the Activity Log entry.
 
 The activity Id that this entry refers to. This is obtained through a hash of the Activity itself.
 
+#### Inherited from
+
+[`IActivityLogDetails`](IActivityLogDetails.md).[`activityId`](IActivityLogDetails.md#activityid)
+
 ***
 
 ### generator
@@ -25,6 +37,10 @@ The activity Id that this entry refers to. This is obtained through a hash of th
 > **generator**: `string`
 
 The identity of the Activity's generator.
+
+#### Inherited from
+
+[`IActivityLogDetails`](IActivityLogDetails.md).[`generator`](IActivityLogDetails.md#generator)
 
 ***
 
@@ -34,6 +50,10 @@ The identity of the Activity's generator.
 
 Status of the Activity Processing.
 
+#### Inherited from
+
+[`IActivityLogDetails`](IActivityLogDetails.md).[`status`](IActivityLogDetails.md#status)
+
 ***
 
 ### dateCreated
@@ -41,6 +61,10 @@ Status of the Activity Processing.
 > **dateCreated**: `string`
 
 The creation date of this object.
+
+#### Inherited from
+
+[`IActivityLogDetails`](IActivityLogDetails.md).[`dateCreated`](IActivityLogDetails.md#datecreated)
 
 ***
 
@@ -50,26 +74,30 @@ The creation date of this object.
 
 The last update date of this object.
 
+#### Inherited from
+
+[`IActivityLogDetails`](IActivityLogDetails.md).[`dateUpdated`](IActivityLogDetails.md#dateupdated)
+
 ***
 
-### associatedTasks
+### associatedTasks?
 
-> **associatedTasks**: [`IActivityTask`](IActivityTask.md)[]
+> `optional` **associatedTasks**: [`ITaskApp`](ITaskApp.md)[]
 
 The tasks this activity log entry is in association with.
 
 ***
 
-### finalizedTasks
+### finalizedTasks?
 
-> **finalizedTasks**: [`IActivityTask`](IActivityTask.md) & `object`[]
+> `optional` **finalizedTasks**: [`ITaskApp`](ITaskApp.md) & `object`[]
 
 The tasks that have already finalized.
 
 ***
 
-### inErrorTasks
+### inErrorTasks?
 
-> **inErrorTasks**: [`IActivityTask`](IActivityTask.md) & `object`[]
+> `optional` **inErrorTasks**: [`ITaskApp`](ITaskApp.md) & `object`[]
 
 The tasks that are in error.

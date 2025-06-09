@@ -37,7 +37,21 @@ The entity storage for activity log details.
 #### Default
 
 ```ts
-activity-log-entry
+activity-log-details
+```
+
+***
+
+### activityTaskEntityStorageType?
+
+> `optional` **activityTaskEntityStorageType**: `string`
+
+The entity storage for the association between Activities and Tasks.
+
+#### Default
+
+```ts
+activity-task
 ```
 
 ***
@@ -52,4 +66,18 @@ The entity storage for subscriptions.
 
 ```ts
 subscription-entry
+```
+
+***
+
+### backgroundTaskConnectorType?
+
+> `optional` **backgroundTaskConnectorType**: `string`
+
+Background task connector.
+
+#### Default
+
+```ts
+background-task-4-data-space
 ```

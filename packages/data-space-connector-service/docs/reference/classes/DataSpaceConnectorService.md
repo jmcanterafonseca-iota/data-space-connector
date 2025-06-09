@@ -196,7 +196,7 @@ Registers a Data Space Connector App.
 
 ##### app
 
-`IDataSpaceConnectorApp`
+`IDataSpaceConnectorAppDescriptor`
 
 The App to be registered.
 

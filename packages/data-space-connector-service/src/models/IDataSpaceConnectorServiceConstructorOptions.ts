@@ -24,9 +24,15 @@ export interface IDataSpaceConnectorServiceConstructorOptions {
 
 	/**
 	 * The entity storage for activity log details.
-	 * @default activity-log-entry
+	 * @default activity-log-details
 	 */
 	activityLogEntityStorageType?: string;
+
+	/**
+	 * The entity storage for the association between Activities and Tasks.
+	 * @default activity-task
+	 */
+	activityTaskEntityStorageType?: string;
 
 	/**
 	 * The entity storage for subscriptions.

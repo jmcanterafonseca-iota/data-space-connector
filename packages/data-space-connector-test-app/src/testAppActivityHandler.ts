@@ -13,6 +13,6 @@ export class TestAppActivityHandler implements IActivityHandler {
 	 * @returns Activity processing result
 	 */
 	public async handleActivity(act: IActivity): Promise<unknown> {
-		return new Promise(resolve => setTimeout(resolve, 50));
+		return new Promise(resolve => setTimeout(resolve, 500));
 	}
 }

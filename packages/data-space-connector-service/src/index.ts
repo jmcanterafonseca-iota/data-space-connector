@@ -9,5 +9,6 @@ export * from "./models/IDataSpaceConnectorServiceConfig";
 
 export * from "./schema";
 
-export * from "./entities/activityLogEntry";
+export * from "./entities/activityLogDetails";
+export * from "./entities/activityTask";
 export * from "./entities/subscriptionEntry";

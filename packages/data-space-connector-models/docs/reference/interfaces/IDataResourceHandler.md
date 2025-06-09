@@ -2,6 +2,10 @@
 
 Data Resource handler.
 
+## Extended by
+
+- [`IDataSpaceConnectorApp`](IDataSpaceConnectorApp.md)
+
 ## Methods
 
 ### handleDataResource()

@@ -3,7 +3,8 @@
 ## Classes
 
 - [DataSpaceConnectorService](classes/DataSpaceConnectorService.md)
-- [ActivityLogEntry](classes/ActivityLogEntry.md)
+- [ActivityLogDetails](classes/ActivityLogDetails.md)
+- [ActivityTask](classes/ActivityTask.md)
 - [SubscriptionEntry](classes/SubscriptionEntry.md)
 
 ## Interfaces

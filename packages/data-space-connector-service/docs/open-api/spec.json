@@ -54,7 +54,7 @@
 											"@type": "Consignment",
 											"globalId": "24KEP051219453I002610796"
 										},
-										"updated": "2025-06-03T12:47:28.367Z"
+										"updated": "2025-06-09T16:07:08.935Z"
 									}
 								}
 							}
@@ -180,10 +180,18 @@
 									"activityLogEntryResponseExample": {
 										"value": {
 											"id": "urn:x-activity-log:134567",
-											"dateCreated": "2025-06-03T12:47:28.368Z",
-											"dateUpdated": "2025-06-03T12:47:28.368Z",
+											"dateCreated": "2025-06-09T16:07:08.935Z",
+											"dateUpdated": "2025-06-09T16:07:08.935Z",
 											"generator": "did:iota:testnet:123456",
-											"status": "pending"
+											"status": "pending",
+											"associatedTasks": [
+												{
+													"taskId": "urn:x-task-id:45678",
+													"dataSpaceConnectorAppId": "https://my-app.example.org/app1"
+												}
+											],
+											"finalizedTasks": [],
+											"inErrorTasks": []
 										}
 									}
 								}
@@ -564,29 +572,75 @@
 						"type": "string",
 						"description": "The last update date of this object."
 					},
-					"startTime": {
-						"type": "string",
-						"description": "Activity processing start time (filled if it has actually started)."
+					"associatedTasks": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/TaskApp"
+						},
+						"description": "The tasks this activity log entry is in association with."
 					},
-					"endTime": {
-						"type": "string",
-						"description": "Activity's end time (filled if it has actually finished)."
+					"finalizedTasks": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"result": {
+									"type": "string",
+									"description": "The task result."
+								},
+								"taskId": {
+									"type": "string",
+									"description": "Task Id."
+								},
+								"dataSpaceConnectorAppId": {
+									"type": "string",
+									"description": "Data Space Connector App Id."
+								}
+							},
+							"required": [
+								"dataSpaceConnectorAppId",
+								"result",
+								"taskId"
+							]
+						},
+						"description": "The tasks that have already finalized."
 					},
-					"processingResult": {
-						"description": "The result of processing the Activity."
-					},
-					"processingError": {
-						"$ref": "#/components/schemas/Error"
+					"inErrorTasks": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"error": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"taskId": {
+									"type": "string",
+									"description": "Task Id."
+								},
+								"dataSpaceConnectorAppId": {
+									"type": "string",
+									"description": "Data Space Connector App Id."
+								}
+							},
+							"required": [
+								"dataSpaceConnectorAppId",
+								"error",
+								"taskId"
+							]
+						},
+						"description": "The tasks that are in error."
 					}
 				},
-				"required": [
-					"id",
-					"generator",
-					"status",
-					"dateCreated",
-					"dateUpdated"
-				],
 				"additionalProperties": false,
+				"required": [
+					"dateCreated",
+					"dateUpdated",
+					"generator",
+					"id",
+					"status"
+				],
 				"description": "The details related to the processing of an Activity"
 			},
 			"ActivityProcessingStatus": {
@@ -694,20 +748,36 @@
 				"type": "object",
 				"properties": {
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "The name for the error."
 					},
 					"message": {
-						"type": "string"
+						"type": "string",
+						"description": "The message for the error."
+					},
+					"source": {
+						"type": "string",
+						"description": "The source of the error."
+					},
+					"properties": {
+						"type": "object",
+						"additionalProperties": {},
+						"description": "Any additional information for the error."
 					},
 					"stack": {
-						"type": "string"
+						"type": "string",
+						"description": "The stack trace for the error."
+					},
+					"inner": {
+						"$ref": "#/components/schemas/Error"
 					}
 				},
 				"required": [
 					"name",
 					"message"
 				],
-				"additionalProperties": false
+				"additionalProperties": false,
+				"description": "Model to describe serialized error."
 			},
 			"Subscription": {
 				"type": "object",
@@ -721,6 +791,25 @@
 				],
 				"additionalProperties": false,
 				"description": "A subscription."
+			},
+			"TaskApp": {
+				"type": "object",
+				"properties": {
+					"taskId": {
+						"type": "string",
+						"description": "Task Id."
+					},
+					"dataSpaceConnectorAppId": {
+						"type": "string",
+						"description": "Data Space Connector App Id."
+					}
+				},
+				"required": [
+					"taskId",
+					"dataSpaceConnectorAppId"
+				],
+				"additionalProperties": false,
+				"description": "Denotes a task associated with a Data Space Connector App"
 			}
 		},
 		"securitySchemes": {

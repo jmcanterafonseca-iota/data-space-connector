@@ -7,9 +7,11 @@ export * from "./models/activityProcessingStatus";
 
 export * from "./models/ISubscription";
 
+export * from "./models/IActivityLogDetails";
 export * from "./models/IActivityLogEntry";
 export * from "./models/ISubscriptionEntry";
 export * from "./models/app/IDataSpaceConnectorApp";
+export * from "./models/app/IDataSpaceConnectorAppDescriptor";
 export * from "./models/app/IActivityHandler";
 export * from "./models/app/IDataResourceHandler";
 
@@ -32,5 +34,6 @@ export * from "./dataTypes/dataSpaceConnectorDataTypes";
 export * from "./models/IActivityObjectTargetTriple";
 
 export * from "./models/IActivityTask";
+export * from "./models/ITaskApp";
 
 export * from "./models/IExecutionPayload";

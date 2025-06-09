@@ -2,36 +2,64 @@
 
 Interface describes a Data Space Connector App.
 
-## Properties
+## Extends
 
-### id
+- `IComponent`.[`IDataResourceHandler`](IDataResourceHandler.md).[`IActivityHandler`](IActivityHandler.md)
 
-> **id**: `string`
+## Methods
 
-A URI that denotes the identifier of the App.
+### handleActivity()
+
+> **handleActivity**(`activity`): `Promise`\<`unknown`\>
+
+Handles an Activity and report about results through the Data Space Connector Callback
+
+#### Parameters
+
+##### activity
+
+[`IActivity`](IActivity.md)
+
+The Activity to be handled
+
+#### Returns
+
+`Promise`\<`unknown`\>
+
+The result of executing the Activity.
+
+#### Inherited from
+
+[`IActivityHandler`](IActivityHandler.md).[`handleActivity`](IActivityHandler.md#handleactivity)
 
 ***
 
-### handledTypes
+### handleDataResource()
 
-> **handledTypes**: `object`
+> **handleDataResource**(`dataResourceId`, `query?`): `Promise`\<`IJsonLdNodeObject`\>
 
-The types handled by this Data Space Connector App.
+Handles a data resource.
 
-#### activityObjectTargetTriples
+#### Parameters
 
-> **activityObjectTargetTriples**: [`IActivityObjectTargetTriple`](IActivityObjectTargetTriple.md)[]
+##### dataResourceId
 
-#### dataResourceAssetTypes?
+`string`
 
-> `optional` **dataResourceAssetTypes**: `string`[]
+The Data Resource Id.
 
-FQN of the data resource asset types handled.
+##### query?
 
-***
+[`IDataSpaceQuery`](IDataSpaceQuery.md)
 
-### moduleName
+The Data Space query.
 
-> **moduleName**: `string`
+#### Returns
 
-The module that implements this DS Connector App
+`Promise`\<`IJsonLdNodeObject`\>
+
+A JSON-Ld Object with the results of the query over a Data Resource.
+
+#### Inherited from
+
+[`IDataResourceHandler`](IDataResourceHandler.md).[`handleDataResource`](IDataResourceHandler.md#handledataresource)

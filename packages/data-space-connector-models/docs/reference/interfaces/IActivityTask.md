@@ -4,16 +4,16 @@ Denotes a task associated with an Activity
 
 ## Properties
 
-### taskId
+### activityLogEntryId
 
-> **taskId**: `string`
+> **activityLogEntryId**: `string`
 
-Task Id.
+The activity log entry.
 
 ***
 
-### dataSpaceConnectorAppId
+### associatedTasks
 
-> **dataSpaceConnectorAppId**: `string`
+> **associatedTasks**: [`ITaskApp`](ITaskApp.md)[]
 
-Data Space Connector App Id.
+The associated tasks

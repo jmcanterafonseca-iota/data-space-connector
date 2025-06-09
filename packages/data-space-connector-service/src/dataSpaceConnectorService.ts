@@ -28,7 +28,6 @@ import {
 import {
 	type IActivity,
 	type IDataSpaceConnector,
-	type IDataSpaceConnectorApp,
 	type IActivityLogEntry,
 	type ISubscription,
 	type ISubscriptionEntry,
@@ -36,7 +35,10 @@ import {
 	DataSpaceConnectorDataTypes,
 	ActivityProcessingStatus,
 	type IActivityObjectTargetTriple,
-	type IActivityTask
+	type IDataSpaceConnectorAppDescriptor,
+	type IActivityLogDetails,
+	type ITaskApp,
+	type IExecutionPayload
 } from "@twin.org/data-space-connector-models";
 import {
 	EntityStorageConnectorFactory,
@@ -45,10 +47,10 @@ import {
 import { LoggingConnectorFactory, type ILoggingConnector } from "@twin.org/logging-models";
 import { nameof } from "@twin.org/nameof";
 import { AppRegistry } from "./appRegistry";
-import type { ActivityLogEntry } from "./entities/activityLogEntry";
+import type { ActivityLogDetails } from "./entities/activityLogDetails";
+import type { ActivityTask } from "./entities/activityTask";
 import type { SubscriptionEntry } from "./entities/subscriptionEntry";
 import type { IDataSpaceConnectorServiceConstructorOptions } from "./models/IDataSpaceConnectorServiceConstructorOptions";
-import type { IExecutionPayload } from "../../data-space-connector-models/src/models/IExecutionPayload";
 
 /**
  * Data Space Connector Service.
@@ -72,7 +74,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	private readonly _loggingService?: ILoggingConnector;
 
 	/**
-	 * Storage service for participants.
+	 * Storage service for subscriptions.
 	 * @internal
 	 */
 	private readonly _entityStorageSubscriptions: IEntityStorageConnector<SubscriptionEntry>;
@@ -81,7 +83,13 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * Storage service for activity logging.
 	 * @internal
 	 */
-	private readonly _entityStorageActivityLogs: IEntityStorageConnector<ActivityLogEntry>;
+	private readonly _entityStorageActivityLogs: IEntityStorageConnector<ActivityLogDetails>;
+
+	/**
+	 * Storage service for activity tasks.
+	 * @internal
+	 */
+	private readonly _entityStorageActivityTasks: IEntityStorageConnector<ActivityTask>;
 
 	/**
 	 * Handler registry of Data Space Connector Apps.
@@ -105,8 +113,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		);
 
 		this._entityStorageActivityLogs = EntityStorageConnectorFactory.get<
-			IEntityStorageConnector<ActivityLogEntry>
-		>(options.activityLogEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityLogEntry>()));
+			IEntityStorageConnector<ActivityLogDetails>
+		>(options.activityLogEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityLogDetails>()));
+
+		this._entityStorageActivityTasks = EntityStorageConnectorFactory.get<
+			IEntityStorageConnector<ActivityTask>
+		>(options.activityTaskEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityTask>()));
 
 		this._entityStorageSubscriptions = EntityStorageConnectorFactory.get<
 			IEntityStorageConnector<SubscriptionEntry>
@@ -153,9 +165,20 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			);
 		}
 
+		// First of all Activity Log Entry is created
+		const logEntry: IActivityLogDetails = {
+			id: activityLogEntryId,
+			generator:
+				(activity.generator as string) ?? ((activity.actor as IJsonLdNodeObject).id as string),
+			status: ActivityProcessingStatus.Pending,
+			dateCreated: new Date().toISOString(),
+			dateUpdated: new Date().toISOString()
+		};
+		await this._entityStorageActivityLogs.set(logEntry);
+
 		const triples = await this.calculateTriple(compactedObj);
 
-		const tasksScheduled: IActivityTask[] = [];
+		const tasksScheduled: ITaskApp[] = [];
 		for (const triple of triples) {
 			const dataSpaceConnectorApps = this._appRegistry.getAppForActivityObjectTargetTriple(triple);
 
@@ -167,8 +190,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				};
 				const taskId = await this._backgroundTaskConnector.create<IExecutionPayload>(
 					dataSpaceConnectorApp.id,
-					payload
+					payload,
+					{
+						retainFor: -1
+					}
 				);
+
 				tasksScheduled.push({
 					taskId,
 					dataSpaceConnectorAppId: dataSpaceConnectorApp.id
@@ -186,21 +213,17 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			}
 		}
 
-		const logEntry: IActivityLogEntry = {
-			id: activityLogEntryId,
-			generator:
-				(activity.generator as string) ?? ((activity.actor as IJsonLdNodeObject).id as string),
-			status:
-				tasksScheduled.length > 0
-					? ActivityProcessingStatus.Pending
-					: ActivityProcessingStatus.Completed,
-			dateCreated: new Date().toISOString(),
-			dateUpdated: new Date().toISOString(),
-			associatedTasks: tasksScheduled,
-			finalizedTasks: [],
-			inErrorTasks: []
-		};
-		await this._entityStorageActivityLogs.set(logEntry);
+		if (tasksScheduled.length > 0) {
+			// This might happen after the tasks have been scheduled and actually finalized so there can be temporary
+			// inconsistencies in the data that will be eventually solved
+			await this._entityStorageActivityTasks.set({
+				activityLogEntryId,
+				associatedTasks: tasksScheduled
+			});
+		} else {
+			logEntry.status = ActivityProcessingStatus.Completed;
+			await this._entityStorageActivityLogs.set(logEntry);
+		}
 
 		return activityLogEntryId;
 	}
@@ -221,7 +244,44 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			);
 		}
 
-		return result;
+		let associatedTasks: IActivityLogEntry["associatedTasks"];
+		let finalizedTasks: IActivityLogEntry["finalizedTasks"];
+		let inErrorTasks: IActivityLogEntry["inErrorTasks"];
+
+		// Now query the associated tasks
+		const activityTasks = await this._entityStorageActivityTasks.get(logEntryId);
+
+		// If activity tasks is undefined it might because
+		// there are no tasks or because the corresponding store has not been persisted yet
+		if (!Is.undefined(activityTasks)) {
+			associatedTasks = [];
+			finalizedTasks = [];
+			inErrorTasks = [];
+
+			for (const entity of activityTasks.associatedTasks) {
+				associatedTasks.push(entity as ITaskApp);
+
+				const taskDetails = await this._backgroundTaskConnector.get<IExecutionPayload, unknown>(
+					entity.taskId
+				);
+
+				if (taskDetails?.status === TaskStatus.Success) {
+					finalizedTasks.push({
+						...(entity as ITaskApp),
+						result: JSON.stringify(taskDetails?.result)
+					});
+				}
+
+				if (taskDetails?.status === TaskStatus.Failed) {
+					inErrorTasks.push({
+						...(entity as ITaskApp),
+						error: taskDetails.error as IError
+					});
+				}
+			}
+		}
+
+		return { ...result, associatedTasks, finalizedTasks, inErrorTasks };
 	}
 
 	/**
@@ -272,7 +332,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * Registers a Data Space Connector App.
 	 * @param app The App to be registered.
 	 */
-	public registerDataSpaceConnectorApp(app: IDataSpaceConnectorApp): void {
+	public registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): void {
 		const activityObjectTargetTriples = app.handledTypes.activityObjectTargetTriples;
 
 		if (Is.arrayValue(activityObjectTargetTriples)) {
@@ -297,7 +357,6 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @internal
 	 */
 	private async finaliseTask(task: IBackgroundTask<IExecutionPayload, unknown>): Promise<void> {
-		console.log(task);
 		const payload = task.payload;
 
 		if (Is.undefined(payload)) {
@@ -305,58 +364,51 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		}
 
 		const activityLogEntry = await this._entityStorageActivityLogs.get(payload.activityLogEntryId);
-
 		if (Is.undefined(activityLogEntry)) {
 			this._loggingService?.log({
 				level: "error",
 				source: this.CLASS_NAME,
 				message: "dataSpaceConnector.unknownActivityLogEntryId",
-				data: activityLogEntry
+				data: {
+					activityLogEntryId: payload.activityLogEntryId
+				}
 			});
 			return;
 		}
 
+		await this.updateActivityProcessingStatus(activityLogEntry, task);
+	}
+
+	/**
+	 * Update the activity processing status.
+	 * @param activityLogEntry The Activity Log entry to update.
+	 * @param task background task details.
+	 */
+	private async updateActivityProcessingStatus(
+		activityLogEntry: IActivityLogDetails,
+		task: IBackgroundTask
+	): Promise<void> {
 		let nextStatus: ActivityProcessingStatus = activityLogEntry.status;
 		switch (task.status) {
+			case TaskStatus.Pending:
+				break;
 			case TaskStatus.Processing:
-				if (activityLogEntry.status === ActivityProcessingStatus.Pending) {
+				if (activityLogEntry.status !== ActivityProcessingStatus.Error) {
 					nextStatus = ActivityProcessingStatus.Running;
 				}
 				break;
 			case TaskStatus.Success:
-				if (Is.object(task.payload) && Is.object(task.result)) {
-					if (!Is.undefined(activityLogEntry?.finalizedTasks)) {
-						activityLogEntry.finalizedTasks = [];
-					}
-					activityLogEntry.finalizedTasks.push({
-						taskId: task.id,
-						dataSpaceConnectorAppId: task.payload.executorApp,
-						result: JSON.stringify(task.result)
-					});
-
-					if (
-						activityLogEntry.finalizedTasks.length === activityLogEntry.associatedTasks.length &&
-						activityLogEntry.status !== ActivityProcessingStatus.Error
-					) {
-						nextStatus = ActivityProcessingStatus.Completed;
-					}
+				if (activityLogEntry.status !== ActivityProcessingStatus.Error) {
+					nextStatus = ActivityProcessingStatus.Completed;
 				}
 				break;
 			case TaskStatus.Failed:
-				if (!Is.undefined(activityLogEntry?.inErrorTasks)) {
-					activityLogEntry.inErrorTasks = [];
-				}
-
-				activityLogEntry.inErrorTasks.push({
-					taskId: task.id,
-					dataSpaceConnectorAppId: payload.executorApp,
-					error: task.error as IError
-				});
 				nextStatus = ActivityProcessingStatus.Error;
 				break;
 		}
 
 		activityLogEntry.status = nextStatus;
+		activityLogEntry.dateUpdated = new Date().toISOString();
 
 		await this._entityStorageActivityLogs.set(activityLogEntry);
 	}

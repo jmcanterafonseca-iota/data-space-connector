@@ -15,9 +15,7 @@ export async function executeTask(
 	engineCloneData: IEngineCoreClone,
 	payload: IExecutionPayload
 ): Promise<unknown> {
-	console.log("execute called", payload);
-
 	const executor = new TestAppActivityHandler();
-
-	return executor.handleActivity(payload.activity);
+	await executor.handleActivity(payload.activity);
+	return "1234";
 }

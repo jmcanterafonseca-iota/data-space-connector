@@ -144,9 +144,9 @@ Registers a Data Space Connector App.
 
 ##### app
 
-[`IDataSpaceConnectorApp`](IDataSpaceConnectorApp.md)
+[`IDataSpaceConnectorAppDescriptor`](IDataSpaceConnectorAppDescriptor.md)
 
-The App to be registered.
+The descriptor of the App to be registered.
 
 #### Returns
 
