@@ -9,7 +9,6 @@ import {
 } from "@twin.org/background-task-connector-entity-storage";
 import { BackgroundTaskConnectorFactory } from "@twin.org/background-task-models";
 import { Is, StringHelper } from "@twin.org/core";
-import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import {
 	ActivityProcessingStatus,
 	ActivityStreamsContexts,
@@ -76,24 +75,6 @@ describe("data-space-connector-tests", () => {
 			loggingConnectorType: "console",
 			config: {}
 		};
-
-		DataTypeHandlerFactory.register("https://twin.example.org/MyCreate", () => ({
-			context: "https://twin.example.org/",
-			type: "MyCreate",
-			defaultValue: {},
-			jsonSchema: async () => ({
-				type: "object"
-			})
-		}));
-
-		DataTypeHandlerFactory.register("https://vocabulary.uncefact.org/Consignment", () => ({
-			context: "https://vocabulary.uncefact.org/",
-			type: "Consignment",
-			defaultValue: {},
-			jsonSchema: async () => ({
-				type: "object"
-			})
-		}));
 	});
 
 	afterAll(async () => {
@@ -104,7 +85,7 @@ describe("data-space-connector-tests", () => {
 		activityLogStore = new FileEntityStorageConnector<ActivityLogDetails>({
 			entitySchema: nameof<ActivityLogDetails>(),
 			config: {
-				directory: "./tests/.tmp/activity-log-store"
+				directory: `${path.join(BASE_STORE_DIR, "/activity-log-store")}`
 			}
 		});
 		await activityLogStore.bootstrap();
@@ -112,7 +93,7 @@ describe("data-space-connector-tests", () => {
 		activityTasksStore = new FileEntityStorageConnector<ActivityTask>({
 			entitySchema: nameof<ActivityTask>(),
 			config: {
-				directory: "./tests/.tmp/activity-task-store"
+				directory: `${path.join(BASE_STORE_DIR, "/activity-task-store")}`
 			}
 		});
 		await activityTasksStore.bootstrap();
@@ -140,7 +121,7 @@ describe("data-space-connector-tests", () => {
 
 		backgroundTaskStorage = new FileEntityStorageConnector<BackgroundTask>({
 			entitySchema: nameof<BackgroundTask>(),
-			config: { directory: "./tests/.tmp/background-task-store" }
+			config: { directory: `${path.join(BASE_STORE_DIR, "/background-task-store")}` }
 		});
 		await backgroundTaskStorage.bootstrap();
 		EntityStorageConnectorFactory.register("background-task", () => backgroundTaskStorage);
@@ -195,7 +176,7 @@ describe("data-space-connector-tests", () => {
 		await backgroundTaskConnectorEntityStorage.start("");
 
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
-		dataSpaceConnectorService.registerDataSpaceConnectorApp(TestAppDescriptor);
+		await dataSpaceConnectorService.registerDataSpaceConnectorApp(TestAppDescriptor);
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(canonicalActivity);
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
@@ -206,7 +187,7 @@ describe("data-space-connector-tests", () => {
 		await backgroundTaskConnectorEntityStorage.start("");
 
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
-		dataSpaceConnectorService.registerDataSpaceConnectorApp(TestAppDescriptor);
+		await dataSpaceConnectorService.registerDataSpaceConnectorApp(TestAppDescriptor);
 		// Avoid duplication check
 		activityLdContextArray.updated = new Date().toISOString();
 
@@ -220,7 +201,7 @@ describe("data-space-connector-tests", () => {
 		await backgroundTaskConnectorEntityStorage.start("");
 
 		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
-		dataSpaceConnectorService.registerDataSpaceConnectorApp(TestAppDescriptor);
+		await dataSpaceConnectorService.registerDataSpaceConnectorApp(TestAppDescriptor);
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(extendedActivity);
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);

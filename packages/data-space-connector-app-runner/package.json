@@ -1,11 +1,11 @@
 {
-	"name": "@twin.org/data-space-connector-test-app",
+	"name": "@twin.org/data-space-connector-app-runner",
 	"version": "0.0.1-next.1",
-	"description": "Data Space Connector Test App",
+	"description": "Data Space Connector App Runner",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/twinfoundation/data-space-connector.git",
-		"directory": "packages/data-space-connector-test-app"
+		"directory": "packages/data-space-connector-app-runner"
 	},
 	"author": "jose.cantera@iota.org",
 	"license": "Apache-2.0",
@@ -26,8 +26,7 @@
 		"@twin.org/data-space-connector-models": "0.0.1-next.1",
 		"@twin.org/logging-models": "next",
 		"@twin.org/engine-models": "next",
-		"@twin.org/data-json-ld": "next",
-		"@twin.org/data-core": "next",
+		"@twin.org/engine-core": "next",
 		"@twin.org/core": "next",
 		"@twin.org/nameof": "next"
 	},

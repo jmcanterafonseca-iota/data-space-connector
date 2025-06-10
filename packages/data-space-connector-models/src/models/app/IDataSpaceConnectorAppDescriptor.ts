@@ -28,4 +28,10 @@ export interface IDataSpaceConnectorAppDescriptor {
 	 * The module that implements this DS Connector App
 	 */
 	moduleName: string;
+
+	/**
+	 * The function that allows the initialisation of this DS Connector App
+	 * @default "appInitialiser"
+	 */
+	initialiserName?: string;
 }

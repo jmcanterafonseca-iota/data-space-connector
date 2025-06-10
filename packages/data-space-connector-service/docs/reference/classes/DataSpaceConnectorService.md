@@ -188,7 +188,7 @@ a JSON-LD document with the data
 
 ### registerDataSpaceConnectorApp()
 
-> **registerDataSpaceConnectorApp**(`app`): `void`
+> **registerDataSpaceConnectorApp**(`app`): `Promise`\<`void`\>
 
 Registers a Data Space Connector App.
 
@@ -202,7 +202,7 @@ The App to be registered.
 
 #### Returns
 
-`void`
+`Promise`\<`void`\>
 
 #### Implementation of
 

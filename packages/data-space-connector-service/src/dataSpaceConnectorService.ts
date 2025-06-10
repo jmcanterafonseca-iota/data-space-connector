@@ -38,13 +38,17 @@ import {
 	type IDataSpaceConnectorAppDescriptor,
 	type IActivityLogDetails,
 	type ITaskApp,
-	type IExecutionPayload
+	type IExecutionPayload,
+	type IDataSpaceConnectorApp
 } from "@twin.org/data-space-connector-models";
+import { EngineCoreFactory, type IEngineCoreTypeConfig } from "@twin.org/engine-models";
+import { LoggingConnectorType } from "@twin.org/engine-types";
 import {
 	EntityStorageConnectorFactory,
 	type IEntityStorageConnector
 } from "@twin.org/entity-storage-models";
 import { LoggingConnectorFactory, type ILoggingConnector } from "@twin.org/logging-models";
+import { ModuleHelper } from "@twin.org/modules";
 import { nameof } from "@twin.org/nameof";
 import { AppRegistry } from "./appRegistry";
 import type { ActivityLogDetails } from "./entities/activityLogDetails";
@@ -61,6 +65,13 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @internal
 	 */
 	private static readonly _DS_CONNECTOR_TASK_TYPE: string = "dataSpaceConnectorTask";
+
+	/**
+	 * DS Connector App Component Type.
+	 * @internal
+	 */
+	private static readonly _DS_CONNECTOR_APP_COMPONENT_TYPE: string =
+		nameof<IDataSpaceConnectorApp>();
 
 	/**
 	 * Runtime name for the class.
@@ -131,6 +142,15 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 
 		JsonLdDataTypes.registerTypes();
 		DataSpaceConnectorDataTypes.registerTypes();
+
+		this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
+			DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
+			"@twin.org/data-space-connector-app-runner",
+			"appRunner",
+			async task => {
+				await this.finaliseTask(task);
+			}
+		);
 	}
 
 	/**
@@ -189,7 +209,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 					executorApp: dataSpaceConnectorApp.id
 				};
 				const taskId = await this._backgroundTaskConnector.create<IExecutionPayload>(
-					dataSpaceConnectorApp.id,
+					DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
 					payload,
 					{
 						retainFor: -1
@@ -332,7 +352,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * Registers a Data Space Connector App.
 	 * @param app The App to be registered.
 	 */
-	public registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): void {
+	public async registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void> {
 		const activityObjectTargetTriples = app.handledTypes.activityObjectTargetTriples;
 
 		if (Is.arrayValue(activityObjectTargetTriples)) {
@@ -341,14 +361,35 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			}
 		}
 
-		this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
-			app.id,
-			app.moduleName,
-			"executeTask",
-			async task => {
-				await this.finaliseTask(task);
+		const customTypeConfig: IEngineCoreTypeConfig[] = [
+			{
+				type: `${DataSpaceConnectorService._DS_CONNECTOR_APP_COMPONENT_TYPE}${app.id}`,
+				options: {
+					loggingConnectorType: LoggingConnectorType.Console,
+					dataSpaceConnectorAppId: app.id,
+					config: {}
+				}
 			}
-		);
+		];
+
+		// Register within the Engine so that it can be cloned in the future
+		const engine = EngineCoreFactory.getIfExists("engine");
+		if (!Is.undefined(engine)) {
+			engine.addTypeInitialiser(
+				`${DataSpaceConnectorService._DS_CONNECTOR_APP_COMPONENT_TYPE}${app.id}`,
+				customTypeConfig,
+				app.moduleName,
+				app.initialiserName ?? "appInitialiser"
+			);
+		}
+
+		// Instantiate the application so that it will be registered in the ComponentFactory
+		await ModuleHelper.execModuleMethod(app.moduleName, app.initialiserName ?? "appInitialiser", [
+			engine,
+			null,
+			{ options: customTypeConfig[0].options },
+			null
+		]);
 	}
 
 	/**

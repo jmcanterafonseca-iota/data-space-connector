@@ -59,6 +59,7 @@ export interface IDataSpaceConnector extends IComponent {
 	/**
 	 * Registers a Data Space Connector App.
 	 * @param app The descriptor of the App to be registered.
+	 * @returns nothing.
 	 */
-	registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): void;
+	registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void>;
 }

@@ -37,3 +37,5 @@ export * from "./models/IActivityTask";
 export * from "./models/ITaskApp";
 
 export * from "./models/IExecutionPayload";
+
+export * from "./models/app/IDataSpaceConnectorAppConstructorOptions";

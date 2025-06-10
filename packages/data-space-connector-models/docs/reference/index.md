@@ -23,6 +23,7 @@
 - [IActivityHandler](interfaces/IActivityHandler.md)
 - [IDataResourceHandler](interfaces/IDataResourceHandler.md)
 - [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
+- [IDataSpaceConnectorAppConstructorOptions](interfaces/IDataSpaceConnectorAppConstructorOptions.md)
 - [IDataSpaceConnectorAppDescriptor](interfaces/IDataSpaceConnectorAppDescriptor.md)
 
 ## Type Aliases
