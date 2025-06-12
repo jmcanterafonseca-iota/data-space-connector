@@ -35,3 +35,9 @@ Failed: Activity processing failed (i.e. exception happened).
 > `readonly` **Error**: `"error"` = `"error"`
 
 Error: Activity processing cannot be performed and marked as in error. (Depends on application).
+
+### Unknown
+
+> `readonly` **Unknown**: `"unknown"` = `"unknown"`
+
+Unknown: It is not possible to determine the current processing status (transient situation)

@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 import type { IError } from "@twin.org/core";
+import type { ActivityProcessingStatus } from "./activityProcessingStatus";
+import type { IActivityLogDates } from "./IActivityLogDates";
 import type { IActivityLogDetails } from "./IActivityLogDetails";
 import type { ITaskApp } from "./ITaskApp";
 
@@ -10,19 +12,29 @@ import type { ITaskApp } from "./ITaskApp";
  */
 export interface IActivityLogEntry extends IActivityLogDetails {
 	/**
-	 * The tasks this activity log entry is in association with.
+	 * Status of the Activity Processing.
 	 */
-	associatedTasks?: ITaskApp[];
+	status: ActivityProcessingStatus;
+	/**
+	 * The pending tasks that have to be run to process the Activity.
+	 */
+	pendingTasks?: ITaskApp[];
+
+	/**
+	 * The running tasks that are processing the Activity.
+	 */
+	runningTasks?: (ITaskApp & IActivityLogDates)[];
 
 	/**
 	 * The tasks that have already finalized.
 	 */
-	finalizedTasks?: (ITaskApp & {
-		/**
-		 * The task result.
-		 */
-		result: string;
-	})[];
+	finalizedTasks?: (ITaskApp &
+		IActivityLogDates & {
+			/**
+			 * The task result.
+			 */
+			result: string;
+		})[];
 
 	/**
 	 * The tasks that are in error.

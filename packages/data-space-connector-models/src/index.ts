@@ -8,6 +8,7 @@ export * from "./models/activityProcessingStatus";
 export * from "./models/ISubscription";
 
 export * from "./models/IActivityLogDetails";
+export * from "./models/IActivityLogDates";
 export * from "./models/IActivityLogEntry";
 export * from "./models/ISubscriptionEntry";
 export * from "./models/app/IDataSpaceConnectorApp";

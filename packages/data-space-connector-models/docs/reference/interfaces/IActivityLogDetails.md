@@ -32,14 +32,6 @@ The identity of the Activity's generator.
 
 ***
 
-### status
-
-> **status**: [`ActivityProcessingStatus`](../type-aliases/ActivityProcessingStatus.md)
-
-Status of the Activity Processing.
-
-***
-
 ### dateCreated
 
 > **dateCreated**: `string`

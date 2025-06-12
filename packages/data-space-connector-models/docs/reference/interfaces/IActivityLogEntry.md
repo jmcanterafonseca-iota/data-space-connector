@@ -44,18 +44,6 @@ The identity of the Activity's generator.
 
 ***
 
-### status
-
-> **status**: [`ActivityProcessingStatus`](../type-aliases/ActivityProcessingStatus.md)
-
-Status of the Activity Processing.
-
-#### Inherited from
-
-[`IActivityLogDetails`](IActivityLogDetails.md).[`status`](IActivityLogDetails.md#status)
-
-***
-
 ### dateCreated
 
 > **dateCreated**: `string`
@@ -80,17 +68,33 @@ The last update date of this object.
 
 ***
 
-### associatedTasks?
+### status
 
-> `optional` **associatedTasks**: [`ITaskApp`](ITaskApp.md)[]
+> **status**: [`ActivityProcessingStatus`](../type-aliases/ActivityProcessingStatus.md)
 
-The tasks this activity log entry is in association with.
+Status of the Activity Processing.
+
+***
+
+### pendingTasks?
+
+> `optional` **pendingTasks**: [`ITaskApp`](ITaskApp.md)[]
+
+The pending tasks that have to be run to process the Activity.
+
+***
+
+### runningTasks?
+
+> `optional` **runningTasks**: [`ITaskApp`](ITaskApp.md) & [`IActivityLogDates`](IActivityLogDates.md)[]
+
+The running tasks that are processing the Activity.
 
 ***
 
 ### finalizedTasks?
 
-> `optional` **finalizedTasks**: [`ITaskApp`](ITaskApp.md) & `object`[]
+> `optional` **finalizedTasks**: [`ITaskApp`](ITaskApp.md) & [`IActivityLogDates`](IActivityLogDates.md) & `object`[]
 
 The tasks that have already finalized.
 

@@ -190,7 +190,6 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			id: activityLogEntryId,
 			generator:
 				(activity.generator as string) ?? ((activity.actor as IJsonLdNodeObject).id as string),
-			status: ActivityProcessingStatus.Pending,
 			dateCreated: new Date().toISOString(),
 			dateUpdated: new Date().toISOString()
 		};
@@ -233,17 +232,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			}
 		}
 
-		if (tasksScheduled.length > 0) {
-			// This might happen after the tasks have been scheduled and actually finalized so there can be temporary
-			// inconsistencies in the data that will be eventually solved
-			await this._entityStorageActivityTasks.set({
-				activityLogEntryId,
-				associatedTasks: tasksScheduled
-			});
-		} else {
-			logEntry.status = ActivityProcessingStatus.Completed;
-			await this._entityStorageActivityLogs.set(logEntry);
-		}
+		// This might happen after the tasks have been scheduled and actually finalized so there can be temporary
+		// inconsistencies in the data that will be eventually solved
+		await this._entityStorageActivityTasks.set({
+			activityLogEntryId,
+			associatedTasks: tasksScheduled
+		});
 
 		return activityLogEntryId;
 	}
@@ -264,44 +258,65 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			);
 		}
 
-		let associatedTasks: IActivityLogEntry["associatedTasks"];
+		let pendingTasks: IActivityLogEntry["pendingTasks"];
+		let runningTasks: IActivityLogEntry["runningTasks"];
 		let finalizedTasks: IActivityLogEntry["finalizedTasks"];
 		let inErrorTasks: IActivityLogEntry["inErrorTasks"];
+
+		// For calculating the processing status. Unknown if we cannot determine the activity tasks
+		let status: ActivityProcessingStatus = ActivityProcessingStatus.Unknown;
 
 		// Now query the associated tasks
 		const activityTasks = await this._entityStorageActivityTasks.get(logEntryId);
 
-		// If activity tasks is undefined it might because
-		// there are no tasks or because the corresponding store has not been persisted yet
+		// If activity tasks is undefined it is because the corresponding store has not been persisted yet
 		if (!Is.undefined(activityTasks)) {
-			associatedTasks = [];
+			pendingTasks = [];
+			runningTasks = [];
 			finalizedTasks = [];
 			inErrorTasks = [];
 
 			for (const entity of activityTasks.associatedTasks) {
-				associatedTasks.push(entity as ITaskApp);
-
 				const taskDetails = await this._backgroundTaskConnector.get<IExecutionPayload, unknown>(
 					entity.taskId
 				);
 
-				if (taskDetails?.status === TaskStatus.Success) {
-					finalizedTasks.push({
-						...(entity as ITaskApp),
-						result: JSON.stringify(taskDetails?.result)
-					});
-				}
+				switch (taskDetails?.status) {
+					case TaskStatus.Success:
+						finalizedTasks.push({
+							...(entity as ITaskApp),
+							result: JSON.stringify(taskDetails?.result),
+							startDate: taskDetails?.dateCreated,
+							endDate: taskDetails?.dateCompleted
+						});
+						break;
 
-				if (taskDetails?.status === TaskStatus.Failed) {
-					inErrorTasks.push({
-						...(entity as ITaskApp),
-						error: taskDetails.error as IError
-					});
+					case TaskStatus.Pending:
+						pendingTasks.push({ ...(entity as ITaskApp) });
+						break;
+
+					case TaskStatus.Processing:
+						runningTasks?.push({ ...(entity as ITaskApp), startDate: taskDetails?.dateCreated });
+						break;
+
+					case TaskStatus.Failed:
+						inErrorTasks.push({
+							...(entity as ITaskApp),
+							error: taskDetails.error as IError
+						});
 				}
 			}
+			if (inErrorTasks.length > 0) {
+				status = ActivityProcessingStatus.Error;
+			} else if (runningTasks.length > 0) {
+				status = ActivityProcessingStatus.Running;
+			} else if (pendingTasks.length > 0) {
+				status = ActivityProcessingStatus.Pending;
+			} else {
+				status = ActivityProcessingStatus.Completed;
+			}
 		}
-
-		return { ...result, associatedTasks, finalizedTasks, inErrorTasks };
+		return { ...result, status, pendingTasks, runningTasks, finalizedTasks, inErrorTasks };
 	}
 
 	/**
@@ -414,44 +429,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 					activityLogEntryId: payload.activityLogEntryId
 				}
 			});
-			return;
 		}
-
-		await this.updateActivityProcessingStatus(activityLogEntry, task);
-	}
-
-	/**
-	 * Update the activity processing status.
-	 * @param activityLogEntry The Activity Log entry to update.
-	 * @param task background task details.
-	 */
-	private async updateActivityProcessingStatus(
-		activityLogEntry: IActivityLogDetails,
-		task: IBackgroundTask
-	): Promise<void> {
-		let nextStatus: ActivityProcessingStatus = activityLogEntry.status;
-		switch (task.status) {
-			case TaskStatus.Pending:
-				break;
-			case TaskStatus.Processing:
-				if (activityLogEntry.status !== ActivityProcessingStatus.Error) {
-					nextStatus = ActivityProcessingStatus.Running;
-				}
-				break;
-			case TaskStatus.Success:
-				if (activityLogEntry.status !== ActivityProcessingStatus.Error) {
-					nextStatus = ActivityProcessingStatus.Completed;
-				}
-				break;
-			case TaskStatus.Failed:
-				nextStatus = ActivityProcessingStatus.Error;
-				break;
-		}
-
-		activityLogEntry.status = nextStatus;
-		activityLogEntry.dateUpdated = new Date().toISOString();
-
-		await this._entityStorageActivityLogs.set(activityLogEntry);
 	}
 
 	/**

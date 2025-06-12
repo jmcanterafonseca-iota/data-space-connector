@@ -30,14 +30,6 @@ The Activity Id.
 
 ***
 
-### status
-
-> **status**: `ActivityProcessingStatus`
-
-The processing status of the Activity.
-
-***
-
 ### generator
 
 > **generator**: `string`

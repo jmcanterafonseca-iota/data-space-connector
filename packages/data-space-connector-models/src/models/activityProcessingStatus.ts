@@ -29,7 +29,12 @@ export const ActivityProcessingStatus = {
 	/**
 	 * Error: Activity processing cannot be performed and marked as in error. (Depends on application).
 	 */
-	Error: "error"
+	Error: "error",
+
+	/**
+	 * Unknown: It is not possible to determine the current processing status (transient situation)
+	 */
+	Unknown: "unknown"
 } as const;
 
 /**

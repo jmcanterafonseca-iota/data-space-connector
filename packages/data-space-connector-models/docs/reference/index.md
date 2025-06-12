@@ -7,6 +7,7 @@
 ## Interfaces
 
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
+- [IActivityLogDates](interfaces/IActivityLogDates.md)
 - [IActivityLogDetails](interfaces/IActivityLogDetails.md)
 - [IActivityLogEntry](interfaces/IActivityLogEntry.md)
 - [IActivityObjectTargetTriple](interfaces/IActivityObjectTargetTriple.md)

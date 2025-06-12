@@ -78,12 +78,13 @@ const activityLogEntryExample: IActivityLogEntry = {
 	dateUpdated: new Date().toISOString(),
 	generator: "did:iota:testnet:123456",
 	status: "pending",
-	associatedTasks: [
+	pendingTasks: [
 		{
 			taskId: "urn:x-task-id:45678",
 			dataSpaceConnectorAppId: "https://my-app.example.org/app1"
 		}
 	],
+	runningTasks: [],
 	finalizedTasks: [],
 	inErrorTasks: []
 };

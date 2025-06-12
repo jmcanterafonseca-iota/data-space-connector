@@ -1,8 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { ActivityProcessingStatus } from "./activityProcessingStatus";
-
 /**
  * The details related to the processing of an Activity
  */
@@ -21,11 +19,6 @@ export interface IActivityLogDetails {
 	 * The identity of the Activity's generator.
 	 */
 	generator: string;
-
-	/**
-	 * Status of the Activity Processing.
-	 */
-	status: ActivityProcessingStatus;
 
 	/**
 	 * The creation date of this object.
