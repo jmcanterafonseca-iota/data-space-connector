@@ -39,7 +39,8 @@ import {
 	type IActivityLogDetails,
 	type ITaskApp,
 	type IExecutionPayload,
-	type IDataSpaceConnectorApp
+	type IDataSpaceConnectorApp,
+	type IActivityLogStatusNotification
 } from "@twin.org/data-space-connector-models";
 import { EngineCoreFactory, type IEngineCoreTypeConfig } from "@twin.org/engine-models";
 import { LoggingConnectorType } from "@twin.org/engine-types";
@@ -109,10 +110,18 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	private readonly _appRegistry: AppRegistry;
 
 	/**
-	 * Background Task Connector
+	 * Background Task Connector.
 	 * @internal
 	 */
 	private readonly _backgroundTaskConnector: IBackgroundTaskConnector;
+
+	/**
+	 * Activity Log Status callback.
+	 * @internal
+	 */
+	private _activityLogStatusCallback:
+		| ((notification: IActivityLogStatusNotification) => Promise<void>)
+		| undefined;
 
 	/**
 	 * Create a new instance of FederatedCatalogue service.
@@ -240,6 +249,16 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		});
 
 		return activityLogEntryId;
+	}
+
+	/**
+	 * Subscribes to the activity log.
+	 * @param callback The callback to be called when Activity Log is called.
+	 */
+	public subscribeToActivityLog(
+		callback: (notification: IActivityLogStatusNotification) => Promise<void>
+	): void {
+		this._activityLogStatusCallback = callback;
 	}
 
 	/**
@@ -427,6 +446,20 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				message: "dataSpaceConnector.unknownActivityLogEntryId",
 				data: {
 					activityLogEntryId: payload.activityLogEntryId
+				}
+			});
+		}
+
+		if (
+			(task.status === TaskStatus.Success || task.status === TaskStatus.Failed) &&
+			Is.function(this._activityLogStatusCallback)
+		) {
+			await this._activityLogStatusCallback({
+				activityLogEntryId: payload.activityLogEntryId,
+				taskProcessingStatus: {
+					dataSpaceConnectorAppId: payload.executorApp,
+					taskId: task.id,
+					taskStatus: task.status
 				}
 			});
 		}

@@ -54,7 +54,7 @@
 											"@type": "Consignment",
 											"globalId": "24KEP051219453I002610796"
 										},
-										"updated": "2025-06-12T08:13:11.403Z"
+										"updated": "2025-06-13T14:47:28.193Z"
 									}
 								}
 							}
@@ -180,8 +180,8 @@
 									"activityLogEntryResponseExample": {
 										"value": {
 											"id": "urn:x-activity-log:134567",
-											"dateCreated": "2025-06-12T08:13:11.403Z",
-											"dateUpdated": "2025-06-12T08:13:11.403Z",
+											"dateCreated": "2025-06-13T14:47:28.193Z",
+											"dateUpdated": "2025-06-13T14:47:28.193Z",
 											"generator": "did:iota:testnet:123456",
 											"status": "pending",
 											"pendingTasks": [
@@ -381,10 +381,20 @@
 						"$ref": "#/components/schemas/ActivityStreamsLdContextType"
 					},
 					"@id": {
-						"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						]
 					},
 					"@included": {
-						"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+						"$ref": "https://schema.twindev.org/json-ld/JsonLdIncludedBlock"
 					},
 					"@graph": {
 						"anyOf": [
@@ -415,12 +425,12 @@
 					"@type": {
 						"anyOf": [
 							{
-								"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+								"type": "string"
 							},
 							{
 								"type": "array",
 								"items": {
-									"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+									"type": "string"
 								}
 							}
 						]
@@ -428,11 +438,11 @@
 					"@reverse": {
 						"type": "object",
 						"additionalProperties": {
-							"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+							"type": "string"
 						}
 					},
 					"@index": {
-						"$ref": "https://schema.twindev.org/json-ld/JsonLdKeyword"
+						"type": "string"
 					},
 					"type": {
 						"$ref": "#/components/schemas/ActivityTypeJsonLd"
@@ -516,7 +526,6 @@
 				"required": [
 					"@context",
 					"type",
-					"actor",
 					"object",
 					"updated"
 				],

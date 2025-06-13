@@ -51,7 +51,8 @@
 		"packages/data-space-connector-models",
 		"packages/data-space-connector-app-runner",
 		"packages/data-space-connector-test-app",
-		"packages/data-space-connector-service"
+		"packages/data-space-connector-service",
+		"apps/data-space-connector-rest-server"
 	],
 	"type": "module"
 }

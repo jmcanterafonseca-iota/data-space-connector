@@ -30,6 +30,26 @@ The Activity's identifier.
 
 ***
 
+### subscribeToActivityLog()
+
+> **subscribeToActivityLog**(`callback`): `void`
+
+Subscribes to the activity log.
+
+#### Parameters
+
+##### callback
+
+(`notification`) => `Promise`\<`void`\>
+
+The callback to be called when Activity Log is called.
+
+#### Returns
+
+`void`
+
+***
+
 ### getActivityLogEntry()
 
 > **getActivityLogEntry**(`logEntryId`): `Promise`\<[`IActivityLogEntry`](IActivityLogEntry.md)\>

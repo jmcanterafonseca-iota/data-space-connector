@@ -1,9 +1,9 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IJsonLdKeyword, IJsonLdLanguageMap, IJsonLdNodeObject } from "@twin.org/data-json-ld";
+import type { IJsonLdLanguageMap, IJsonLdNodeObject, IJsonLdObject } from "@twin.org/data-json-ld";
 import type { ActivityStreamsLdContextType } from "./activityStreamsLdContextType";
-import type { ActivityTypeJsonLd } from "./activityType";
+import type { ActivityTypeJsonLd } from "./activityTypeJsonLd";
 
 /**
  * A W3C Activity from Activity Streams
@@ -24,13 +24,13 @@ export interface IActivity extends IJsonLdNodeObject {
 	/**
 	 * The generator of the Activity.
 	 */
-	generator?: IJsonLdKeyword["@id"] | IJsonLdNodeObject;
+	generator?: IJsonLdObject["@id"] | IJsonLdNodeObject;
 
 	/**
 	 * The Actor behind the Activity.
 	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-actor
 	 */
-	actor: IJsonLdKeyword["@id"] | IJsonLdNodeObject;
+	actor: IJsonLdObject["@id"] | IJsonLdNodeObject;
 
 	/**
 	 * The object affected by the Activity.
@@ -60,7 +60,7 @@ export interface IActivity extends IJsonLdNodeObject {
 	 * Activity's origin.
 	 * @see https://www.w3.org/TR/activitystreams-vocabulary/#dfn-origin
 	 */
-	origin?: IJsonLdKeyword["@id"] | IJsonLdNodeObject;
+	origin?: IJsonLdObject["@id"] | IJsonLdNodeObject;
 
 	/**
 	 * The date and time at which the object was updated.

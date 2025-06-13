@@ -66,6 +66,30 @@ The Activity's Log Entry identifier.
 
 ***
 
+### subscribeToActivityLog()
+
+> **subscribeToActivityLog**(`callback`): `void`
+
+Subscribes to the activity log.
+
+#### Parameters
+
+##### callback
+
+(`notification`) => `Promise`\<`void`\>
+
+The callback to be called when Activity Log is called.
+
+#### Returns
+
+`void`
+
+#### Implementation of
+
+`IDataSpaceConnector.subscribeToActivityLog`
+
+***
+
 ### getActivityLogEntry()
 
 > **getActivityLogEntry**(`logEntryId`): `Promise`\<`IActivityLogEntry`\>

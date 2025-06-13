@@ -5,6 +5,7 @@ import type {
 	IHttpRequestContext,
 	INotFoundResponse,
 	IRestRoute,
+	ISocketRoute,
 	ITag,
 	IUnprocessableEntityResponse
 } from "@twin.org/api-models";
@@ -18,7 +19,9 @@ import {
 	type IActivityStreamRequest,
 	type IActivityLogEntry,
 	type ISubscriptionCreateRequest,
-	type ISubscription
+	type ISubscription,
+	type IActivityLogStatusRequest,
+	type IActivityLogStatusNotificationPayload
 } from "@twin.org/data-space-connector-models";
 import { nameof } from "@twin.org/nameof";
 import { HttpStatusCode, MimeTypes } from "@twin.org/web";
@@ -277,4 +280,51 @@ export async function subscriptionCreate(
 		},
 		statusCode: HttpStatusCode.created
 	};
+}
+
+/**
+ * The socket routes for the Data Space Connector.
+ * @param baseRouteName Prefix to prepend to the paths.
+ * @param componentName The name of the component to use in the routes stored in the ComponentFactory.
+ * @returns The generated routes.
+ */
+export function generateSocketRoutesDataSpaceConnector(
+	baseRouteName: string,
+	componentName: string
+): ISocketRoute[] {
+	const activityLogStatusWsRoute: ISocketRoute<
+		IActivityLogStatusRequest,
+		IActivityLogStatusNotificationPayload
+	> = {
+		operationId: "statusQuery",
+		path: `${baseRouteName}/${ACTIVITY_LOG_ROUTE}/status`,
+		handler: async (httpRequestContext, request, emitter) =>
+			statusUpdate(httpRequestContext, componentName, request, emitter)
+	};
+
+	return [activityLogStatusWsRoute];
+}
+
+/**
+ * Provides an status update.
+ * @param httpRequestContext The request context for the API.
+ * @param componentName The name of the component to use in the routes.
+ * @param request The request.
+ * @param emitter The emitter to send message back.
+ * @returns The response object with additional http response properties.
+ */
+export async function statusUpdate(
+	httpRequestContext: IHttpRequestContext,
+	componentName: string,
+	request: IActivityLogStatusRequest,
+	emitter: (topic: string, response: IActivityLogStatusNotificationPayload) => Promise<void>
+): Promise<void> {
+	Guards.stringValue(ROUTES_SOURCE, nameof(request.body.topic), request.body.topic);
+
+	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
+	await component.subscribeToActivityLog(async event => {
+		await emitter("publish", {
+			body: event
+		});
+	});
 }

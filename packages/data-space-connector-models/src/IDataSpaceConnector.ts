@@ -6,6 +6,7 @@ import type { IJsonLdDocument } from "@twin.org/data-json-ld";
 import type { IActivity } from "./models/activity-streams/IActivity";
 import type { IDataSpaceConnectorAppDescriptor } from "./models/app/IDataSpaceConnectorAppDescriptor";
 import type { IActivityLogEntry } from "./models/IActivityLogEntry";
+import type { IActivityLogStatusNotification } from "./models/IActivityLogStatusNotification";
 import type { IDataSpaceQuery } from "./models/IDataSpaceQuery";
 import type { ISubscription } from "./models/ISubscription";
 import type { ISubscriptionEntry } from "./models/ISubscriptionEntry";
@@ -20,6 +21,14 @@ export interface IDataSpaceConnector extends IComponent {
 	 * @returns The Activity's identifier.
 	 */
 	notifyActivity(activity: IActivity): Promise<string>;
+
+	/**
+	 * Subscribes to the activity log.
+	 * @param callback The callback to be called when Activity Log is called.
+	 */
+	subscribeToActivityLog(
+		callback: (notification: IActivityLogStatusNotification) => Promise<void>
+	): void;
 
 	/**
 	 * Returns Activity Log Entry which contains the Activity processing details.

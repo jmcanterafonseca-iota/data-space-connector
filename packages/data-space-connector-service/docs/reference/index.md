@@ -23,4 +23,6 @@
 - [activityStreamNotify](functions/activityStreamNotify.md)
 - [activityLogEntryGet](functions/activityLogEntryGet.md)
 - [subscriptionCreate](functions/subscriptionCreate.md)
+- [generateSocketRoutesDataSpaceConnector](functions/generateSocketRoutesDataSpaceConnector.md)
+- [statusUpdate](functions/statusUpdate.md)
 - [initSchema](functions/initSchema.md)

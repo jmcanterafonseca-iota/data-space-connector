@@ -40,3 +40,9 @@ export * from "./models/ITaskApp";
 export * from "./models/IExecutionPayload";
 
 export * from "./models/app/IDataSpaceConnectorAppConstructorOptions";
+
+export * from "./models/activity-streams/activityTypeJsonLd";
+
+export * from "./models/api/IActivityLogStatusRequest";
+export * from "./models/IActivityLogStatusNotification";
+export * from "./models/api/IActivityLogStatusNotificationPayload";

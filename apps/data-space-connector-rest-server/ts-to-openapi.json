@@ -1,0 +1,17 @@
+{
+	"title": "TWIN Data Space Connector",
+	"version": "0.0.1",
+	"description": "REST API Data Space Connector.",
+	"licenseName": "Apache 2.0 License",
+	"licenseUrl": "https://opensource.org/licenses/Apache-2.0",
+	"servers": ["http://localhost:3010"],
+	"restRoutes": [
+		{
+			"package": "@twin.org/api-service"
+		},
+		{
+			"package": "@twin.org/data-space-connector-service"
+		}
+	],
+	"authMethods": ["jwtBearer"]
+}
