@@ -309,7 +309,7 @@
 											"@type": "Consignment",
 											"globalId": "24KEP051219453I002610796"
 										},
-										"updated": "2025-06-13T14:47:46.553Z"
+										"updated": "2025-07-07T11:22:16.366Z"
 									}
 								}
 							}
@@ -435,8 +435,8 @@
 									"activityLogEntryResponseExample": {
 										"value": {
 											"id": "urn:x-activity-log:134567",
-											"dateCreated": "2025-06-13T14:47:46.554Z",
-											"dateUpdated": "2025-06-13T14:47:46.554Z",
+											"dateCreated": "2025-07-07T11:22:16.366Z",
+											"dateUpdated": "2025-07-07T11:22:16.366Z",
 											"generator": "did:iota:testnet:123456",
 											"status": "pending",
 											"pendingTasks": [
@@ -642,9 +642,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							}
 						]
 					},
@@ -658,9 +660,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/JsonLdNodeObject"
-								}
+								"prefixItems": [
+									{
+										"$ref": "#/components/schemas/JsonLdNodeObject"
+									}
+								]
 							}
 						]
 					},
@@ -671,9 +675,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/JsonLdJsonObject"
-								}
+								"prefixItems": [
+									{
+										"$ref": "#/components/schemas/JsonLdJsonObject"
+									}
+								]
 							}
 						]
 					},
@@ -684,9 +690,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							}
 						]
 					},
@@ -709,9 +717,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							},
 							{
 								"$ref": "#/components/schemas/JsonLdNodeObject"
@@ -726,9 +736,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							},
 							{
 								"$ref": "#/components/schemas/JsonLdNodeObject"
@@ -763,9 +775,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							},
 							{
 								"$ref": "#/components/schemas/JsonLdNodeObject"
@@ -839,103 +853,111 @@
 					},
 					"pendingTasks": {
 						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/TaskApp"
-						},
-						"description": "The pending tasks that have to be run to process the Activity."
+						"description": "The pending tasks that have to be run to process the Activity.",
+						"prefixItems": [
+							{
+								"$ref": "#/components/schemas/TaskApp"
+							}
+						]
 					},
 					"runningTasks": {
 						"type": "array",
-						"items": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"startDate": {
-									"type": "string",
-									"description": "Task processing start timestamp"
+						"description": "The running tasks that are processing the Activity.",
+						"prefixItems": [
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"properties": {
+									"startDate": {
+										"type": "string",
+										"description": "Task processing start timestamp"
+									},
+									"endDate": {
+										"type": "string",
+										"description": "Task processing end timestamp"
+									},
+									"taskId": {
+										"type": "string",
+										"description": "Task Id."
+									},
+									"dataSpaceConnectorAppId": {
+										"type": "string",
+										"description": "Data Space Connector App Id."
+									}
 								},
-								"endDate": {
-									"type": "string",
-									"description": "Task processing end timestamp"
-								},
-								"taskId": {
-									"type": "string",
-									"description": "Task Id."
-								},
-								"dataSpaceConnectorAppId": {
-									"type": "string",
-									"description": "Data Space Connector App Id."
-								}
-							},
-							"required": [
-								"dataSpaceConnectorAppId",
-								"startDate",
-								"taskId"
-							]
-						},
-						"description": "The running tasks that are processing the Activity."
+								"required": [
+									"dataSpaceConnectorAppId",
+									"startDate",
+									"taskId"
+								]
+							}
+						]
 					},
 					"finalizedTasks": {
 						"type": "array",
-						"items": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"result": {
-									"type": "string",
-									"description": "The task result."
+						"description": "The tasks that have already finalized.",
+						"prefixItems": [
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"properties": {
+									"result": {
+										"type": "string",
+										"description": "The task result."
+									},
+									"startDate": {
+										"type": "string",
+										"description": "Task processing start timestamp"
+									},
+									"endDate": {
+										"type": "string",
+										"description": "Task processing end timestamp"
+									},
+									"taskId": {
+										"type": "string",
+										"description": "Task Id."
+									},
+									"dataSpaceConnectorAppId": {
+										"type": "string",
+										"description": "Data Space Connector App Id."
+									}
 								},
-								"startDate": {
-									"type": "string",
-									"description": "Task processing start timestamp"
-								},
-								"endDate": {
-									"type": "string",
-									"description": "Task processing end timestamp"
-								},
-								"taskId": {
-									"type": "string",
-									"description": "Task Id."
-								},
-								"dataSpaceConnectorAppId": {
-									"type": "string",
-									"description": "Data Space Connector App Id."
-								}
-							},
-							"required": [
-								"dataSpaceConnectorAppId",
-								"result",
-								"startDate",
-								"taskId"
-							]
-						},
-						"description": "The tasks that have already finalized."
+								"required": [
+									"dataSpaceConnectorAppId",
+									"result",
+									"startDate",
+									"taskId"
+								]
+							}
+						]
 					},
 					"inErrorTasks": {
 						"type": "array",
-						"items": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"error": {
-									"$ref": "#/components/schemas/Error"
+						"description": "The tasks that are in error.",
+						"prefixItems": [
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"properties": {
+									"error": {
+										"$ref": "#/components/schemas/Error"
+									},
+									"taskId": {
+										"type": "string",
+										"description": "Task Id."
+									},
+									"dataSpaceConnectorAppId": {
+										"type": "string",
+										"description": "Data Space Connector App Id."
+									}
 								},
-								"taskId": {
-									"type": "string",
-									"description": "Task Id."
-								},
-								"dataSpaceConnectorAppId": {
-									"type": "string",
-									"description": "Data Space Connector App Id."
-								}
-							},
-							"required": [
-								"dataSpaceConnectorAppId",
-								"error",
-								"taskId"
-							]
-						},
-						"description": "The tasks that are in error."
+								"required": [
+									"dataSpaceConnectorAppId",
+									"error",
+									"taskId"
+								]
+							}
+						]
 					}
 				},
 				"required": [
@@ -991,23 +1013,25 @@
 					},
 					{
 						"type": "array",
-						"items": {
-							"type": "string",
-							"const": "https://www.w3.org/ns/activitystreams"
-						},
 						"minItems": 1,
-						"maxItems": 1
+						"maxItems": 1,
+						"prefixItems": [
+							{
+								"type": "string",
+								"const": "https://www.w3.org/ns/activitystreams"
+							}
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 1,
-						"items": [
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "https://www.w3.org/ns/activitystreams"
 							}
 						],
-						"additionalItems": {
+						"items": {
 							"$ref": "#/components/schemas/JsonLdContextDefinitionElement"
 						}
 					}
@@ -1033,21 +1057,23 @@
 					},
 					{
 						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/ActivityType"
-						},
 						"minItems": 1,
-						"maxItems": 1
+						"maxItems": 1,
+						"prefixItems": [
+							{
+								"$ref": "#/components/schemas/ActivityType"
+							}
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 1,
-						"items": [
+						"prefixItems": [
 							{
 								"$ref": "#/components/schemas/ActivityType"
 							}
 						],
-						"additionalItems": {
+						"items": {
 							"type": "string"
 						}
 					}
@@ -1097,28 +1123,30 @@
 					},
 					"components": {
 						"type": "array",
-						"items": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string",
-									"description": "The name of the component."
+						"description": "The status of the components.",
+						"prefixItems": [
+							{
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string",
+										"description": "The name of the component."
+									},
+									"status": {
+										"$ref": "#/components/schemas/HealthStatus"
+									},
+									"details": {
+										"type": "string",
+										"description": "The details for the status."
+									}
 								},
-								"status": {
-									"$ref": "#/components/schemas/HealthStatus"
-								},
-								"details": {
-									"type": "string",
-									"description": "The details for the status."
-								}
-							},
-							"required": [
-								"name",
-								"status"
-							],
-							"additionalProperties": false
-						},
-						"description": "The status of the components."
+								"required": [
+									"name",
+									"status"
+								],
+								"additionalProperties": false
+							}
+						]
 					}
 				},
 				"required": [
@@ -1163,7 +1191,8 @@
 					{
 						"type": "array",
 						"minItems": 2,
-						"items": [
+						"maxItems": 2,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@graph"
@@ -1172,13 +1201,13 @@
 								"type": "string",
 								"const": "@id"
 							}
-						],
-						"maxItems": 2
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 2,
-						"items": [
+						"maxItems": 2,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@id"
@@ -1187,13 +1216,13 @@
 								"type": "string",
 								"const": "@graph"
 							}
-						],
-						"maxItems": 2
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 3,
-						"items": [
+						"maxItems": 3,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@set"
@@ -1206,13 +1235,13 @@
 								"type": "string",
 								"const": "@id"
 							}
-						],
-						"maxItems": 3
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 3,
-						"items": [
+						"maxItems": 3,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@set"
@@ -1225,13 +1254,13 @@
 								"type": "string",
 								"const": "@graph"
 							}
-						],
-						"maxItems": 3
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 3,
-						"items": [
+						"maxItems": 3,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@graph"
@@ -1244,13 +1273,13 @@
 								"type": "string",
 								"const": "@id"
 							}
-						],
-						"maxItems": 3
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 3,
-						"items": [
+						"maxItems": 3,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@id"
@@ -1263,13 +1292,13 @@
 								"type": "string",
 								"const": "@graph"
 							}
-						],
-						"maxItems": 3
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 3,
-						"items": [
+						"maxItems": 3,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@graph"
@@ -1282,13 +1311,13 @@
 								"type": "string",
 								"const": "@set"
 							}
-						],
-						"maxItems": 3
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 3,
-						"items": [
+						"maxItems": 3,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@id"
@@ -1301,13 +1330,13 @@
 								"type": "string",
 								"const": "@set"
 							}
-						],
-						"maxItems": 3
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 2,
-						"items": [
+						"maxItems": 2,
+						"prefixItems": [
 							{
 								"type": "string",
 								"const": "@set"
@@ -1315,13 +1344,13 @@
 							{
 								"$ref": "#/components/schemas/JsonLdContainerType"
 							}
-						],
-						"maxItems": 2
+						]
 					},
 					{
 						"type": "array",
 						"minItems": 2,
-						"items": [
+						"maxItems": 2,
+						"prefixItems": [
 							{
 								"$ref": "#/components/schemas/JsonLdContainerType"
 							},
@@ -1329,8 +1358,7 @@
 								"type": "string",
 								"const": "@set"
 							}
-						],
-						"maxItems": 2
+						]
 					}
 				],
 				"description": "JSON-LD container type array."
@@ -1430,9 +1458,11 @@
 					},
 					{
 						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/JsonLdContextDefinitionElement"
-						}
+						"prefixItems": [
+							{
+								"$ref": "#/components/schemas/JsonLdContextDefinitionElement"
+							}
+						]
 					}
 				],
 				"description": "A context definition root is used to define the root of a context definition."
@@ -1450,9 +1480,11 @@
 									},
 									{
 										"type": "array",
-										"items": {
-											"type": "string"
-										}
+										"prefixItems": [
+											{
+												"type": "string"
+											}
+										]
 									},
 									{
 										"type": "null"
@@ -1477,21 +1509,23 @@
 									},
 									{
 										"type": "array",
-										"items": {
-											"anyOf": [
-												{
-													"type": "string",
-													"const": "@list"
-												},
-												{
-													"type": "string",
-													"const": "@set"
-												},
-												{
-													"$ref": "#/components/schemas/JsonLdContainerType"
-												}
-											]
-										}
+										"prefixItems": [
+											{
+												"anyOf": [
+													{
+														"type": "string",
+														"const": "@list"
+													},
+													{
+														"type": "string",
+														"const": "@set"
+													},
+													{
+														"$ref": "#/components/schemas/JsonLdContainerType"
+													}
+												]
+											}
+										]
 									},
 									{
 										"$ref": "#/components/schemas/JsonLdContainerTypeArray"
@@ -1581,9 +1615,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/JsonLdNodeObject"
-								}
+								"prefixItems": [
+									{
+										"$ref": "#/components/schemas/JsonLdNodeObject"
+									}
+								]
 							}
 						]
 					},
@@ -1597,9 +1633,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							}
 						]
 					},
@@ -1627,9 +1665,11 @@
 					},
 					{
 						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/JsonLdNodeObject"
-						}
+						"prefixItems": [
+							{
+								"$ref": "#/components/schemas/JsonLdNodeObject"
+							}
+						]
 					}
 				],
 				"description": "An included block is used to provide a set of node objects."
@@ -1643,9 +1683,11 @@
 						},
 						{
 							"type": "array",
-							"items": {
-								"$ref": "#/components/schemas/JsonLdIndexMapItem"
-							}
+							"prefixItems": [
+								{
+									"$ref": "#/components/schemas/JsonLdIndexMapItem"
+								}
+							]
 						}
 					]
 				},
@@ -1682,10 +1724,12 @@
 			},
 			"JsonLdJsonArray": {
 				"type": "array",
-				"items": {
-					"$ref": "#/components/schemas/JsonLdJsonValue"
-				},
-				"description": "JSON Type for array."
+				"description": "JSON Type for array.",
+				"prefixItems": [
+					{
+						"$ref": "#/components/schemas/JsonLdJsonValue"
+					}
+				]
 			},
 			"JsonLdJsonObject": {
 				"type": "object",
@@ -1736,9 +1780,11 @@
 						},
 						{
 							"type": "array",
-							"items": {
-								"type": "string"
-							}
+							"prefixItems": [
+								{
+									"type": "string"
+								}
+							]
 						}
 					]
 				},
@@ -1754,9 +1800,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/JsonLdListOrSetItem"
-								}
+								"prefixItems": [
+									{
+										"$ref": "#/components/schemas/JsonLdListOrSetItem"
+									}
+								]
 							}
 						]
 					},
@@ -1831,9 +1879,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							}
 						]
 					},
@@ -1847,9 +1897,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/JsonLdNodeObject"
-								}
+								"prefixItems": [
+									{
+										"$ref": "#/components/schemas/JsonLdNodeObject"
+									}
+								]
 							}
 						]
 					},
@@ -1860,9 +1912,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/JsonLdJsonObject"
-								}
+								"prefixItems": [
+									{
+										"$ref": "#/components/schemas/JsonLdJsonObject"
+									}
+								]
 							}
 						]
 					},
@@ -1873,9 +1927,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"type": "string"
-								}
+								"prefixItems": [
+									{
+										"type": "string"
+									}
+								]
 							}
 						]
 					},
@@ -1933,9 +1989,11 @@
 							},
 							{
 								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/JsonLdListOrSetItem"
-								}
+								"prefixItems": [
+									{
+										"$ref": "#/components/schemas/JsonLdListOrSetItem"
+									}
+								]
 							}
 						]
 					},

@@ -1,28 +1,33 @@
 {
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://schema.twindev.org/data-space-connector/ActivityTypeJsonLd",
+	"description": "Activity Type JSON-LD",
 	"anyOf": [
 		{
 			"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
 		},
 		{
 			"type": "array",
-			"items": {
-				"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
-			},
+			"items": false,
 			"minItems": 1,
-			"maxItems": 1
+			"maxItems": 1,
+			"prefixItems": [
+				{
+					"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
+				}
+			]
 		},
 		{
 			"type": "array",
 			"minItems": 1,
-			"items": [
+			"items": {
+				"type": "string"
+			},
+			"prefixItems": [
 				{
 					"$ref": "https://schema.twindev.org/data-space-connector/ActivityType"
 				}
-			],
-			"additionalItems": {
-				"type": "string"
-			}
+			]
 		}
-	],
-	"description": "Activity Type JSON-LD"
+	]
 }

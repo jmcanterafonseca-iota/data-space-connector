@@ -54,21 +54,21 @@ export async function extendConfig(engineConfig: IEngineConfig): Promise<void> {
 		engineConfig,
 		nameof<ActivityLogDetails>(),
 		EntitySchemaHelper.getSchema(ActivityLogDetails),
-		"activity-log-details"
+		""
 	);
 
 	EngineConfigHelper.addCustomEntityStorage<ActivityTask>(
 		engineConfig,
 		nameof<ActivityTask>(),
 		EntitySchemaHelper.getSchema(ActivityTask),
-		"activity-task"
+		""
 	);
 
 	EngineConfigHelper.addCustomEntityStorage<SubscriptionEntry>(
 		engineConfig,
 		nameof<SubscriptionEntry>(),
 		EntitySchemaHelper.getSchema(SubscriptionEntry),
-		"subscription-entry"
+		""
 	);
 }
 

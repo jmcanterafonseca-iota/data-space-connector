@@ -1,4 +1,7 @@
 {
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://schema.twindev.org/data-space-connector/ActivityStreamsLdContextType",
+	"description": "The Activity Streams JSON-LD context type.",
 	"anyOf": [
 		{
 			"type": "string",
@@ -6,26 +9,28 @@
 		},
 		{
 			"type": "array",
-			"items": {
-				"type": "string",
-				"const": "https://www.w3.org/ns/activitystreams"
-			},
+			"items": false,
 			"minItems": 1,
-			"maxItems": 1
-		},
-		{
-			"type": "array",
-			"minItems": 1,
-			"items": [
+			"maxItems": 1,
+			"prefixItems": [
 				{
 					"type": "string",
 					"const": "https://www.w3.org/ns/activitystreams"
 				}
-			],
-			"additionalItems": {
+			]
+		},
+		{
+			"type": "array",
+			"minItems": 1,
+			"items": {
 				"$ref": "https://schema.twindev.org/json-ld/JsonLdContextDefinitionElement"
-			}
+			},
+			"prefixItems": [
+				{
+					"type": "string",
+					"const": "https://www.w3.org/ns/activitystreams"
+				}
+			]
 		}
-	],
-	"description": "The Activity Streams JSON-LD context type."
+	]
 }
