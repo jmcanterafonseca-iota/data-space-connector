@@ -219,7 +219,7 @@ export async function activityStreamNotify(
 	request: IActivityStreamRequest
 ): Promise<ICreatedResponse> {
 	Guards.object<IActivityStreamRequest>(ROUTES_SOURCE, nameof(request), request);
-	Guards.stringValue(ROUTES_SOURCE, nameof(request.body), request.body);
+	Guards.object<IActivity>(ROUTES_SOURCE, nameof(request.body), request.body);
 
 	const service = ComponentFactory.get<IDataSpaceConnector>(factoryServiceName);
 	const activityLogEntryId = await service.notifyActivity(request.body);

@@ -116,6 +116,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	private readonly _backgroundTaskConnector: IBackgroundTaskConnector;
 
 	/**
+	 * Initial set of Data Space Connector Apps
+	 * @internal
+	 */
+	private readonly _initialDataSpaceConnectorApps?: IDataSpaceConnectorAppDescriptor[];
+
+	/**
 	 * Activity Log Status callback.
 	 * @internal
 	 */
@@ -145,7 +151,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		>(options.subscriptionEntityStorageType ?? StringHelper.kebabCase(nameof<SubscriptionEntry>()));
 
 		this._backgroundTaskConnector = BackgroundTaskConnectorFactory.get(
-			options?.backgroundTaskConnectorType ?? "background-task-4-data-space"
+			options?.backgroundTaskConnectorType ?? "background-task-4-data-space-connector"
 		);
 		this._appRegistry = new AppRegistry();
 
@@ -160,6 +166,21 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				await this.finaliseTask(task);
 			}
 		);
+
+		this._initialDataSpaceConnectorApps = options.config.dataSpaceConnectorAppDescriptors;
+	}
+
+	/**
+	 * Start step. It just registers the Data Space Connector Apps initial descriptors.
+	 * @param nodeIdentity Node Identity
+	 * @param nodeLoggingConnectorType Node Logging Connector type.
+	 */
+	public async start(nodeIdentity: string, nodeLoggingConnectorType?: string): Promise<void> {
+		if (Is.arrayValue(this._initialDataSpaceConnectorApps)) {
+			for (const app of this._initialDataSpaceConnectorApps) {
+				await this.registerDataSpaceConnectorApp(app);
+			}
+		}
 	}
 
 	/**
@@ -168,6 +189,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @returns The Activity's Log Entry identifier.
 	 */
 	public async notifyActivity(activity: IActivity): Promise<string> {
+		this._loggingService?.log({
+			level: "debug",
+			source: this.CLASS_NAME,
+			message: `New Activity of type: ${activity.type} notified`
+		});
+
 		// Validate that the Activity notified is encoded using the representation format expected by the Connector
 		const validationFailures: IValidationFailure[] = [];
 		await JsonLdHelper.validate(activity, validationFailures, { failOnMissingType: true });

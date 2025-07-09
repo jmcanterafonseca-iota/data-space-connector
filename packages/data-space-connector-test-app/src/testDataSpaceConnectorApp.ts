@@ -66,10 +66,10 @@ export class TestDataSpaceConnectorApp implements IDataSpaceConnectorApp {
 
 	/**
 	 * Handle Activity.
-	 * @param act Activity
+	 * @param activity Activity
 	 * @returns Activity processing result
 	 */
-	public async handleActivity(act: IActivity): Promise<unknown> {
+	public async handleActivity(activity: IActivity): Promise<unknown> {
 		await this._loggingService?.log({
 			level: "info",
 			source: this.CLASS_NAME,

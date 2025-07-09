@@ -1,7 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { Is } from "@twin.org/core";
+import type { IDataSpaceConnectorAppDescriptor } from "@twin.org/data-space-connector-models";
 import {
 	ActivityLogDetails,
 	ActivityTask,
@@ -10,7 +13,12 @@ import {
 } from "@twin.org/data-space-connector-service";
 import { EngineConfigHelper } from "@twin.org/engine";
 import type { IEngineCore, IEngineCoreTypeConfig, IEngineServer } from "@twin.org/engine-models";
-import { LoggingConnectorType, type IEngineConfig } from "@twin.org/engine-types";
+import {
+	type BackgroundTaskConnectorConfig,
+	BackgroundTaskConnectorType,
+	LoggingConnectorType,
+	type IEngineConfig
+} from "@twin.org/engine-types";
 import { EntitySchemaHelper } from "@twin.org/entity";
 import { nameof } from "@twin.org/nameof";
 import { run } from "@twin.org/node-core";
@@ -21,13 +29,39 @@ const REST_PATH = "data-space-connector";
 const filename = fileURLToPath(import.meta.url);
 const dirnameStr = path.dirname(filename);
 
+const dsConnectorAppsFileNme = "data-space-connector-apps.json";
+let dataSpaceConnectorAppDescriptors: IDataSpaceConnectorAppDescriptor[] = [];
+const dsConnectorAppsFile = path.resolve(dsConnectorAppsFileNme);
+if (fs.existsSync(dsConnectorAppsFile)) {
+	const jsonStr = fs.readFileSync(dsConnectorAppsFile, "utf8");
+	try {
+		dataSpaceConnectorAppDescriptors = JSON.parse(jsonStr) as IDataSpaceConnectorAppDescriptor[];
+		if (!Is.arrayValue(dataSpaceConnectorAppDescriptors)) {
+			// eslint-disable-next-line no-console
+			console.warn("Data Space Connector Apps descriptors file does not represent an array");
+		} else {
+			// eslint-disable-next-line no-console
+			console.log(`Data Space Connector Apps descriptors file  ${dsConnectorAppsFileNme} read`);
+		}
+	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.error(
+			`Data Space Connector Apps descriptors file ${dsConnectorAppsFileNme} invalid`,
+			error
+		);
+	}
+}
+
+// Data Space Connector Component Config
 const customTypeConfig: IEngineCoreTypeConfig[] = [
 	{
 		type: DATA_SPACE_CONNECTOR_TYPE,
 		restPath: REST_PATH,
 		options: {
 			loggingConnectorType: LoggingConnectorType.Console,
-			config: {}
+			config: {
+				dataSpaceConnectorAppDescriptors
+			}
 		}
 	}
 ];
@@ -53,22 +87,19 @@ export async function extendConfig(engineConfig: IEngineConfig): Promise<void> {
 	EngineConfigHelper.addCustomEntityStorage<ActivityLogDetails>(
 		engineConfig,
 		nameof<ActivityLogDetails>(),
-		EntitySchemaHelper.getSchema(ActivityLogDetails),
-		""
+		EntitySchemaHelper.getSchema(ActivityLogDetails)
 	);
 
 	EngineConfigHelper.addCustomEntityStorage<ActivityTask>(
 		engineConfig,
 		nameof<ActivityTask>(),
-		EntitySchemaHelper.getSchema(ActivityTask),
-		""
+		EntitySchemaHelper.getSchema(ActivityTask)
 	);
 
 	EngineConfigHelper.addCustomEntityStorage<SubscriptionEntry>(
 		engineConfig,
 		nameof<SubscriptionEntry>(),
-		EntitySchemaHelper.getSchema(SubscriptionEntry),
-		""
+		EntitySchemaHelper.getSchema(SubscriptionEntry)
 	);
 }
 
@@ -77,6 +108,26 @@ export async function extendConfig(engineConfig: IEngineConfig): Promise<void> {
  * @param engine Engine Core
  */
 export async function extendEngine(engine: IEngineCore): Promise<void> {
+	const backgroundTaskConnectorConfig: BackgroundTaskConnectorConfig = {
+		type: BackgroundTaskConnectorType.EntityStorage
+	};
+	const backgroundTaskConnectorTypeConfig: IEngineCoreTypeConfig[] = [
+		{
+			type: BackgroundTaskConnectorType.EntityStorage,
+			options: {
+				loggingConnectorType: LoggingConnectorType.Console,
+				config: backgroundTaskConnectorConfig
+			},
+			overrideInstanceType: "background-task-4-data-space-connector"
+		}
+	];
+	engine.addTypeInitialiser(
+		"backgroundTaskConnector",
+		backgroundTaskConnectorTypeConfig,
+		"@twin.org/engine-types",
+		"initialiseBackgroundTaskConnector"
+	);
+
 	engine.addTypeInitialiser(
 		DATA_SPACE_CONNECTOR_TYPE,
 		customTypeConfig,

@@ -136,7 +136,7 @@ describe("data-space-connector-tests", () => {
 			backgroundTaskEntityStorageType: "background-task"
 		});
 		BackgroundTaskConnectorFactory.register(
-			"background-task-4-data-space",
+			"background-task-4-data-space-connector",
 			() => backgroundTaskConnectorEntityStorage
 		);
 	});

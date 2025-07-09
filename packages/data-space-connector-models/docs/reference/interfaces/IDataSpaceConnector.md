@@ -8,6 +8,38 @@ Data Space Connector service interface.
 
 ## Methods
 
+### start()
+
+> **start**(`nodeIdentity`, `nodeLoggingConnectorType?`): `Promise`\<`void`\>
+
+Start method.
+
+#### Parameters
+
+##### nodeIdentity
+
+`string`
+
+Node Identity.
+
+##### nodeLoggingConnectorType?
+
+`string`
+
+Node Logging Connector Type.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+nothing
+
+#### Overrides
+
+`IComponent.start`
+
+***
+
 ### notifyActivity()
 
 > **notifyActivity**(`activity`): `Promise`\<`string`\>

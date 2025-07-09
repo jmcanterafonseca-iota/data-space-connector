@@ -28,11 +28,16 @@ export function dataSpaceConnectorTypeInitialiser(
 	overrideInstanceType: string
 ): string {
 	const componentName = StringHelper.kebabCase(nameof<IDataSpaceConnector>(), true);
-	ComponentFactory.register(
-		componentName,
-		() => new DataSpaceConnectorService(instanceConfig.options)
-	);
-	return overrideInstanceType ?? componentName;
+	const dataSpaceConnector = new DataSpaceConnectorService(instanceConfig.options);
+	ComponentFactory.register(componentName, () => dataSpaceConnector);
+
+	const finalInstanceName = overrideInstanceType ?? componentName;
+	context.componentInstances.push({
+		instanceType: finalInstanceName,
+		component: dataSpaceConnector
+	});
+
+	return finalInstanceName;
 }
 
 /**
