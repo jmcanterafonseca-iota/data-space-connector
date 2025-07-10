@@ -43,15 +43,6 @@ export const ActivityStreamsTypes = {
 	Delete: "Delete"
 } as const;
 
-export const ACTIVITY_STREAMS_TYPE_LIST = [
-	ActivityStreamsTypes.Activity,
-	ActivityStreamsTypes.Create,
-	ActivityStreamsTypes.Add,
-	ActivityStreamsTypes.Update,
-	ActivityStreamsTypes.Remove,
-	ActivityStreamsTypes.Delete
-];
-
 /**
  * The types concerning Activity.
  */

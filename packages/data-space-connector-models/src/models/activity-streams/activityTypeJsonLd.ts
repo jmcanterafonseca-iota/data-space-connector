@@ -1,13 +1,12 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { ActivityType } from "./activityType";
+import type { ActivityStreamsTypes } from "./activityStreamsTypes";
 
 /**
  * Activity Type JSON-LD
  */
 export type ActivityTypeJsonLd =
-	| ActivityType
-	| [ActivityType]
-	// Workaround for the buggy ts-to-schema behaviour
-	| [ActivityType, ...string[]];
+	| ActivityStreamsTypes
+	| [ActivityStreamsTypes]
+	| [ActivityStreamsTypes, ...string[]];

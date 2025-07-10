@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 export * from "./models/activity-streams/IActivity";
-export * from "./models/activity-streams/activityType";
 export * from "./models/activityProcessingStatus";
 
 export * from "./models/ISubscription";

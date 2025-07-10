@@ -3,8 +3,8 @@
 	"types": [
 		"./src/models/activity-streams/IActivity.ts",
 		"./src/models/activity-streams/ActivityStreamsLdContextType.ts",
-		"./src/models/activity-streams/ActivityType.ts",
-		"./src/models/activity-streams/ActivityTypeJsonLd.ts"
+		"./src/models/activity-streams/ActivityTypeJsonLd.ts",
+		"./src/models/activity-streams/ActivityStreamsTypes.ts"
 	],
 	"externalReferences": {
 		"IJsonLd(.*)": "https://schema.twindev.org/json-ld/JsonLd$1"

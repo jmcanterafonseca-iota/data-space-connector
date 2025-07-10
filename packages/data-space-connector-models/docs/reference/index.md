@@ -36,7 +36,6 @@
 - [ActivityStreamsContexts](type-aliases/ActivityStreamsContexts.md)
 - [ActivityStreamsLdContextType](type-aliases/ActivityStreamsLdContextType.md)
 - [ActivityStreamsTypes](type-aliases/ActivityStreamsTypes.md)
-- [ActivityType](type-aliases/ActivityType.md)
 - [ActivityTypeJsonLd](type-aliases/ActivityTypeJsonLd.md)
 - [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 
@@ -44,5 +43,4 @@
 
 - [ActivityStreamsContexts](variables/ActivityStreamsContexts.md)
 - [ActivityStreamsTypes](variables/ActivityStreamsTypes.md)
-- [ACTIVITY\_STREAMS\_TYPE\_LIST](variables/ACTIVITY_STREAMS_TYPE_LIST.md)
 - [ActivityProcessingStatus](variables/ActivityProcessingStatus.md)

@@ -1,5 +1,5 @@
 # Type Alias: ActivityTypeJsonLd
 
-> **ActivityTypeJsonLd** = [`ActivityType`](ActivityType.md) \| \[[`ActivityType`](ActivityType.md)\] \| \[[`ActivityType`](ActivityType.md), `...string[]`\]
+> **ActivityTypeJsonLd** = [`ActivityStreamsTypes`](ActivityStreamsTypes.md) \| \[[`ActivityStreamsTypes`](ActivityStreamsTypes.md)\] \| \[[`ActivityStreamsTypes`](ActivityStreamsTypes.md), `...string[]`\]
 
 Activity Type JSON-LD

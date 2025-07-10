@@ -57,6 +57,7 @@ const customTypeConfig: IEngineCoreTypeConfig[] = [
 	{
 		type: DATA_SPACE_CONNECTOR_TYPE,
 		restPath: REST_PATH,
+		socketPath: REST_PATH,
 		options: {
 			loggingConnectorType: LoggingConnectorType.Console,
 			config: {

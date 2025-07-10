@@ -4,10 +4,10 @@
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import type { JSONSchema7 } from "json-schema";
 import { ActivityStreamsContexts } from "../models/activity-streams/activityStreamsContexts";
-import { ACTIVITY_STREAMS_TYPE_LIST } from "../models/activity-streams/activityStreamsTypes";
+import { ActivityStreamsTypes } from "../models/activity-streams/activityStreamsTypes";
 import ActivitySchema from "../schemas/Activity.json";
 import ActivityStreamsLdContextTypeSchema from "../schemas/ActivityStreamsLdContextType.json";
-import ActivityTypeSchema from "../schemas/ActivityType.json";
+import ActivityStreamsTypesSchema from "../schemas/ActivityStreamsTypes.json";
 import ActivityTypeJsonLdSchema from "../schemas/ActivityTypeJsonLd.json";
 
 /**
@@ -18,7 +18,7 @@ export abstract class DataSpaceConnectorDataTypes {
 	 * Register all the data types.
 	 */
 	public static registerTypes(): void {
-		for (const activityStreamsType of ACTIVITY_STREAMS_TYPE_LIST) {
+		for (const activityStreamsType of Object.values(ActivityStreamsTypes)) {
 			DataTypeHandlerFactory.register(
 				`${ActivityStreamsContexts.ActivityStreamsNamespace}${activityStreamsType}`,
 				() => ({
@@ -32,8 +32,8 @@ export abstract class DataSpaceConnectorDataTypes {
 
 		const auxiliaryTypes: { [key: string]: JSONSchema7 } = {
 			ActivityStreamsLdContextType: ActivityStreamsLdContextTypeSchema as JSONSchema7,
-			ActivityType: ActivityTypeSchema as JSONSchema7,
-			ActivityTypeJsonLd: ActivityTypeJsonLdSchema as JSONSchema7
+			ActivityTypeJsonLd: ActivityTypeJsonLdSchema as JSONSchema7,
+			ActivityStreamsTypes: ActivityStreamsTypesSchema as JSONSchema7
 		};
 
 		for (const type of Object.keys(auxiliaryTypes)) {
