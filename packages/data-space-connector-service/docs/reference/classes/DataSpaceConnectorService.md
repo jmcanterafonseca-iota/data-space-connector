@@ -40,6 +40,36 @@ Runtime name for the class.
 
 ## Methods
 
+### start()
+
+> **start**(`nodeIdentity`, `nodeLoggingConnectorType?`): `Promise`\<`void`\>
+
+Start step. It just registers the Data Space Connector Apps initial descriptors.
+
+#### Parameters
+
+##### nodeIdentity
+
+`string`
+
+Node Identity
+
+##### nodeLoggingConnectorType?
+
+`string`
+
+Node Logging Connector type.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Implementation of
+
+`IDataSpaceConnector.start`
+
+***
+
 ### notifyActivity()
 
 > **notifyActivity**(`activity`): `Promise`\<`string`\>

@@ -43,6 +43,15 @@ let backgroundTaskConnectorEntityStorage: EntityStorageBackgroundTaskConnector;
 const BASE_STORE_DIR = "./tests/.tmp";
 
 /**
+ * Waits.
+ * @param ms milliseconds to sleep.
+ * @returns Promise
+ */
+async function sleep(ms: number): Promise<void> {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
  * Asserts Activity Log.
  * @param entry Entry to be asserted
  */
@@ -149,6 +158,8 @@ describe("data-space-connector-tests", () => {
 
 		const activityLogEntryId = await dataSpaceConnectorService.notifyActivity(canonicalActivity);
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
+		// await sleep(3000);
+
 		assertActivityLog(entry);
 	});
 

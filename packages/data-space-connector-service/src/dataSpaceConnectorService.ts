@@ -192,7 +192,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		this._loggingService?.log({
 			level: "debug",
 			source: this.CLASS_NAME,
-			message: `New Activity of type: ${activity.type} notified`
+			message: `New Activity of type "${activity.type}" notified by ${activity.generator ?? activity.actor}`
 		});
 
 		// Validate that the Activity notified is encoded using the representation format expected by the Connector
