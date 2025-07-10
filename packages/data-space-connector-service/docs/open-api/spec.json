@@ -54,7 +54,7 @@
 											"@type": "Consignment",
 											"globalId": "24KEP051219453I002610796"
 										},
-										"updated": "2025-07-10T10:30:05.881Z"
+										"updated": "2025-07-10T14:42:18.807Z"
 									}
 								}
 							}
@@ -180,8 +180,8 @@
 									"activityLogEntryResponseExample": {
 										"value": {
 											"id": "urn:x-activity-log:134567",
-											"dateCreated": "2025-07-10T10:30:05.881Z",
-											"dateUpdated": "2025-07-10T10:30:05.881Z",
+											"dateCreated": "2025-07-10T14:42:18.807Z",
+											"dateUpdated": "2025-07-10T14:42:18.807Z",
 											"generator": "did:iota:testnet:123456",
 											"status": "pending",
 											"pendingTasks": [
@@ -783,22 +783,45 @@
 				],
 				"description": "The Activity Streams JSON-LD context type."
 			},
-			"ActivityType": {
-				"type": "string",
-				"enum": [
-					"Activity",
-					"Add",
-					"Create",
-					"Update",
-					"Remove",
-					"Delete"
+			"ActivityStreamsTypes": {
+				"anyOf": [
+					{
+						"type": "string",
+						"const": "Activity",
+						"description": "Activity base class"
+					},
+					{
+						"type": "string",
+						"const": "Create",
+						"description": "Activity Create"
+					},
+					{
+						"type": "string",
+						"const": "Add",
+						"description": "Activity Add"
+					},
+					{
+						"type": "string",
+						"const": "Update",
+						"description": "Activity Update"
+					},
+					{
+						"type": "string",
+						"const": "Remove",
+						"description": "Activity Remove"
+					},
+					{
+						"type": "string",
+						"const": "Delete",
+						"description": "Activity Delete"
+					}
 				],
-				"description": "Activity Type."
+				"description": "The types concerning Activity Streams.   The types concerning Activity."
 			},
 			"ActivityTypeJsonLd": {
 				"anyOf": [
 					{
-						"$ref": "#/components/schemas/ActivityType"
+						"$ref": "#/components/schemas/ActivityStreamsTypes"
 					},
 					{
 						"type": "array",
@@ -806,7 +829,7 @@
 						"maxItems": 1,
 						"prefixItems": [
 							{
-								"$ref": "#/components/schemas/ActivityType"
+								"$ref": "#/components/schemas/ActivityStreamsTypes"
 							}
 						]
 					},
@@ -815,7 +838,7 @@
 						"minItems": 1,
 						"prefixItems": [
 							{
-								"$ref": "#/components/schemas/ActivityType"
+								"$ref": "#/components/schemas/ActivityStreamsTypes"
 							}
 						],
 						"items": {
