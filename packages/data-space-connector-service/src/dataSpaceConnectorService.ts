@@ -28,13 +28,11 @@ import {
 	type IJsonLdNodeObject
 } from "@twin.org/data-json-ld";
 import {
-	type IActivity,
 	type IDataSpaceConnector,
 	type IActivityLogEntry,
 	type ISubscription,
 	type ISubscriptionEntry,
 	type IDataSpaceQuery,
-	DataSpaceConnectorDataTypes,
 	ActivityProcessingStatus,
 	type IActivityObjectTargetTriple,
 	type IDataSpaceConnectorAppDescriptor,
@@ -53,6 +51,7 @@ import {
 import { LoggingConnectorFactory, type ILoggingConnector } from "@twin.org/logging-models";
 import { ModuleHelper } from "@twin.org/modules";
 import { nameof } from "@twin.org/nameof";
+import { ActivityStreamsDataTypes, type IActivity } from "@twin.org/standards-w3c-activity-streams";
 import { AppRegistry } from "./appRegistry";
 import type { ActivityLogDetails } from "./entities/activityLogDetails";
 import type { ActivityTask } from "./entities/activityTask";
@@ -158,7 +157,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		this._appRegistry = new AppRegistry();
 
 		JsonLdDataTypes.registerTypes();
-		DataSpaceConnectorDataTypes.registerTypes();
+		ActivityStreamsDataTypes.registerTypes();
 
 		this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
 			DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,

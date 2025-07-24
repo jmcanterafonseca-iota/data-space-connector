@@ -10,20 +10,19 @@ import type {
 	IUnprocessableEntityResponse
 } from "@twin.org/api-models";
 import { ComponentFactory, Guards } from "@twin.org/core";
-import {
-	ActivityStreamsContexts,
-	type IDataSpaceConnector,
-	type IActivity,
-	type IActivityLogEntryGetRequest,
-	type IActivityLogEntryGetResponse,
-	type IActivityStreamRequest,
-	type IActivityLogEntry,
-	type ISubscriptionCreateRequest,
-	type ISubscription,
-	type IActivityLogStatusRequest,
-	type IActivityLogStatusNotificationPayload
+import type {
+	IDataSpaceConnector,
+	IActivityLogEntryGetRequest,
+	IActivityLogEntryGetResponse,
+	IActivityStreamRequest,
+	IActivityLogEntry,
+	ISubscriptionCreateRequest,
+	ISubscription,
+	IActivityLogStatusRequest,
+	IActivityLogStatusNotificationPayload
 } from "@twin.org/data-space-connector-models";
 import { nameof } from "@twin.org/nameof";
+import { ActivityStreamsContexts, type IActivity } from "@twin.org/standards-w3c-activity-streams";
 import { HttpStatusCode, MimeTypes } from "@twin.org/web";
 
 /**
@@ -62,7 +61,7 @@ export const tagsDataSpaceConnector: ITag[] = [
 ];
 
 const activityExample: IActivity = {
-	"@context": ActivityStreamsContexts.ActivityStreamsLdContext,
+	"@context": ActivityStreamsContexts.ContextRoot,
 	type: "Add",
 	actor: {
 		id: "did:iota:testnet:0x123456"

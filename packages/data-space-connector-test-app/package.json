@@ -29,7 +29,8 @@
 		"@twin.org/data-json-ld": "next",
 		"@twin.org/data-core": "next",
 		"@twin.org/core": "next",
-		"@twin.org/nameof": "next"
+		"@twin.org/nameof": "next",
+		"@twin.org/standards-w3c-activity-streams": "next"
 	},
 	"devDependencies": {
 		"@twin.org/nameof-transformer": "next",

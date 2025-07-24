@@ -24,6 +24,7 @@
 	},
 	"dependencies": {
 		"@twin.org/data-space-connector-models": "0.0.1-next.1",
+		"@twin.org/standards-w3c-activity-streams": "next",
 		"@twin.org/logging-models": "next",
 		"@twin.org/engine-models": "next",
 		"@twin.org/engine-core": "next",

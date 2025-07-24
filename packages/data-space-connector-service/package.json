@@ -44,6 +44,7 @@
 		"@twin.org/identity-models": "next",
 		"@twin.org/identity-service": "next",
 		"@twin.org/standards-w3c-odrl": "next",
+		"@twin.org/standards-w3c-activity-streams": "next",
 		"@twin.org/crypto": "next",
 		"@twin.org/data-json-ld": "next",
 		"@twin.org/background-task-models": "next",

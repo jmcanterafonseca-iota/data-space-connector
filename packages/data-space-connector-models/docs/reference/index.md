@@ -1,9 +1,5 @@
 # @twin.org/data-space-connector-models
 
-## Classes
-
-- [DataSpaceConnectorDataTypes](classes/DataSpaceConnectorDataTypes.md)
-
 ## Interfaces
 
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
@@ -17,7 +13,6 @@
 - [IExecutionPayload](interfaces/IExecutionPayload.md)
 - [ISubscription](interfaces/ISubscription.md)
 - [ITaskApp](interfaces/ITaskApp.md)
-- [IActivity](interfaces/IActivity.md)
 - [IActivityLogEntryGetRequest](interfaces/IActivityLogEntryGetRequest.md)
 - [IActivityLogEntryGetResponse](interfaces/IActivityLogEntryGetResponse.md)
 - [IActivityLogStatusNotificationPayload](interfaces/IActivityLogStatusNotificationPayload.md)
@@ -33,14 +28,8 @@
 ## Type Aliases
 
 - [ISubscriptionEntry](type-aliases/ISubscriptionEntry.md)
-- [ActivityStreamsContexts](type-aliases/ActivityStreamsContexts.md)
-- [ActivityStreamsLdContextType](type-aliases/ActivityStreamsLdContextType.md)
-- [ActivityStreamsTypes](type-aliases/ActivityStreamsTypes.md)
-- [ActivityTypeJsonLd](type-aliases/ActivityTypeJsonLd.md)
 - [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 
 ## Variables
 
-- [ActivityStreamsContexts](variables/ActivityStreamsContexts.md)
-- [ActivityStreamsTypes](variables/ActivityStreamsTypes.md)
 - [ActivityProcessingStatus](variables/ActivityProcessingStatus.md)

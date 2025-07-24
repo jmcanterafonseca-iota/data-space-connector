@@ -50,7 +50,7 @@ Notify an Activity to the DS Connector Activity Stream.
 
 ##### activity
 
-[`IActivity`](IActivity.md)
+`IActivity`
 
 The Activity notified.
 

@@ -1,10 +1,10 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import { ActivityStreamsContexts, type IActivity } from "@twin.org/data-space-connector-models";
+import { ActivityStreamsContexts, type IActivity } from "@twin.org/standards-w3c-activity-streams";
 
 export const canonicalActivity: IActivity = {
-	"@context": ActivityStreamsContexts.ActivityStreamsLdContext,
+	"@context": ActivityStreamsContexts.ContextRoot,
 	type: "Create",
 	actor: {
 		id: "did:iota:testnet:0x123456"
@@ -19,7 +19,7 @@ export const canonicalActivity: IActivity = {
 
 export const activityLdContextArray: IActivity = {
 	...canonicalActivity,
-	"@context": [ActivityStreamsContexts.ActivityStreamsLdContext]
+	"@context": [ActivityStreamsContexts.ContextRoot]
 };
 
 export const extendedActivity: IActivity = {
@@ -27,7 +27,7 @@ export const extendedActivity: IActivity = {
 		{
 			MyCreate: "https://twin.example.org/MyCreate"
 		},
-		ActivityStreamsContexts.ActivityStreamsLdContext
+		ActivityStreamsContexts.ContextRoot
 	],
 	type: ["Create", "MyCreate"],
 	actor: {

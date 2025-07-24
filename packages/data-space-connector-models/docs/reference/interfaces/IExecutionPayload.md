@@ -14,7 +14,7 @@ The Activity Log Entry Id.
 
 ### activity
 
-> **activity**: [`IActivity`](IActivity.md)
+> **activity**: `IActivity`
 
 The activity
 

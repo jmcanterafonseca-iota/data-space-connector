@@ -3,7 +3,7 @@
 
 import type { IComponent } from "@twin.org/core";
 import type { IJsonLdDocument } from "@twin.org/data-json-ld";
-import type { IActivity } from "./models/activity-streams/IActivity";
+import type { IActivity } from "@twin.org/standards-w3c-activity-streams";
 import type { IDataSpaceConnectorAppDescriptor } from "./models/app/IDataSpaceConnectorAppDescriptor";
 import type { IActivityLogEntry } from "./models/IActivityLogEntry";
 import type { IActivityLogStatusNotification } from "./models/IActivityLogStatusNotification";

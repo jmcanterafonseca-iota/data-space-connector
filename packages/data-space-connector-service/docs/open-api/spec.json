@@ -309,7 +309,7 @@
 											"@type": "Consignment",
 											"globalId": "24KEP051219453I002610796"
 										},
-										"updated": "2025-07-24T14:22:28.550Z"
+										"updated": "2025-07-24T14:48:48.514Z"
 									}
 								}
 							}
@@ -435,8 +435,8 @@
 									"activityLogEntryResponseExample": {
 										"value": {
 											"id": "urn:x-activity-log:134567",
-											"dateCreated": "2025-07-24T14:22:28.550Z",
-											"dateUpdated": "2025-07-24T14:22:28.550Z",
+											"dateCreated": "2025-07-24T14:48:48.514Z",
+											"dateUpdated": "2025-07-24T14:48:48.514Z",
 											"generator": "did:iota:testnet:123456",
 											"status": "pending",
 											"pendingTasks": [
@@ -633,7 +633,7 @@
 				"type": "object",
 				"properties": {
 					"@context": {
-						"$ref": "#/components/schemas/ActivityStreamsLdContextType"
+						"$ref": "#/components/schemas/ActivityStreamsContextType"
 					},
 					"@id": {
 						"anyOf": [
@@ -712,7 +712,7 @@
 						"type": "string"
 					},
 					"type": {
-						"$ref": "#/components/schemas/ActivityTypeJsonLd"
+						"$ref": "#/components/schemas/ObjectOrArray<(ActivityStreamsTypes|string)>"
 					},
 					"generator": {
 						"anyOf": [
@@ -1016,7 +1016,7 @@
 				],
 				"description": "Activity processing statuses.   The type exported."
 			},
-			"ActivityStreamsLdContextType": {
+			"ActivityStreamsContextType": {
 				"anyOf": [
 					{
 						"type": "string",
@@ -1084,37 +1084,6 @@
 					}
 				],
 				"description": "The types concerning Activity Streams.   The types concerning Activity."
-			},
-			"ActivityTypeJsonLd": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/ActivityStreamsTypes"
-					},
-					{
-						"type": "array",
-						"items": false,
-						"minItems": 1,
-						"maxItems": 1,
-						"prefixItems": [
-							{
-								"$ref": "#/components/schemas/ActivityStreamsTypes"
-							}
-						]
-					},
-					{
-						"type": "array",
-						"minItems": 1,
-						"items": {
-							"type": "string"
-						},
-						"prefixItems": [
-							{
-								"$ref": "#/components/schemas/ActivityStreamsTypes"
-							}
-						]
-					}
-				],
-				"description": "Activity Type JSON-LD"
 			},
 			"Error": {
 				"type": "object",
@@ -2193,6 +2162,33 @@
 					}
 				],
 				"description": "A value object is used to explicitly associate a type or a language with a value to create a typed value or a language-tagged string and possibly associate a base direction."
+			},
+			"ObjectOrArray_(ActivityStreamsTypes|string)_": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ActivityStreamsTypes"
+					},
+					{
+						"type": "string"
+					},
+					{
+						"type": "array",
+						"items": false,
+						"prefixItems": [
+							{
+								"anyOf": [
+									{
+										"$ref": "#/components/schemas/ActivityStreamsTypes"
+									},
+									{
+										"type": "string"
+									}
+								]
+							}
+						]
+					}
+				],
+				"description": "Object or array data type"
 			},
 			"ServerInfo": {
 				"type": "object",

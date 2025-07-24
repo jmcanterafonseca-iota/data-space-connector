@@ -4,12 +4,12 @@
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
 import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
 import type {
-	IActivity,
 	IDataSpaceConnectorApp,
 	IDataSpaceQuery
 } from "@twin.org/data-space-connector-models";
 import { LoggingConnectorFactory, type ILoggingConnector } from "@twin.org/logging-models";
 import { nameof } from "@twin.org/nameof";
+import type { IActivity } from "@twin.org/standards-w3c-activity-streams";
 import type { ITestAppConstructorOptions } from "./ITestAppConstructorOptions";
 
 /**
