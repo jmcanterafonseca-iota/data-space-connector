@@ -15,7 +15,9 @@ import {
 	Validation,
 	Converter,
 	ConflictError,
-	type IError
+	type IError,
+	Guards,
+	RandomHelper
 } from "@twin.org/core";
 import { Blake2b } from "@twin.org/crypto";
 import {
@@ -122,12 +124,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	private readonly _initialDataSpaceConnectorApps?: IDataSpaceConnectorAppDescriptor[];
 
 	/**
-	 * Activity Log Status callback.
+	 * Activity Log Status callbacks.
 	 * @internal
 	 */
-	private _activityLogStatusCallback:
-		| ((notification: IActivityLogStatusNotification) => Promise<void>)
-		| undefined;
+	private readonly _activityLogStatusCallbacks: {
+		[key: string]: (notification: IActivityLogStatusNotification) => Promise<void>;
+	};
 
 	/**
 	 * Create a new instance of FederatedCatalogue service.
@@ -168,6 +170,8 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		);
 
 		this._initialDataSpaceConnectorApps = options.config.dataSpaceConnectorAppDescriptors;
+
+		this._activityLogStatusCallbacks = {};
 	}
 
 	/**
@@ -281,11 +285,17 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	/**
 	 * Subscribes to the activity log.
 	 * @param callback The callback to be called when Activity Log is called.
+	 * @returns The subscription Id.
 	 */
 	public subscribeToActivityLog(
 		callback: (notification: IActivityLogStatusNotification) => Promise<void>
-	): void {
-		this._activityLogStatusCallback = callback;
+	): string {
+		Guards.function(this.CLASS_NAME, nameof(callback), callback);
+
+		const subscriptionId = Converter.bytesToHex(RandomHelper.generate(16));
+		this._activityLogStatusCallbacks[subscriptionId] = callback;
+
+		return subscriptionId;
 	}
 
 	/**
@@ -477,18 +487,17 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			});
 		}
 
-		if (
-			(task.status === TaskStatus.Success || task.status === TaskStatus.Failed) &&
-			Is.function(this._activityLogStatusCallback)
-		) {
-			await this._activityLogStatusCallback({
-				activityLogEntryId: payload.activityLogEntryId,
-				taskProcessingStatus: {
-					dataSpaceConnectorAppId: payload.executorApp,
-					taskId: task.id,
-					taskStatus: task.status
-				}
-			});
+		if (task.status === TaskStatus.Success || task.status === TaskStatus.Failed) {
+			for (const callback of Object.values(this._activityLogStatusCallbacks)) {
+				await callback({
+					activityLogEntryId: payload.activityLogEntryId,
+					taskProcessingStatus: {
+						dataSpaceConnectorAppId: payload.executorApp,
+						taskId: task.id,
+						taskStatus: task.status
+					}
+				});
+			}
 		}
 	}
 

@@ -98,7 +98,7 @@ The Activity's Log Entry identifier.
 
 ### subscribeToActivityLog()
 
-> **subscribeToActivityLog**(`callback`): `void`
+> **subscribeToActivityLog**(`callback`): `string`
 
 Subscribes to the activity log.
 
@@ -112,7 +112,9 @@ The callback to be called when Activity Log is called.
 
 #### Returns
 
-`void`
+`string`
+
+The subscription Id.
 
 #### Implementation of
 

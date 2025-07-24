@@ -319,10 +319,8 @@ export async function statusUpdate(
 	request: IActivityLogStatusRequest,
 	emitter: (topic: string, response: IActivityLogStatusNotificationPayload) => Promise<void>
 ): Promise<void> {
-	Guards.stringValue(ROUTES_SOURCE, nameof(request.body.topic), request.body.topic);
-
 	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
-	await component.subscribeToActivityLog(async event => {
+	component.subscribeToActivityLog(async event => {
 		await emitter("publish", {
 			body: event
 		});

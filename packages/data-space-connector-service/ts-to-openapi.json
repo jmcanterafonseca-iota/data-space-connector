@@ -1,17 +1,17 @@
 {
-	"title": "TWIN - Test Endpoints",
-	"version": "1.0.0",
-	"description": "REST API for TWIN - Test Endpoints.",
+	"title": "TWIN Data Space Connector",
+	"version": "0.0.1",
+	"description": "REST API Data Space Connector.",
 	"licenseName": "Apache 2.0 License",
 	"licenseUrl": "https://opensource.org/licenses/Apache-2.0",
-	"servers": ["https://localhost"],
-	"authMethods": ["jwtBearer"],
+	"servers": ["http://localhost:3010"],
 	"restRoutes": [
 		{
-			"packageRoot": "./"
+			"package": "@twin.org/api-service"
+		},
+		{
+			"package": "@twin.org/data-space-connector-service"
 		}
 	],
-	"externalReferences": {
-		"JsonLd(.*?)": "https://schema.twindev.org/json-ld/JsonLd$1"
-	}
+	"authMethods": ["jwtBearer"]
 }
