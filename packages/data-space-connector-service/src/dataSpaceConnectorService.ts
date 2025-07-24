@@ -63,12 +63,6 @@ import type { IDataSpaceConnectorServiceConstructorOptions } from "./models/IDat
  */
 export class DataSpaceConnectorService implements IDataSpaceConnector {
 	/**
-	 * DS Connector Task Type.
-	 * @internal
-	 */
-	private static readonly _DS_CONNECTOR_TASK_TYPE: string = "dataSpaceConnectorTask";
-
-	/**
 	 * DS Connector App Component Type.
 	 * @internal
 	 */
@@ -159,15 +153,6 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		JsonLdDataTypes.registerTypes();
 		ActivityStreamsDataTypes.registerTypes();
 
-		this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
-			DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
-			"@twin.org/data-space-connector-app-runner",
-			"appRunner",
-			async task => {
-				await this.finaliseTask(task);
-			}
-		);
-
 		this._initialDataSpaceConnectorApps = options.config.dataSpaceConnectorAppDescriptors;
 
 		this._activityLogStatusCallbacks = {};
@@ -246,11 +231,23 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 					activity: compactedObj,
 					executorApp: dataSpaceConnectorApp.id
 				};
+				// This is needed because the Background Task component does not support multiple tasks of
+				// the same type executing at the same time
+				const taskType = Converter.bytesToHex(RandomHelper.generate(16));
 				const taskId = await this._backgroundTaskConnector.create<IExecutionPayload>(
-					DataSpaceConnectorService._DS_CONNECTOR_TASK_TYPE,
+					taskType,
 					payload,
 					{
 						retainFor: -1
+					}
+				);
+
+				this._backgroundTaskConnector.registerHandler<IExecutionPayload, unknown>(
+					taskType,
+					"@twin.org/data-space-connector-app-runner",
+					"appRunner",
+					async task => {
+						await this.finaliseTask(task);
 					}
 				);
 
