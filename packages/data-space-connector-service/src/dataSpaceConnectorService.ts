@@ -51,6 +51,7 @@ import {
 import { LoggingConnectorFactory, type ILoggingConnector } from "@twin.org/logging-models";
 import { ModuleHelper } from "@twin.org/modules";
 import { nameof } from "@twin.org/nameof";
+import { SchemaOrgDataTypes } from "@twin.org/standards-schema-org";
 import { ActivityStreamsDataTypes, type IActivity } from "@twin.org/standards-w3c-activity-streams";
 import { AppRegistry } from "./appRegistry";
 import type { ActivityLogDetails } from "./entities/activityLogDetails";
@@ -152,6 +153,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 
 		JsonLdDataTypes.registerTypes();
 		ActivityStreamsDataTypes.registerTypes();
+		SchemaOrgDataTypes.registerRedirects();
 
 		this._initialDataSpaceConnectorApps = options.config.dataSpaceConnectorAppDescriptors;
 
