@@ -46,9 +46,7 @@ export interface IDataSpaceConnector extends IComponent {
 	 * @param subscriptionId The subscription Id.
 	 * @returns The subscription Id.
 	 */
-	unSubscribeToActivityLog(
-		subscriptionId: string
-	): void;
+	unSubscribeToActivityLog(subscriptionId: string): void;
 
 	/**
 	 * Returns Activity Log Entry which contains the Activity processing details.

@@ -325,10 +325,6 @@ export async function activityLogStatusUpdate(
 ): Promise<void> {
 	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
 
-	console.log(request);
-
-	request.body = { operation: "subscribe" };
-
 	switch (request.body.operation) {
 		case "subscribe":
 			component.subscribeToActivityLog(async event => {
@@ -352,7 +348,7 @@ export function activityLogStatusDisconnected(
 	socketRequestContext: ISocketRequestContext,
 	componentName: string
 ): void {
-	const logger = ComponentFactory.getIfExists<ILoggingConnector>("logging");
+	const logger = ComponentFactory.getIfExists<ILoggingConnector>("logging-service");
 	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
 
 	logger?.log({
@@ -372,12 +368,12 @@ export function activityLogStatusDisconnected(
  * @param socketRequestContext Socket Request Context
  */
 export function activityLogStatusConnected(socketRequestContext: ISocketRequestContext): void {
-	const logger = ComponentFactory.getIfExists<ILoggingConnector>("logging");
+	const logger = ComponentFactory.getIfExists<ILoggingConnector>("logging-service");
 
 	logger?.log({
 		source: ROUTES_SOURCE,
 		level: "debug",
-		message: "dataSpaceConnectorService.activityLogStatusDisconnected",
+		message: "dataSpaceConnectorService.activityLogStatusConnected",
 		data: {
 			socketId: socketRequestContext.socketId
 		}

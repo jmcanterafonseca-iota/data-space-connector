@@ -14,7 +14,8 @@
 	"debug": {
 		"dataSpaceConnectorService": {
 			"activityLogStatusConnected": "Web Socket Connected: Socket Id: \"{socketId}\"",
-			"activityLogStatusDisconnected": "Web Socket disconnected: Socket Id: \"{socketId}\""
+			"activityLogStatusDisconnected": "Web Socket disconnected: Socket Id: \"{socketId}\"",
+			"newActivity": "New Activity of type \"{actityType}\" notified by \"{generator}\""
 		}
 	}
 }
