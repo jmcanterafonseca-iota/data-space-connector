@@ -98,7 +98,7 @@ The Activity's Log Entry identifier.
 
 ### subscribeToActivityLog()
 
-> **subscribeToActivityLog**(`callback`): `string`
+> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `string`
 
 Subscribes to the activity log.
 
@@ -110,6 +110,12 @@ Subscribes to the activity log.
 
 The callback to be called when Activity Log is called.
 
+##### subscriptionId?
+
+`string`
+
+The Subscription Id.
+
 #### Returns
 
 `string`
@@ -119,6 +125,30 @@ The subscription Id.
 #### Implementation of
 
 `IDataSpaceConnector.subscribeToActivityLog`
+
+***
+
+### unSubscribeToActivityLog()
+
+> **unSubscribeToActivityLog**(`subscriptionId`): `void`
+
+Subscribes to the activity log.
+
+#### Parameters
+
+##### subscriptionId
+
+`string`
+
+The Subscription Id.
+
+#### Returns
+
+`void`
+
+#### Implementation of
+
+`IDataSpaceConnector.unSubscribeToActivityLog`
 
 ***
 

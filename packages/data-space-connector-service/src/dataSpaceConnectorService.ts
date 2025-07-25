@@ -283,17 +283,29 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	/**
 	 * Subscribes to the activity log.
 	 * @param callback The callback to be called when Activity Log is called.
+	 * @param subscriptionId The Subscription Id.
 	 * @returns The subscription Id.
 	 */
 	public subscribeToActivityLog(
-		callback: (notification: IActivityLogStatusNotification) => Promise<void>
+		callback: (notification: IActivityLogStatusNotification) => Promise<void>,
+		subscriptionId?: string
 	): string {
 		Guards.function(this.CLASS_NAME, nameof(callback), callback);
 
-		const subscriptionId = Converter.bytesToHex(RandomHelper.generate(16));
-		this._activityLogStatusCallbacks[subscriptionId] = callback;
+		const theSubscriptionId = Is.stringValue(subscriptionId)
+			? subscriptionId
+			: Converter.bytesToHex(RandomHelper.generate(16));
+		this._activityLogStatusCallbacks[theSubscriptionId] = callback;
 
-		return subscriptionId;
+		return theSubscriptionId;
+	}
+
+	/**
+	 * Subscribes to the activity log.
+	 * @param subscriptionId The Subscription Id.
+	 */
+	public unSubscribeToActivityLog(subscriptionId: string): void {
+		delete this._activityLogStatusCallbacks[subscriptionId];
 	}
 
 	/**

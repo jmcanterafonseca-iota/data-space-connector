@@ -64,7 +64,7 @@ The Activity's identifier.
 
 ### subscribeToActivityLog()
 
-> **subscribeToActivityLog**(`callback`): `string`
+> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `string`
 
 Subscribes to the activity log.
 
@@ -76,9 +76,37 @@ Subscribes to the activity log.
 
 The callback to be called when Activity Log is called.
 
+##### subscriptionId?
+
+`string`
+
+The subscription Id.
+
 #### Returns
 
 `string`
+
+The subscription Id.
+
+***
+
+### unSubscribeToActivityLog()
+
+> **unSubscribeToActivityLog**(`subscriptionId`): `void`
+
+Unsubscribes to the activity log.
+
+#### Parameters
+
+##### subscriptionId
+
+`string`
+
+The subscription Id.
+
+#### Returns
+
+`void`
 
 The subscription Id.
 

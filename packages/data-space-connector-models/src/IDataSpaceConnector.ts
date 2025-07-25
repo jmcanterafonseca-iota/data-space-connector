@@ -33,11 +33,22 @@ export interface IDataSpaceConnector extends IComponent {
 	/**
 	 * Subscribes to the activity log.
 	 * @param callback The callback to be called when Activity Log is called.
+	 * @param subscriptionId The subscription Id.
 	 * @returns The subscription Id.
 	 */
 	subscribeToActivityLog(
-		callback: (notification: IActivityLogStatusNotification) => Promise<void>
+		callback: (notification: IActivityLogStatusNotification) => Promise<void>,
+		subscriptionId?: string
 	): string;
+
+	/**
+	 * Unsubscribes to the activity log.
+	 * @param subscriptionId The subscription Id.
+	 * @returns The subscription Id.
+	 */
+	unSubscribeToActivityLog(
+		subscriptionId: string
+	): void;
 
 	/**
 	 * Returns Activity Log Entry which contains the Activity processing details.

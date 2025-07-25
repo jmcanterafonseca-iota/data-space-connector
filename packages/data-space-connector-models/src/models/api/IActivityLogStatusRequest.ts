@@ -8,5 +8,7 @@ export interface IActivityLogStatusRequest {
 	/**
 	 * Empty body.
 	 */
-	body: { [key: string]: never };
+	body: {
+		operation: "subscribe" | "unsubscribe";
+	};
 }

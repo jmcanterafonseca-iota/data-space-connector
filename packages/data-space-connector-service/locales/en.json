@@ -10,5 +10,11 @@
 		"dataSpaceConnectorService": {
 			"taskScheduled": "Task scheduled: \"{taskId}\" for Data Space Connector App \"{dataSpaceConnectorAppId}\""
 		}
+	},
+	"debug": {
+		"dataSpaceConnectorService": {
+			"activityLogStatusConnected": "Web Socket Connected: Socket Id: \"{socketId}\"",
+			"activityLogStatusDisconnected": "Web Socket disconnected: Socket Id: \"{socketId}\""
+		}
 	}
 }

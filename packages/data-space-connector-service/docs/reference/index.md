@@ -24,5 +24,7 @@
 - [activityLogEntryGet](functions/activityLogEntryGet.md)
 - [subscriptionCreate](functions/subscriptionCreate.md)
 - [generateSocketRoutesDataSpaceConnector](functions/generateSocketRoutesDataSpaceConnector.md)
-- [statusUpdate](functions/statusUpdate.md)
+- [activityLogStatusUpdate](functions/activityLogStatusUpdate.md)
+- [activityLogStatusDisconnected](functions/activityLogStatusDisconnected.md)
+- [activityLogStatusConnected](functions/activityLogStatusConnected.md)
 - [initSchema](functions/initSchema.md)

@@ -10,6 +10,6 @@ Activity log status
 
 Empty body.
 
-#### Index Signature
+#### operation
 
-\[`key`: `string`\]: `never`
+> **operation**: `"subscribe"` \| `"unsubscribe"`

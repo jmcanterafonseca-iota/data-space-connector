@@ -1,14 +1,14 @@
-# Function: statusUpdate()
+# Function: activityLogStatusUpdate()
 
-> **statusUpdate**(`httpRequestContext`, `componentName`, `request`, `emitter`): `Promise`\<`void`\>
+> **activityLogStatusUpdate**(`socketRequestContext`, `componentName`, `request`, `emitter`): `Promise`\<`void`\>
 
 Provides an status update.
 
 ## Parameters
 
-### httpRequestContext
+### socketRequestContext
 
-`IHttpRequestContext`
+`ISocketRequestContext`
 
 The request context for the API.
 
