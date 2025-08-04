@@ -45,7 +45,7 @@
 		"husky": "9.1.7",
 		"markdownlint-cli": "^0.44.0",
 		"prettier": "^3.5.3",
-		"release-please": "17.0.0"
+		"release-please": "17.1.0"
 	},
 	"workspaces": [
 		"packages/data-space-connector-models",
