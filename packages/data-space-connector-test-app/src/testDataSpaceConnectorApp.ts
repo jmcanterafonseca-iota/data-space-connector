@@ -38,7 +38,6 @@ export class TestDataSpaceConnectorApp implements IDataSpaceConnectorApp {
 	 * Constructor options.
 	 * @param options The constructor options.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(options: ITestAppConstructorOptions) {
 		DataTypeHandlerFactory.register("https://twin.example.org/MyCreate", () => ({
 			context: "https://twin.example.org/",

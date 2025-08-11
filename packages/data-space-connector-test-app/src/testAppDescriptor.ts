@@ -16,7 +16,6 @@ export const TestAppDescriptor: IDataSpaceConnectorAppDescriptor = {
 	/**
 	 * The module name.
 	 */
-	// eslint-disable-next-line no-restricted-syntax
 	moduleName: "@twin.org/data-space-connector-test-app",
 
 	// eslint-disable-next-line no-restricted-syntax
