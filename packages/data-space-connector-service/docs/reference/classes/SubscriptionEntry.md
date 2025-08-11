@@ -46,8 +46,8 @@ The creation date.
 
 ***
 
-### dateUpdated
+### dateModified
 
-> **dateUpdated**: `string`
+> **dateModified**: `string`
 
 The update date.

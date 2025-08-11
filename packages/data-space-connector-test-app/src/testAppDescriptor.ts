@@ -8,7 +8,9 @@ import type { IDataSpaceConnectorAppDescriptor } from "@twin.org/data-space-conn
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const TestAppDescriptor: IDataSpaceConnectorAppDescriptor = {
-	// eslint-disable-next-line no-restricted-syntax
+	/**
+	 * App Id.
+	 */
 	id: "https://twin.example.org/app1",
 
 	/**

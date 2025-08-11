@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IBackgroundTask } from "@twin.org/background-task-models";
 import type { IDataSpaceConnectorAppDescriptor } from "./app/IDataSpaceConnectorAppDescriptor";
 
 /**
@@ -11,7 +10,7 @@ export interface ITaskApp {
 	/**
 	 * Task Id.
 	 */
-	taskId: IBackgroundTask["id"];
+	taskId: string;
 
 	/**
 	 * Data Space Connector App Id.

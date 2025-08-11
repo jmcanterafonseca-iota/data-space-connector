@@ -51,7 +51,6 @@
 		"@twin.org/background-task-models": "next",
 		"@twin.org/background-task-connector-entity-storage": "next",
 		"@twin.org/engine-models": "next",
-		"@twin.org/engine-core": "next",
 		"@twin.org/engine-types": "next"
 	},
 	"devDependencies": {

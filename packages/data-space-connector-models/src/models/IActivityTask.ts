@@ -1,7 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IActivityLogDetails } from "./IActivityLogDetails";
 import type { ITaskApp } from "./ITaskApp";
 
 /**
@@ -11,7 +10,7 @@ export interface IActivityTask {
 	/**
 	 * The activity log entry.
 	 */
-	activityLogEntryId: IActivityLogDetails["id"];
+	activityLogEntryId: string;
 
 	/**
 	 * The associated tasks

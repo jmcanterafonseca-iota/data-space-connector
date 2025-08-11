@@ -56,15 +56,15 @@ The creation date of this object.
 
 ***
 
-### dateUpdated
+### dateModified
 
-> **dateUpdated**: `string`
+> **dateModified**: `string`
 
 The last update date of this object.
 
 #### Inherited from
 
-[`IActivityLogDetails`](IActivityLogDetails.md).[`dateUpdated`](IActivityLogDetails.md#dateupdated)
+[`IActivityLogDetails`](IActivityLogDetails.md).[`dateModified`](IActivityLogDetails.md#datemodified)
 
 ***
 

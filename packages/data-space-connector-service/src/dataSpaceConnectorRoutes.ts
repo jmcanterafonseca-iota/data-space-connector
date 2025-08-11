@@ -79,7 +79,7 @@ const activityExample: IActivity = {
 const activityLogEntryExample: IActivityLogEntry = {
 	id: "urn:x-activity-log:134567",
 	dateCreated: new Date().toISOString(),
-	dateUpdated: new Date().toISOString(),
+	dateModified: new Date().toISOString(),
 	generator: "did:iota:testnet:123456",
 	status: "pending",
 	pendingTasks: [

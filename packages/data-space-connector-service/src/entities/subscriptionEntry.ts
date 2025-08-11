@@ -36,5 +36,5 @@ export class SubscriptionEntry {
 	 * The update date.
 	 */
 	@property({ type: "string", format: "date-time" })
-	public dateUpdated!: string;
+	public dateModified!: string;
 }

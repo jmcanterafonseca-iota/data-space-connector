@@ -1,7 +1,7 @@
 {
 	"error": {
 		"dataSpaceConnectorService": {
-			"activityLogEntryNotFound": "Activity Log Entry has not been found",
+			"activityLogEntryNotFound": "Activity Log Entry '\"{notFoundId}\"' has not been found",
 			"subscriptionEntryNotFound": "Subscription Entry has not been found",
 			"activityAlreadyNotified": "Activity has already been notified"
 		}

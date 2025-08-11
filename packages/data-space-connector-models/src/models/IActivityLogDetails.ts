@@ -28,5 +28,5 @@ export interface IActivityLogDetails {
 	/**
 	 * The last update date of this object.
 	 */
-	dateUpdated: string;
+	dateModified: string;
 }

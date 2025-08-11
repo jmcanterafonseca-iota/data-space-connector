@@ -40,8 +40,8 @@ The creation date of this object.
 
 ***
 
-### dateUpdated
+### dateModified
 
-> **dateUpdated**: `string`
+> **dateModified**: `string`
 
 The last update date of this object.

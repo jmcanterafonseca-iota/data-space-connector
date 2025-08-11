@@ -7,6 +7,7 @@
 		"url": "https://github.com/twinfoundation/data-space-connector.git",
 		"directory": "packages/data-space-connector-test-app"
 	},
+	"private": true,
 	"author": "jose.cantera@iota.org",
 	"license": "Apache-2.0",
 	"type": "module",

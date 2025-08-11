@@ -3,7 +3,6 @@
 
 import type { IBackgroundTask } from "@twin.org/background-task-models";
 import type { IDataSpaceConnectorAppDescriptor } from "./app/IDataSpaceConnectorAppDescriptor";
-import type { IActivityLogDetails } from "./IActivityLogDetails";
 
 /**
  * The status supplied to clients of the Data Space Connector
@@ -12,7 +11,7 @@ export interface IActivityLogStatusNotification {
 	/**
 	 * The activity log entry id.
 	 */
-	activityLogEntryId: IActivityLogDetails["id"];
+	activityLogEntryId: string;
 
 	/**
 	 * The activity processing status through the associated tasks.

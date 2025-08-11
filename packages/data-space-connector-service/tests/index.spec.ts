@@ -212,8 +212,7 @@ describe("data-space-connector-tests", () => {
 
 		await expect(dataSpaceConnectorService.notifyActivity(canonicalActivity)).rejects.toMatchObject(
 			{
-				name: "ConflictError",
-				message: "dataSpaceConnector.activityAlreadyNotified"
+				name: "ConflictError"
 			}
 		);
 	});

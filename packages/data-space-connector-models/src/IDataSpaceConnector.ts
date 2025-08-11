@@ -16,14 +16,6 @@ import type { ISubscriptionEntry } from "./models/ISubscriptionEntry";
  */
 export interface IDataSpaceConnector extends IComponent {
 	/**
-	 * Start method.
-	 * @param nodeIdentity Node Identity.
-	 * @param nodeLoggingConnectorType Node Logging Connector Type.
-	 * @returns nothing
-	 */
-	start(nodeIdentity: string, nodeLoggingConnectorType?: string): Promise<void>;
-
-	/**
 	 * Notify an Activity to the DS Connector Activity Stream.
 	 * @param activity The Activity notified.
 	 * @returns The Activity's identifier.

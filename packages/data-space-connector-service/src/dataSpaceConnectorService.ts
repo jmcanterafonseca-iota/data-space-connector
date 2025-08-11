@@ -210,7 +210,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		if (entryExists) {
 			throw new ConflictError(
 				this.CLASS_NAME,
-				"dataSpaceConnector.activityAlreadyNotified",
+				"activityAlreadyNotified",
 				activityLogEntryId
 			);
 		}
@@ -221,7 +221,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			generator:
 				(activity.generator as string) ?? ((activity.actor as IJsonLdNodeObject).id as string),
 			dateCreated: new Date().toISOString(),
-			dateUpdated: new Date().toISOString()
+			dateModified: new Date().toISOString()
 		};
 		await this._entityStorageActivityLogs.set(logEntry);
 
@@ -265,7 +265,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				await this._loggingService?.log({
 					level: "info",
 					source: this.CLASS_NAME,
-					message: "dataSpaceConnector.scheduledTask",
+					message: "scheduledTask",
 					data: {
 						taskId,
 						dataSpaceConnectorAppId: dataSpaceConnectorApp.id
@@ -323,7 +323,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		if (Is.undefined(result)) {
 			throw new NotFoundError(
 				this.CLASS_NAME,
-				"dataSpaceConnector.activityLogEntryNotFound",
+				"activityLogEntryNotFound",
 				logEntryId
 			);
 		}
@@ -408,7 +408,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		if (Is.undefined(result)) {
 			throw new NotFoundError(
 				this.CLASS_NAME,
-				"dataSpaceConnector.subscriptionEntryNotFound",
+				"subscriptionEntryNotFound",
 				entryId
 			);
 		}
@@ -494,7 +494,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			this._loggingService?.log({
 				level: "error",
 				source: this.CLASS_NAME,
-				message: "dataSpaceConnector.unknownActivityLogEntryId",
+				message: "unknownActivityLogEntryId",
 				data: {
 					activityLogEntryId: payload.activityLogEntryId
 				}

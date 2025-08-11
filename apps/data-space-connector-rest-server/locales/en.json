@@ -1,8 +1,4 @@
 {
 	"error": {
-		"workbench": {
-			"noEnvVars": "There are no environment variables starting DATA_SPACE_CONNECTOR the server will not start without them, please set them in the shell or create a .env file",
-			"storageFileRootNotSet": "DATA_SPACE_CONNECTOR_STORAGE_FILE_ROOT is not set, the server will not start without it, please set it in the shell or create a .env file"
-		}
 	}
 }
