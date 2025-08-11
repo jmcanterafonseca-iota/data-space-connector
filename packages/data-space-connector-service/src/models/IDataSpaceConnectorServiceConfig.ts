@@ -11,5 +11,5 @@ export interface IDataSpaceConnectorServiceConfig {
 	/**
 	 * Data Space Connector App Descriptors to be registered initially
 	 */
-	dataSpaceConnectorAppDescriptors?: [IDataSpaceConnectorAppDescriptor];
+	dataSpaceConnectorAppDescriptors?: IDataSpaceConnectorAppDescriptor[];
 }

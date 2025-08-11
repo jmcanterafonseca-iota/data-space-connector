@@ -13,9 +13,9 @@ export interface IDataSpaceConnectorServiceConstructorOptions {
 	identityResolverComponentType?: string;
 
 	/**
-	 * Logging connector type
+	 * Logging component type
 	 */
-	loggingConnectorType?: string;
+	loggingComponentType?: string;
 
 	/**
 	 * The configuration of the Federated Catalogue service.

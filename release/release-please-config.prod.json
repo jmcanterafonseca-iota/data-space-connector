@@ -11,37 +11,27 @@
 		"packages/data-space-connector-models": {
 			"package-name": "data-space-connector-models",
 			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"extra-files": ["src/index.ts"]
 		},
 		"packages/data-space-connector-app-runner": {
 			"package-name": "data-space-connector-app-runner",
 			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"extra-files": ["src/index.ts"]
 		},
 		"packages/data-space-connector-test-app": {
 			"package-name": "data-space-connector-test-app",
 			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"extra-files": ["src/index.ts"]
 		},
 		"packages/data-space-connector-service": {
 			"package-name": "data-space-connector-service",
 			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"extra-files": ["src/index.ts"]
 		},
 		"apps/data-space-connector-rest-server": {
 			"package-name": "data-space-connector-rest-server",
 			"changelog-path": "docs/changelog.md",
-			"extra-files": [
-				"src/index.ts"
-			]
+			"extra-files": ["src/index.ts"]
 		}
 	},
 	"plugins": [

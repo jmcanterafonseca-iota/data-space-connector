@@ -309,7 +309,7 @@
 											"@type": "Consignment",
 											"globalId": "24KEP051219453I002610796"
 										},
-										"updated": "2025-08-11T15:17:41.743Z"
+										"updated": "2025-08-11T15:56:19.376Z"
 									}
 								}
 							}
@@ -435,8 +435,8 @@
 									"activityLogEntryResponseExample": {
 										"value": {
 											"id": "urn:x-activity-log:134567",
-											"dateCreated": "2025-08-11T15:17:41.744Z",
-											"dateModified": "2025-08-11T15:17:41.744Z",
+											"dateCreated": "2025-08-11T15:56:19.377Z",
+											"dateModified": "2025-08-11T15:56:19.377Z",
 											"generator": "did:iota:testnet:123456",
 											"status": "pending",
 											"pendingTasks": [

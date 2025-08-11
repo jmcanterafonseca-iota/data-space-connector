@@ -17,7 +17,8 @@ import {
 	ConflictError,
 	type IError,
 	Guards,
-	RandomHelper
+	RandomHelper,
+	ComponentFactory
 } from "@twin.org/core";
 import { Blake2b } from "@twin.org/crypto";
 import {
@@ -48,7 +49,7 @@ import {
 	EntityStorageConnectorFactory,
 	type IEntityStorageConnector
 } from "@twin.org/entity-storage-models";
-import { LoggingConnectorFactory, type ILoggingConnector } from "@twin.org/logging-models";
+import type { ILoggingComponent } from "@twin.org/logging-models";
 import { ModuleHelper } from "@twin.org/modules";
 import { nameof } from "@twin.org/nameof";
 import { SchemaOrgDataTypes } from "@twin.org/standards-schema-org";
@@ -79,7 +80,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * Logging service.
 	 * @internal
 	 */
-	private readonly _loggingService?: ILoggingConnector;
+	private readonly _loggingService?: ILoggingComponent;
 
 	/**
 	 * Storage service for subscriptions.
@@ -130,8 +131,8 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param options The options for the connector.
 	 */
 	constructor(options: IDataSpaceConnectorServiceConstructorOptions) {
-		this._loggingService = LoggingConnectorFactory.getIfExists(
-			options?.loggingConnectorType ?? "logging"
+		this._loggingService = ComponentFactory.getIfExists<ILoggingComponent>(
+			options?.loggingComponentType ?? "logging-service"
 		);
 
 		this._entityStorageActivityLogs = EntityStorageConnectorFactory.get<
@@ -147,7 +148,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		>(options.subscriptionEntityStorageType ?? StringHelper.kebabCase(nameof<SubscriptionEntry>()));
 
 		this._backgroundTaskConnector = BackgroundTaskConnectorFactory.get(
-			options?.backgroundTaskConnectorType ?? "background-task-4-data-space-connector"
+			options?.backgroundTaskConnectorType ?? "background-task-service"
 		);
 		this._appRegistry = new AppRegistry();
 
@@ -199,7 +200,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 
 		// Calculate Activity Log Entry Id
 		const canonical = await JsonLdProcessor.canonize(compactedObj);
-		const canonicalBytes = new TextEncoder().encode(canonical);
+		const canonicalBytes = Converter.utf8ToBytes(canonical);
 		const activityLogId = Converter.bytesToHex(Blake2b.sum256(canonicalBytes));
 		const activityLogEntryId = `urn:x-activity-log:${activityLogId}`;
 
@@ -208,11 +209,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			await this._entityStorageActivityLogs.get(activityLogEntryId)
 		);
 		if (entryExists) {
-			throw new ConflictError(
-				this.CLASS_NAME,
-				"activityAlreadyNotified",
-				activityLogEntryId
-			);
+			throw new ConflictError(this.CLASS_NAME, "activityAlreadyNotified", activityLogEntryId);
 		}
 
 		// First of all Activity Log Entry is created
@@ -321,11 +318,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	public async getActivityLogEntry(logEntryId: string): Promise<IActivityLogEntry> {
 		const result = await this._entityStorageActivityLogs.get(logEntryId);
 		if (Is.undefined(result)) {
-			throw new NotFoundError(
-				this.CLASS_NAME,
-				"activityLogEntryNotFound",
-				logEntryId
-			);
+			throw new NotFoundError(this.CLASS_NAME, "activityLogEntryNotFound", logEntryId);
 		}
 
 		let pendingTasks: IActivityLogEntry["pendingTasks"];
@@ -406,11 +399,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	public async getSubscriptionEntry(entryId: string): Promise<ISubscriptionEntry> {
 		const result = await this._entityStorageSubscriptions.get(entryId);
 		if (Is.undefined(result)) {
-			throw new NotFoundError(
-				this.CLASS_NAME,
-				"subscriptionEntryNotFound",
-				entryId
-			);
+			throw new NotFoundError(this.CLASS_NAME, "subscriptionEntryNotFound", entryId);
 		}
 
 		return result;

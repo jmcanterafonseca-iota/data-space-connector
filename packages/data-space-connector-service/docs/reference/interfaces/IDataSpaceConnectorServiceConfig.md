@@ -6,6 +6,6 @@ Data Space Connector service configuration
 
 ### dataSpaceConnectorAppDescriptors?
 
-> `optional` **dataSpaceConnectorAppDescriptors**: \[`IDataSpaceConnectorAppDescriptor`\]
+> `optional` **dataSpaceConnectorAppDescriptors**: `IDataSpaceConnectorAppDescriptor`[]
 
 Data Space Connector App Descriptors to be registered initially

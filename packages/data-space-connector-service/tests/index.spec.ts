@@ -88,7 +88,8 @@ describe("data-space-connector-tests", () => {
 		initSchemaBackgroundTask();
 
 		options = {
-			loggingConnectorType: "console",
+			loggingComponentType: "console",
+			backgroundTaskConnectorType: "background-task-4-data-space-connector",
 			config: {}
 		};
 	});
