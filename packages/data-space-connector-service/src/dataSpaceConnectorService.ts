@@ -508,6 +508,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * Calculates the (Activity, Object, Target, Triple).
 	 * @param compactedObj The compactObj representing the Activity.
 	 * @returns the Activity, Object, Target, triple.
+	 * @internal
 	 */
 	private async calculateTriple(compactedObj: IActivity): Promise<IActivityObjectTargetTriple[]> {
 		const expanded = await JsonLdProcessor.expand({

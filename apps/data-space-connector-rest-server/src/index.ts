@@ -29,9 +29,9 @@ const REST_PATH = "data-space-connector";
 const filename = fileURLToPath(import.meta.url);
 const dirnameStr = path.dirname(filename);
 
-const dsConnectorAppsFileNme = "data-space-connector-apps.json";
+const dsConnectorAppsFileName = "data-space-connector-apps.json";
 let dataSpaceConnectorAppDescriptors: IDataSpaceConnectorAppDescriptor[] = [];
-const dsConnectorAppsFile = path.resolve(dsConnectorAppsFileNme);
+const dsConnectorAppsFile = path.resolve(dsConnectorAppsFileName);
 if (fs.existsSync(dsConnectorAppsFile)) {
 	const jsonStr = fs.readFileSync(dsConnectorAppsFile, "utf8");
 	try {
@@ -41,12 +41,12 @@ if (fs.existsSync(dsConnectorAppsFile)) {
 			console.warn("Data Space Connector Apps descriptors file does not represent an array");
 		} else {
 			// eslint-disable-next-line no-console
-			console.log(`Data Space Connector Apps descriptors file  ${dsConnectorAppsFileNme} read`);
+			console.log(`Data Space Connector Apps descriptors file  ${dsConnectorAppsFileName} read`);
 		}
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.error(
-			`Data Space Connector Apps descriptors file ${dsConnectorAppsFileNme} invalid`,
+			`Data Space Connector Apps descriptors file ${dsConnectorAppsFileName} invalid`,
 			error
 		);
 	}
