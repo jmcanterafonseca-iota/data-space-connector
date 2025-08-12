@@ -6,9 +6,9 @@
  */
 export interface IDataSpaceConnectorAppConstructorOptions {
 	/**
-	 * Logging connector type
+	 * Logging component type
 	 */
-	loggingConnectorType?: string;
+	loggingComponentType?: string;
 
 	/**
 	 * The Data Space Connector App Id

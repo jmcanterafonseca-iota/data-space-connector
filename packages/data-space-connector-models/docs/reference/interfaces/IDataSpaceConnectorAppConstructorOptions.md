@@ -4,11 +4,11 @@ Data Space App Constructor Options.
 
 ## Properties
 
-### loggingConnectorType?
+### loggingComponentType?
 
-> `optional` **loggingConnectorType**: `string`
+> `optional` **loggingComponentType**: `string`
 
-Logging connector type
+Logging component type
 
 ***
 

@@ -45,7 +45,6 @@ import {
 	type IActivityLogStatusNotification
 } from "@twin.org/data-space-connector-models";
 import { EngineCoreFactory, type IEngineCoreTypeConfig } from "@twin.org/engine-models";
-import { LoggingConnectorType } from "@twin.org/engine-types";
 import {
 	EntityStorageConnectorFactory,
 	type IEntityStorageConnector
@@ -76,6 +75,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * Runtime name for the class.
 	 */
 	public readonly CLASS_NAME: string = nameof<DataSpaceConnectorService>();
+
+	/**
+	 * Logging service type.
+	 * @internal
+	 */
+	private readonly _loggingComponentType: string;
 
 	/**
 	 * Logging service.
@@ -132,8 +137,9 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param options The options for the connector.
 	 */
 	constructor(options: IDataSpaceConnectorServiceConstructorOptions) {
+		this._loggingComponentType = options?.loggingComponentType ?? "logging-service";
 		this._loggingService = ComponentFactory.getIfExists<ILoggingComponent>(
-			options?.loggingComponentType ?? "logging-service"
+			this._loggingComponentType
 		);
 
 		this._entityStorageActivityLogs = EntityStorageConnectorFactory.get<
@@ -347,7 +353,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				switch (taskDetails?.status) {
 					case TaskStatus.Success:
 						finalizedTasks.push({
-							...(entity as ITaskApp),
+							...entity,
 							result: JSON.stringify(taskDetails?.result),
 							startDate: taskDetails?.dateCreated,
 							endDate: taskDetails?.dateCompleted
@@ -355,16 +361,16 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 						break;
 
 					case TaskStatus.Pending:
-						pendingTasks.push({ ...(entity as ITaskApp) });
+						pendingTasks.push(entity);
 						break;
 
 					case TaskStatus.Processing:
-						runningTasks?.push({ ...(entity as ITaskApp), startDate: taskDetails?.dateCreated });
+						runningTasks.push({ ...entity, startDate: taskDetails?.dateCreated });
 						break;
 
 					case TaskStatus.Failed:
 						inErrorTasks.push({
-							...(entity as ITaskApp),
+							...entity,
 							error: taskDetails.error as IError
 						});
 				}
@@ -437,9 +443,9 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 
 		const customTypeConfig: IEngineCoreTypeConfig[] = [
 			{
-				type: `${DataSpaceConnectorService._DS_CONNECTOR_APP_COMPONENT_TYPE}${app.id}`,
+				type: `${DataSpaceConnectorService._DS_CONNECTOR_APP_COMPONENT_TYPE}_${app.id}`,
 				options: {
-					loggingConnectorType: LoggingConnectorType.Console,
+					loggingComponentType: this._loggingComponentType,
 					dataSpaceConnectorAppId: app.id,
 					config: {}
 				}
@@ -450,7 +456,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		const engine = EngineCoreFactory.getIfExists("engine");
 		if (!Is.undefined(engine)) {
 			engine.addTypeInitialiser(
-				`${DataSpaceConnectorService._DS_CONNECTOR_APP_COMPONENT_TYPE}${app.id}`,
+				`${DataSpaceConnectorService._DS_CONNECTOR_APP_COMPONENT_TYPE}_${app.id}`,
 				customTypeConfig,
 				app.moduleName,
 				app.initialiserName ?? "appInitialiser"
