@@ -10,9 +10,15 @@ Activity Handler.
 
 ### handleActivity()
 
-> **handleActivity**(`activity`): `Promise`\<`unknown`\>
+> **handleActivity**\<`T`\>(`activity`): `Promise`\<`T`\>
 
 Handles an Activity and report about results through the Data Space Connector Callback
+
+#### Type Parameters
+
+##### T
+
+`T`
 
 #### Parameters
 
@@ -24,6 +30,6 @@ The Activity to be handled
 
 #### Returns
 
-`Promise`\<`unknown`\>
+`Promise`\<`T`\>
 
 The result of executing the Activity.

@@ -8,7 +8,7 @@ import {
 	initSchema as initSchemaBackgroundTask
 } from "@twin.org/background-task-connector-entity-storage";
 import { BackgroundTaskConnectorFactory } from "@twin.org/background-task-models";
-import { Is, StringHelper } from "@twin.org/core";
+import { Is, ObjectHelper, StringHelper } from "@twin.org/core";
 import {
 	ActivityProcessingStatus,
 	type IActivityLogDates,
@@ -22,6 +22,7 @@ import { ModuleHelper } from "@twin.org/modules";
 import { nameof } from "@twin.org/nameof";
 import { addAllContextsToDocumentCache } from "@twin.org/standards-ld-contexts";
 
+import type { IActivity } from "@twin.org/standards-w3c-activity-streams";
 import { cleanupTestEnv, setupTestEnv } from "./setupTestEnv";
 import { activityLdContextArray, canonicalActivity, extendedActivity } from "./testData";
 import { DataSpaceConnectorService } from "../src/dataSpaceConnectorService";
@@ -216,5 +217,17 @@ describe("data-space-connector-tests", () => {
 				name: "ConflictError"
 			}
 		);
+	});
+
+	test("It should report an error if Activity does not contain generator nor actor", async () => {
+		const dataSpaceConnectorService = new DataSpaceConnectorService(options);
+
+		const activity = ObjectHelper.clone<IActivity>(canonicalActivity);
+		delete activity.generator;
+		delete activity.actor;
+
+		await expect(dataSpaceConnectorService.notifyActivity(activity)).rejects.toMatchObject({
+			name: "GuardError"
+		});
 	});
 });

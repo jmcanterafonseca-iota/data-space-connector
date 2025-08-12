@@ -12,5 +12,5 @@ export interface IActivityHandler {
 	 * @param activity The Activity to be handled
 	 * @returns The result of executing the Activity.
 	 */
-	handleActivity(activity: IActivity): Promise<unknown>;
+	handleActivity<T>(activity: IActivity): Promise<T>;
 }

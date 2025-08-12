@@ -19,10 +19,10 @@ const CLASS_NAME = "DataSpaceAppRunner";
  * @param payload The payload
  * @returns The execution result.
  */
-export async function appRunner(
+export async function appRunner<T>(
 	engineCloneData: IEngineCoreClone,
 	payload: IExecutionPayload
-): Promise<unknown> {
+): Promise<T> {
 	Guards.objectValue<IExecutionPayload>(CLASS_NAME, nameof(payload), payload);
 	Guards.stringValue(CLASS_NAME, nameof(payload.executorApp), payload.executorApp);
 	Guards.stringValue(CLASS_NAME, nameof(payload.activityLogEntryId), payload.activityLogEntryId);
@@ -42,7 +42,7 @@ export async function appRunner(
 			`${StringHelper.kebabCase(nameof<IDataSpaceConnectorApp>(), true)}-${payload.executorApp}`
 		);
 
-		return app.handleActivity(payload.activity);
+		return app.handleActivity<T>(payload.activity);
 	} finally {
 		if (!Is.empty(engine)) {
 			await engine.stop();

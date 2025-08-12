@@ -69,14 +69,14 @@ export class TestDataSpaceConnectorApp implements IDataSpaceConnectorApp {
 	 * @param activity Activity
 	 * @returns Activity processing result
 	 */
-	public async handleActivity(activity: IActivity): Promise<unknown> {
+	public async handleActivity<T>(activity: IActivity): Promise<T> {
 		await this._loggingService?.log({
 			level: "info",
 			source: this.CLASS_NAME,
 			message: `App Called: ${this._appId}`
 		});
 		await new Promise(resolve => setTimeout(resolve, 500));
-		return "1234";
+		return "1234" as T;
 	}
 
 	/**

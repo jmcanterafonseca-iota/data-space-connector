@@ -18,7 +18,8 @@ import {
 	type IError,
 	Guards,
 	RandomHelper,
-	ComponentFactory
+	ComponentFactory,
+	GuardError
 } from "@twin.org/core";
 import { Blake2b } from "@twin.org/crypto";
 import {
@@ -186,7 +187,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			message: "dataSpaceConnectorService.newActivity",
 			data: {
 				activityType: activity.type,
-				generator: activity.generator ?? activity.actor
+				generator: this.calculateActivityGeneratorIdentity(activity)
 			}
 		});
 
@@ -215,8 +216,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		// First of all Activity Log Entry is created
 		const logEntry: IActivityLogDetails = {
 			id: activityLogEntryId,
-			generator:
-				(activity.generator as string) ?? ((activity.actor as IJsonLdNodeObject).id as string),
+			generator: this.calculateActivityGeneratorIdentity(activity),
 			dateCreated: new Date().toISOString(),
 			dateModified: new Date().toISOString()
 		};
@@ -464,6 +464,40 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			{ options: customTypeConfig[0].options },
 			null
 		]);
+	}
+
+	/**
+	 * Calculates the activity generator from the generator or actor fields.
+	 * @param activity The activity.
+	 * @returns The generator's identity.
+	 * @throws General Error if no identity is found.
+	 */
+	private calculateActivityGeneratorIdentity(activity: IActivity): string {
+		if (Is.string(activity.generator)) {
+			return activity.generator;
+		}
+
+		if (Is.object<IJsonLdNodeObject>(activity.generator) && Is.string(activity.generator.id)) {
+			return activity.generator.id;
+		}
+
+		if (Is.string(activity.actor)) {
+			return activity.actor;
+		}
+
+		if (Is.object<IJsonLdNodeObject>(activity.actor) && Is.string(activity.actor.id)) {
+			return activity.actor.id;
+		}
+
+		throw new GuardError(
+			this.CLASS_NAME,
+			"invalidActivityGeneratorIdentity",
+			nameof(activity.generator),
+			{
+				generator: activity.generator,
+				actor: activity.actor
+			}
+		);
 	}
 
 	/**
