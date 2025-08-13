@@ -24,20 +24,14 @@ Running Activity processing is running.
 
 Completed: Activity processing completed without error.
 
-### Failed
-
-> `readonly` **Failed**: `"failed"` = `"failed"`
-
-Failed: Activity processing failed (i.e. exception happened).
-
 ### Error
 
 > `readonly` **Error**: `"error"` = `"error"`
 
 Error: Activity processing cannot be performed and marked as in error. (Depends on application).
 
-### Unknown
+### Registering
 
-> `readonly` **Unknown**: `"unknown"` = `"unknown"`
+> `readonly` **Registering**: `"registering"` = `"registering"`
 
-Unknown: It is not possible to determine the current processing status (transient situation)
+Transient state. The background tasks associated with the activity are still being registered.

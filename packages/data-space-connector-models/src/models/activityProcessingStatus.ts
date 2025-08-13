@@ -22,19 +22,14 @@ export const ActivityProcessingStatus = {
 	Completed: "completed",
 
 	/**
-	 * Failed: Activity processing failed (i.e. exception happened).
-	 */
-	Failed: "failed",
-
-	/**
 	 * Error: Activity processing cannot be performed and marked as in error. (Depends on application).
 	 */
 	Error: "error",
 
 	/**
-	 * Unknown: It is not possible to determine the current processing status (transient situation)
+	 * Transient state. The background tasks associated with the activity are still being registered.
 	 */
-	Unknown: "unknown"
+	Registering: "registering"
 } as const;
 
 /**

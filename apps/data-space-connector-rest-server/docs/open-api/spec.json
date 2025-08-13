@@ -309,7 +309,7 @@
 											"@type": "Consignment",
 											"globalId": "24KEP051219453I002610796"
 										},
-										"updated": "2025-08-12T17:47:50.447Z"
+										"updated": "2025-08-13T09:46:45.175Z"
 									}
 								}
 							}
@@ -435,8 +435,8 @@
 									"activityLogEntryResponseExample": {
 										"value": {
 											"id": "urn:x-activity-log:134567",
-											"dateCreated": "2025-08-12T17:47:50.448Z",
-											"dateModified": "2025-08-12T17:47:50.448Z",
+											"dateCreated": "2025-08-13T09:46:45.176Z",
+											"dateModified": "2025-08-13T09:46:45.176Z",
 											"generator": "did:iota:testnet:123456",
 											"status": "pending",
 											"pendingTasks": [
@@ -841,7 +841,7 @@
 					},
 					"activityId": {
 						"type": "string",
-						"description": "The activity Id that this entry refers to. This is obtained through a hash of the Activity itself."
+						"description": "The activity Id that this entry refers to."
 					},
 					"generator": {
 						"type": "string",
@@ -1000,18 +1000,13 @@
 					},
 					{
 						"type": "string",
-						"const": "failed",
-						"description": "Failed: Activity processing failed (i.e. exception happened)."
-					},
-					{
-						"type": "string",
 						"const": "error",
 						"description": "Error: Activity processing cannot be performed and marked as in error. (Depends on application)."
 					},
 					{
 						"type": "string",
-						"const": "unknown",
-						"description": "Unknown: It is not possible to determine the current processing status (transient situation)"
+						"const": "registering",
+						"description": "Transient state. The background tasks associated with the activity are still being registered."
 					}
 				],
 				"description": "Activity processing statuses.   The type exported."

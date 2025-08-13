@@ -11,7 +11,7 @@ export interface IActivityLogDetails {
 	id: string;
 
 	/**
-	 * The activity Id that this entry refers to. This is obtained through a hash of the Activity itself.
+	 * The activity Id that this entry refers to.
 	 */
 	activityId?: string;
 

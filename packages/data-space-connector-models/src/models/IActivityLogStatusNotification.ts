@@ -14,6 +14,11 @@ export interface IActivityLogStatusNotification {
 	activityLogEntryId: string;
 
 	/**
+	 * The activity Id.
+	 */
+	activityId?: string;
+
+	/**
 	 * The activity processing status through the associated tasks.
 	 */
 	taskProcessingStatus: {

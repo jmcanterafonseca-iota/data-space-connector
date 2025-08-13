@@ -12,6 +12,14 @@ The activity log entry id.
 
 ***
 
+### activityId?
+
+> `optional` **activityId**: `string`
+
+The activity Id.
+
+***
+
 ### taskProcessingStatus
 
 > **taskProcessingStatus**: `object`

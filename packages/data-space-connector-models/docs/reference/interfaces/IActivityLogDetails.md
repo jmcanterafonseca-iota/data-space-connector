@@ -20,7 +20,7 @@ The Id of the Activity Log entry.
 
 > `optional` **activityId**: `string`
 
-The activity Id that this entry refers to. This is obtained through a hash of the Activity itself.
+The activity Id that this entry refers to.
 
 ***
 

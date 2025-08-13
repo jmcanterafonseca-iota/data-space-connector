@@ -4,19 +4,20 @@
 			"activityLogEntryNotFound": "Activity Log Entry '\"{notFoundId}\"' has not been found",
 			"subscriptionEntryNotFound": "Subscription Entry has not been found",
 			"activityAlreadyNotified": "Activity has already been notified",
-			"invalidActivityGeneratorIdentity": "Invalid activity. No identity specified either on 'generator' or 'actor'"
+			"invalidActivityGeneratorIdentity": "Invalid activity. No identity specified either on 'generator' or 'actor'",
+			"invalidActivity": "Invalid Activity. Expected fields not specified"
 		}
 	},
 	"info": {
 		"dataSpaceConnectorService": {
-			"taskScheduled": "Task scheduled: \"{taskId}\" for Data Space Connector App \"{dataSpaceConnectorAppId}\""
+			"scheduledTask": "Task scheduled: \"{taskId}\" for Data Space Connector App \"{dataSpaceConnectorAppId}\""
 		}
 	},
 	"debug": {
 		"dataSpaceConnectorService": {
 			"activityLogStatusConnected": "Web Socket Connected: Socket Id: \"{socketId}\"",
 			"activityLogStatusDisconnected": "Web Socket disconnected: Socket Id: \"{socketId}\"",
-			"newActivity": "New Activity of type \"{actityType}\" notified by \"{generator}\""
+			"newActivity": "New Activity of type \"{activityType}\" notified by \"{generator}\""
 		}
 	}
 }

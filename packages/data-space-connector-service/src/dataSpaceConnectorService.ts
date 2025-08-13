@@ -190,7 +190,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		this._loggingService?.log({
 			level: "debug",
 			source: this.CLASS_NAME,
-			message: "dataSpaceConnectorService.newActivity",
+			message: "newActivity",
 			data: {
 				activityType: activity.type,
 				generator: this.calculateActivityGeneratorIdentity(activity)
@@ -222,6 +222,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		// First of all Activity Log Entry is created
 		const logEntry: IActivityLogDetails = {
 			id: activityLogEntryId,
+			activityId: Is.string(activity.id) ? activity.id : undefined,
 			generator: this.calculateActivityGeneratorIdentity(activity),
 			dateCreated: new Date().toISOString(),
 			dateModified: new Date().toISOString()
@@ -332,8 +333,8 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		let finalizedTasks: IActivityLogEntry["finalizedTasks"];
 		let inErrorTasks: IActivityLogEntry["inErrorTasks"];
 
-		// For calculating the processing status. Unknown if we cannot determine the activity tasks
-		let status: ActivityProcessingStatus = ActivityProcessingStatus.Unknown;
+		// For calculating the processing status. `Registering` if we cannot determine the activity tasks yet
+		let status: ActivityProcessingStatus = ActivityProcessingStatus.Registering;
 
 		// Now query the associated tasks
 		const activityTasks = await this._entityStorageActivityTasks.get(logEntryId);
@@ -534,6 +535,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			for (const callback of Object.values(this._activityLogStatusCallbacks)) {
 				await callback({
 					activityLogEntryId: payload.activityLogEntryId,
+					activityId: Is.string(payload.activity.id) ? payload.activity.id : undefined,
 					taskProcessingStatus: {
 						dataSpaceConnectorAppId: payload.executorApp,
 						taskId: task.id,
@@ -556,21 +558,46 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			"@type": compactedObj.type
 		});
 		const expandedDoc = expanded[0];
-		const activityTypes = expandedDoc["@type"] as string[];
+		const activityTypes = expandedDoc["@type"];
+		if (!Is.arrayValue<string[]>(activityTypes)) {
+			throw new GuardError(
+				this.CLASS_NAME,
+				"invalidActivity",
+				nameof(compactedObj.type),
+				compactedObj.type
+			);
+		}
 
 		if (Is.undefined(compactedObj.object["@context"])) {
 			compactedObj.object["@context"] = compactedObj["@context"];
 		}
 		const objectExpanded = await JsonLdProcessor.expand(compactedObj.object);
-		const objectTypes = objectExpanded[0]["@type"] as string[];
+		const objectTypes = objectExpanded[0]["@type"];
+		if (!Is.arrayValue<string[]>(objectTypes)) {
+			throw new GuardError(
+				this.CLASS_NAME,
+				"invalidActivity",
+				nameof(compactedObj.object.type),
+				compactedObj.object.type
+			);
+		}
 
-		let targetTypes: string[] | null[] = [null];
+		let targetTypes: string[] = [""];
 		if (Is.object(compactedObj.target)) {
 			if (Is.undefined(compactedObj.target["@context"])) {
 				compactedObj.target["@context"] = compactedObj["@context"];
 			}
 			const targetExpanded = await JsonLdProcessor.expand(compactedObj.target);
 			targetTypes = targetExpanded[0]["@type"] as string[];
+
+			if (!Is.arrayValue<string[]>(targetTypes)) {
+				throw new GuardError(
+					this.CLASS_NAME,
+					"invalidActivity",
+					nameof(compactedObj.target?.type),
+					compactedObj.target?.type
+				);
+			}
 		}
 
 		const result: IActivityObjectTargetTriple[] = [];
@@ -581,7 +608,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 					const triple: IActivityObjectTargetTriple = {
 						activityType,
 						objectType,
-						targetType: Is.null(targetType) ? undefined : targetType
+						targetType: !Is.stringValue(targetType) ? undefined : targetType
 					};
 
 					result.push(triple);
