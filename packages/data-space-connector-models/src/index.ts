@@ -32,6 +32,7 @@ export * from "./models/ITaskApp";
 export * from "./models/IExecutionPayload";
 
 export * from "./models/app/IDataSpaceConnectorAppConstructorOptions";
+export * from "./models/app/IDataSpaceConnectorAppConfig";
 
 export * from "./models/api/IActivityLogStatusRequest";
 export * from "./models/IActivityLogStatusNotification";

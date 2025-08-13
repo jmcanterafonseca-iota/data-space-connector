@@ -58,10 +58,10 @@ export class TestDataSpaceConnectorApp implements IDataSpaceConnectorApp {
 		}));
 
 		this._loggingService = ComponentFactory.getIfExists<ILoggingComponent>(
-			options.loggingComponentType ?? "logging"
+			options.loggingComponentType ?? "logging-service"
 		);
 
-		this._appId = options.dataSpaceConnectorAppId;
+		this._appId = options.config.dataSpaceConnectorAppId;
 	}
 
 	/**

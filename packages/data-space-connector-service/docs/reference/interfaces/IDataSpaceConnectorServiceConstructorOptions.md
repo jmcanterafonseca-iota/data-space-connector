@@ -24,7 +24,7 @@ Logging component type
 
 > **config**: [`IDataSpaceConnectorServiceConfig`](IDataSpaceConnectorServiceConfig.md)
 
-The configuration of the Federated Catalogue service.
+The configuration of the Data Space Connector Service.
 
 ***
 

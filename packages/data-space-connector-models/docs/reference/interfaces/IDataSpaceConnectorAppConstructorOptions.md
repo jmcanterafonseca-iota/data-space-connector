@@ -12,8 +12,8 @@ Logging component type
 
 ***
 
-### dataSpaceConnectorAppId
+### config
 
-> **dataSpaceConnectorAppId**: `string`
+> **config**: [`IDataSpaceConnectorAppConfig`](IDataSpaceConnectorAppConfig.md)
 
-The Data Space Connector App Id
+The configuration of the Data Space Connector App

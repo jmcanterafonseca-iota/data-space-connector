@@ -22,6 +22,7 @@
 - [IActivityHandler](interfaces/IActivityHandler.md)
 - [IDataResourceHandler](interfaces/IDataResourceHandler.md)
 - [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
+- [IDataSpaceConnectorAppConfig](interfaces/IDataSpaceConnectorAppConfig.md)
 - [IDataSpaceConnectorAppConstructorOptions](interfaces/IDataSpaceConnectorAppConstructorOptions.md)
 - [IDataSpaceConnectorAppDescriptor](interfaces/IDataSpaceConnectorAppDescriptor.md)
 

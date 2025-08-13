@@ -447,8 +447,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 				type: `${DataSpaceConnectorService._DS_CONNECTOR_APP_COMPONENT_TYPE}_${app.id}`,
 				options: {
 					loggingComponentType: this._loggingComponentType,
-					dataSpaceConnectorAppId: app.id,
-					config: {}
+					config: { dataSpaceConnectorAppId: app.id }
 				}
 			}
 		];
