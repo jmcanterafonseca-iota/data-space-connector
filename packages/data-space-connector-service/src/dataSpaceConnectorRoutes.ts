@@ -348,13 +348,15 @@ export function activityLogStatusDisconnected(
 	socketRequestContext: ISocketRequestContext,
 	componentName: string
 ): void {
-	const logger = ComponentFactory.getIfExists<ILoggingConnector>("logging-service");
+	const logger = ComponentFactory.getIfExists<ILoggingConnector>(
+		socketRequestContext.loggingComponentType ?? "logging-service"
+	);
 	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
 
 	logger?.log({
 		source: ROUTES_SOURCE,
 		level: "debug",
-		message: "dataSpaceConnectorService.activityLogStatusDisconnected",
+		message: "activityLogStatusDisconnected",
 		data: {
 			socketId: socketRequestContext.socketId
 		}
@@ -368,12 +370,14 @@ export function activityLogStatusDisconnected(
  * @param socketRequestContext Socket Request Context
  */
 export function activityLogStatusConnected(socketRequestContext: ISocketRequestContext): void {
-	const logger = ComponentFactory.getIfExists<ILoggingConnector>("logging-service");
+	const logger = ComponentFactory.getIfExists<ILoggingConnector>(
+		socketRequestContext.loggingComponentType ?? "logging-service"
+	);
 
 	logger?.log({
 		source: ROUTES_SOURCE,
 		level: "debug",
-		message: "dataSpaceConnectorService.activityLogStatusConnected",
+		message: "activityLogStatusConnected",
 		data: {
 			socketId: socketRequestContext.socketId
 		}
