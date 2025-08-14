@@ -5,7 +5,6 @@
 - [DataSpaceConnectorService](classes/DataSpaceConnectorService.md)
 - [ActivityLogDetails](classes/ActivityLogDetails.md)
 - [ActivityTask](classes/ActivityTask.md)
-- [SubscriptionEntry](classes/SubscriptionEntry.md)
 
 ## Interfaces
 

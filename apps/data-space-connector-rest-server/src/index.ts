@@ -8,8 +8,7 @@ import type { IDataSpaceConnectorAppDescriptor } from "@twin.org/data-space-conn
 import {
 	ActivityLogDetails,
 	ActivityTask,
-	initSchema,
-	SubscriptionEntry
+	initSchema
 } from "@twin.org/data-space-connector-service";
 import { EngineConfigHelper } from "@twin.org/engine";
 import type { IEngineCore, IEngineCoreTypeConfig, IEngineServer } from "@twin.org/engine-models";
@@ -98,12 +97,6 @@ export async function extendConfig(engineConfig: IEngineConfig): Promise<void> {
 		engineConfig,
 		nameof<ActivityTask>(),
 		EntitySchemaHelper.getSchema(ActivityTask)
-	);
-
-	EngineConfigHelper.addCustomEntityStorage<SubscriptionEntry>(
-		engineConfig,
-		nameof<SubscriptionEntry>(),
-		EntitySchemaHelper.getSchema(SubscriptionEntry)
 	);
 }
 

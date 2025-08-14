@@ -28,13 +28,11 @@ import { activityLdContextArray, canonicalActivity, extendedActivity } from "./t
 import { DataSpaceConnectorService } from "../src/dataSpaceConnectorService";
 import type { ActivityLogDetails } from "../src/entities/activityLogDetails";
 import type { ActivityTask } from "../src/entities/activityTask";
-import type { SubscriptionEntry } from "../src/entities/subscriptionEntry";
 import type { IDataSpaceConnectorServiceConstructorOptions } from "../src/models/IDataSpaceConnectorServiceConstructorOptions";
 import { initSchema } from "../src/schema";
 
 let activityLogStore: FileEntityStorageConnector<ActivityLogDetails>;
 let activityTasksStore: FileEntityStorageConnector<ActivityTask>;
-let subscriptionStore: FileEntityStorageConnector<SubscriptionEntry>;
 
 let options: IDataSpaceConnectorServiceConstructorOptions;
 
@@ -116,14 +114,6 @@ describe("data-space-connector-tests", () => {
 		});
 		await activityTasksStore.bootstrap();
 
-		subscriptionStore = new FileEntityStorageConnector<SubscriptionEntry>({
-			entitySchema: nameof<SubscriptionEntry>(),
-			config: {
-				directory: path.join(BASE_STORE_DIR, "/subscription-store")
-			}
-		});
-		await subscriptionStore.bootstrap();
-
 		EntityStorageConnectorFactory.register(
 			StringHelper.kebabCase(nameof<ActivityLogDetails>()),
 			() => activityLogStore
@@ -131,10 +121,6 @@ describe("data-space-connector-tests", () => {
 		EntityStorageConnectorFactory.register(
 			StringHelper.kebabCase(nameof<ActivityTask>()),
 			() => activityTasksStore
-		);
-		EntityStorageConnectorFactory.register(
-			StringHelper.kebabCase(nameof<SubscriptionEntry>()),
-			() => subscriptionStore
 		);
 
 		backgroundTaskStorage = new FileEntityStorageConnector<BackgroundTask>({

@@ -53,7 +53,6 @@ import { ActivityStreamsDataTypes, type IActivity } from "@twin.org/standards-w3
 import { AppRegistry } from "./appRegistry";
 import type { ActivityLogDetails } from "./entities/activityLogDetails";
 import type { ActivityTask } from "./entities/activityTask";
-import type { SubscriptionEntry } from "./entities/subscriptionEntry";
 import type { IDataSpaceConnectorServiceConstructorOptions } from "./models/IDataSpaceConnectorServiceConstructorOptions";
 
 /**
@@ -83,12 +82,6 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @internal
 	 */
 	private readonly _loggingService?: ILoggingComponent;
-
-	/**
-	 * Storage service for subscriptions.
-	 * @internal
-	 */
-	private readonly _entityStorageSubscriptions: IEntityStorageConnector<SubscriptionEntry>;
 
 	/**
 	 * Storage service for activity logging.
@@ -145,10 +138,6 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		this._entityStorageActivityTasks = EntityStorageConnectorFactory.get<
 			IEntityStorageConnector<ActivityTask>
 		>(options.activityTaskEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityTask>()));
-
-		this._entityStorageSubscriptions = EntityStorageConnectorFactory.get<
-			IEntityStorageConnector<SubscriptionEntry>
-		>(options.subscriptionEntityStorageType ?? StringHelper.kebabCase(nameof<SubscriptionEntry>()));
 
 		this._backgroundTaskConnector = BackgroundTaskConnectorFactory.get(
 			options?.backgroundTaskConnectorType ?? "background-task-service"

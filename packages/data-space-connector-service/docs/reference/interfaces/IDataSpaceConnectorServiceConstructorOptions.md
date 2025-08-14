@@ -56,20 +56,6 @@ activity-task
 
 ***
 
-### subscriptionEntityStorageType?
-
-> `optional` **subscriptionEntityStorageType**: `string`
-
-The entity storage for subscriptions.
-
-#### Default
-
-```ts
-subscription-entry
-```
-
-***
-
 ### backgroundTaskConnectorType?
 
 > `optional` **backgroundTaskConnectorType**: `string`

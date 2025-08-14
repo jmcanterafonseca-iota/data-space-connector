@@ -35,12 +35,6 @@ export interface IDataSpaceConnectorServiceConstructorOptions {
 	activityTaskEntityStorageType?: string;
 
 	/**
-	 * The entity storage for subscriptions.
-	 * @default subscription-entry
-	 */
-	subscriptionEntityStorageType?: string;
-
-	/**
 	 * Background task connector.
 	 * @default background-task-4-data-space-connector
 	 */
