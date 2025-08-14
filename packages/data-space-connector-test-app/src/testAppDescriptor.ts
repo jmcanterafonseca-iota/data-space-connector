@@ -19,7 +19,5 @@ export const TestAppDescriptor: IDataSpaceConnectorAppDescriptor = {
 	moduleName: "@twin.org/data-space-connector-test-app",
 
 	// eslint-disable-next-line no-restricted-syntax
-	handledTypes: {
-		activityObjectTargetTriples: [{ objectType: "https://vocabulary.uncefact.org/Consignment" }]
-	}
+	activitiesHandled: [{ objectType: "https://vocabulary.uncefact.org/Consignment" }]
 };

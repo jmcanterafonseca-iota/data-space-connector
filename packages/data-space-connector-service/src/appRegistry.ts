@@ -3,7 +3,7 @@
 
 import { Is } from "@twin.org/core";
 import type {
-	IActivityObjectTargetTriple,
+	IActivityQuery,
 	IDataSpaceConnectorAppDescriptor
 } from "@twin.org/data-space-connector-models";
 
@@ -16,7 +16,7 @@ export class AppRegistry {
 	 * @internal
 	 */
 	private readonly _activityObjectApps: {
-		activityObjectTargetTriple: IActivityObjectTargetTriple;
+		activityQuery: IActivityQuery;
 		dataSpaceConnectorApp: IDataSpaceConnectorAppDescriptor;
 	}[];
 
@@ -33,18 +33,18 @@ export class AppRegistry {
 	 * @returns The Data Space Connector Apps or empty list if nothing is registered.
 	 */
 	public getAppForActivityObjectTargetTriple(
-		activityObjectTargetTriple: IActivityObjectTargetTriple
+		activityObjectTargetTriple: IActivityQuery
 	): IDataSpaceConnectorAppDescriptor[] {
 		const matchingElements: IDataSpaceConnectorAppDescriptor[] = [];
 
 		for (const handlerApp of this._activityObjectApps) {
-			const appTriple = handlerApp.activityObjectTargetTriple;
+			const appQuery = handlerApp.activityQuery;
 			if (
-				appTriple.objectType === activityObjectTargetTriple.objectType &&
-				(Is.undefined(appTriple.activityType) ||
-					appTriple.activityType === activityObjectTargetTriple.activityType) &&
-				(Is.undefined(appTriple.targetType) ||
-					appTriple.targetType === activityObjectTargetTriple.targetType)
+				appQuery.objectType === activityObjectTargetTriple.objectType &&
+				(Is.undefined(appQuery.activityType) ||
+					appQuery.activityType === activityObjectTargetTriple.activityType) &&
+				(Is.undefined(appQuery.targetType) ||
+					appQuery.targetType === activityObjectTargetTriple.targetType)
 			) {
 				matchingElements.push(handlerApp.dataSpaceConnectorApp);
 			}
@@ -55,13 +55,13 @@ export class AppRegistry {
 
 	/**
 	 * Sets a DS Connector App to handle (Activity, Object, Target).
-	 * @param activityObjectTargetTriple The triple specified using Fully Qualified Name.
+	 * @param activityQuery The query represented by a triple specified using Fully Qualified Name.
 	 * @param dataSpaceConnectorApp The handler as a Data Space Connector App.
 	 */
 	public setAppForActivityObjectTargetTriple(
-		activityObjectTargetTriple: IActivityObjectTargetTriple,
+		activityQuery: IActivityQuery,
 		dataSpaceConnectorApp: IDataSpaceConnectorAppDescriptor
 	): void {
-		this._activityObjectApps.push({ activityObjectTargetTriple, dataSpaceConnectorApp });
+		this._activityObjectApps.push({ activityQuery, dataSpaceConnectorApp });
 	}
 }

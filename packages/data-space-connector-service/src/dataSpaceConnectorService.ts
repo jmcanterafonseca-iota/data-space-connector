@@ -36,7 +36,7 @@ import {
 	type ISubscriptionEntry,
 	type IDataSpaceQuery,
 	ActivityProcessingStatus,
-	type IActivityObjectTargetTriple,
+	type IActivityQuery,
 	type IDataSpaceConnectorAppDescriptor,
 	type IActivityLogDetails,
 	type ITaskApp,
@@ -434,7 +434,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param app The App to be registered.
 	 */
 	public async registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void> {
-		const activityObjectTargetTriples = app.handledTypes.activityObjectTargetTriples;
+		const activityObjectTargetTriples = app.activitiesHandled;
 
 		if (Is.arrayValue(activityObjectTargetTriples)) {
 			for (const triple of activityObjectTargetTriples) {
@@ -551,7 +551,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @returns the Activity, Object, Target, triple.
 	 * @internal
 	 */
-	private async calculateTriple(compactedObj: IActivity): Promise<IActivityObjectTargetTriple[]> {
+	private async calculateTriple(compactedObj: IActivity): Promise<IActivityQuery[]> {
 		const expanded = await JsonLdProcessor.expand({
 			"@context": compactedObj["@context"],
 			"@type": compactedObj.type
@@ -599,18 +599,18 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			}
 		}
 
-		const result: IActivityObjectTargetTriple[] = [];
+		const result: IActivityQuery[] = [];
 
 		for (const activityType of activityTypes) {
 			for (const objectType of objectTypes) {
 				for (const targetType of targetTypes) {
-					const triple: IActivityObjectTargetTriple = {
+					const query: IActivityQuery = {
 						activityType,
 						objectType,
 						targetType: !Is.stringValue(targetType) ? undefined : targetType
 					};
 
-					result.push(triple);
+					result.push(query);
 				}
 			}
 		}

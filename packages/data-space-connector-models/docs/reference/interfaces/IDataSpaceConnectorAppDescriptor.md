@@ -12,19 +12,17 @@ A URI that denotes the identifier of the App.
 
 ***
 
-### handledTypes
+### activitiesHandled
 
-> **handledTypes**: `object`
+> **activitiesHandled**: [`IActivityQuery`](IActivityQuery.md)[]
 
-The types handled by this Data Space Connector App.
+The activities handled by this Data Space Connector App.
 
-#### activityObjectTargetTriples
+***
 
-> **activityObjectTargetTriples**: [`IActivityObjectTargetTriple`](IActivityObjectTargetTriple.md)[]
+### dataResourceAssetsHandled?
 
-#### dataResourceAssetTypes?
-
-> `optional` **dataResourceAssetTypes**: `string`[]
+> `optional` **dataResourceAssetsHandled**: `string`[]
 
 FQN of the data resource asset types handled.
 

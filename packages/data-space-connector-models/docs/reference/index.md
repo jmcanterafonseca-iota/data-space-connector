@@ -7,7 +7,7 @@
 - [IActivityLogDetails](interfaces/IActivityLogDetails.md)
 - [IActivityLogEntry](interfaces/IActivityLogEntry.md)
 - [IActivityLogStatusNotification](interfaces/IActivityLogStatusNotification.md)
-- [IActivityObjectTargetTriple](interfaces/IActivityObjectTargetTriple.md)
+- [IActivityQuery](interfaces/IActivityQuery.md)
 - [IActivityTask](interfaces/IActivityTask.md)
 - [IDataSpaceQuery](interfaces/IDataSpaceQuery.md)
 - [IExecutionPayload](interfaces/IExecutionPayload.md)

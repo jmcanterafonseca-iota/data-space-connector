@@ -24,7 +24,7 @@ export * from "./models/api/IActivityLogEntryGetResponse";
 export * from "./models/api/IActivityStreamRequest";
 export * from "./models/api/ISubscriptionCreateRequest";
 
-export * from "./models/IActivityObjectTargetTriple";
+export * from "./models/IActivityQuery";
 
 export * from "./models/IActivityTask";
 export * from "./models/ITaskApp";

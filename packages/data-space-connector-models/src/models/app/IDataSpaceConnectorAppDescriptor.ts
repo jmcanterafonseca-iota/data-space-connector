@@ -1,7 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IActivityObjectTargetTriple } from "../IActivityObjectTargetTriple";
+import type { IActivityQuery } from "../IActivityQuery";
 
 /**
  * Interface describes a Data Space Connector App.
@@ -13,16 +13,14 @@ export interface IDataSpaceConnectorAppDescriptor {
 	id: string;
 
 	/**
-	 * The types handled by this Data Space Connector App.
+	 * The activities handled by this Data Space Connector App.
 	 */
-	handledTypes: {
-		activityObjectTargetTriples: IActivityObjectTargetTriple[];
+	activitiesHandled: IActivityQuery[];
 
-		/**
-		 * FQN of the data resource asset types handled.
-		 */
-		dataResourceAssetTypes?: string[];
-	};
+	/**
+	 * FQN of the data resource asset types handled.
+	 */
+	dataResourceAssetsHandled?: string[];
 
 	/**
 	 * The module that implements this DS Connector App
