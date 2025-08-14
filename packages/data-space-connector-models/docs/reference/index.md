@@ -11,14 +11,12 @@
 - [IActivityTask](interfaces/IActivityTask.md)
 - [IDataSpaceQuery](interfaces/IDataSpaceQuery.md)
 - [IExecutionPayload](interfaces/IExecutionPayload.md)
-- [ISubscription](interfaces/ISubscription.md)
 - [ITaskApp](interfaces/ITaskApp.md)
 - [IActivityLogEntryGetRequest](interfaces/IActivityLogEntryGetRequest.md)
 - [IActivityLogEntryGetResponse](interfaces/IActivityLogEntryGetResponse.md)
 - [IActivityLogStatusNotificationPayload](interfaces/IActivityLogStatusNotificationPayload.md)
 - [IActivityLogStatusRequest](interfaces/IActivityLogStatusRequest.md)
 - [IActivityStreamRequest](interfaces/IActivityStreamRequest.md)
-- [ISubscriptionCreateRequest](interfaces/ISubscriptionCreateRequest.md)
 - [IActivityHandler](interfaces/IActivityHandler.md)
 - [IDataResourceHandler](interfaces/IDataResourceHandler.md)
 - [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
@@ -28,7 +26,6 @@
 
 ## Type Aliases
 
-- [ISubscriptionEntry](type-aliases/ISubscriptionEntry.md)
 - [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 
 ## Variables

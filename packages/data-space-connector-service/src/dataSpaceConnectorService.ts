@@ -25,16 +25,12 @@ import { Blake2b } from "@twin.org/crypto";
 import {
 	JsonLdHelper,
 	JsonLdProcessor,
-	type IJsonLdDocument,
 	JsonLdDataTypes,
 	type IJsonLdNodeObject
 } from "@twin.org/data-json-ld";
 import {
 	type IDataSpaceConnector,
 	type IActivityLogEntry,
-	type ISubscription,
-	type ISubscriptionEntry,
-	type IDataSpaceQuery,
 	ActivityProcessingStatus,
 	type IActivityQuery,
 	type IDataSpaceConnectorAppDescriptor,
@@ -387,46 +383,6 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 			}
 		}
 		return { ...result, status, pendingTasks, runningTasks, finalizedTasks, inErrorTasks };
-	}
-
-	/**
-	 * Subscribe to the Data Space Connector.
-	 * @param subscription The subscription
-	 * @returns void
-	 */
-	public async subscribe(subscription: ISubscription): Promise<string> {
-		return "";
-	}
-
-	/**
-	 * Returns a subscription entry.
-	 * @param entryId The entry Id (a URI)
-	 * @returns The subscription entry
-	 */
-	public async getSubscriptionEntry(entryId: string): Promise<ISubscriptionEntry> {
-		const result = await this._entityStorageSubscriptions.get(entryId);
-		if (Is.undefined(result)) {
-			throw new NotFoundError(this.CLASS_NAME, "subscriptionEntryNotFound", entryId);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets data associated with a Service Offering.
-	 * @param serviceOfferingId The Service Offering Id as registered on the Federated Catalogue.
-	 * @param dataResourceId The Data Resource as registered on the Federated Catalogue.
-	 * @param query The Data Space Connector query.
-	 * @returns a JSON-LD document with the data
-	 */
-	public async getData(
-		serviceOfferingId: string,
-		dataResourceId?: string,
-		query?: IDataSpaceQuery
-	): Promise<IJsonLdDocument> {
-		return {
-			"@context": "http://example.org"
-		};
 	}
 
 	/**

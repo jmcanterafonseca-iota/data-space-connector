@@ -22,7 +22,6 @@
 - [generateRestRoutesDataSpaceConnector](functions/generateRestRoutesDataSpaceConnector.md)
 - [activityStreamNotify](functions/activityStreamNotify.md)
 - [activityLogEntryGet](functions/activityLogEntryGet.md)
-- [subscriptionCreate](functions/subscriptionCreate.md)
 - [generateSocketRoutesDataSpaceConnector](functions/generateSocketRoutesDataSpaceConnector.md)
 - [activityLogStatusUpdate](functions/activityLogStatusUpdate.md)
 - [activityLogStatusDisconnected](functions/activityLogStatusDisconnected.md)

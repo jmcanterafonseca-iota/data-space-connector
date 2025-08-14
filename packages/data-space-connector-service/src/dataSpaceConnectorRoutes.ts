@@ -17,8 +17,6 @@ import type {
 	IActivityLogEntryGetResponse,
 	IActivityStreamRequest,
 	IActivityLogEntry,
-	ISubscriptionCreateRequest,
-	ISubscription,
 	IActivityLogStatusRequest,
 	IActivityLogStatusNotificationPayload
 } from "@twin.org/data-space-connector-models";
@@ -41,16 +39,6 @@ const ACTIVITY_STREAM_ROUTE = "notify";
  * Activity processing details route.
  */
 const ACTIVITY_LOG_ROUTE = "activity-logs";
-
-/**
- * Data Resource route.
- */
-// const DATA_RESOURCE_ROUTE = "data";
-
-/**
- * Data Space Connector route.
- */
-const SUBSCRIPTIONS_ROUTE = "subscriptions";
 
 /**
  * The tag to associate with the routes.
@@ -93,10 +81,6 @@ const activityLogEntryExample: IActivityLogEntry = {
 	inErrorTasks: []
 };
 
-const subscriptionExample: ISubscription = {
-	"@context": "https://example.org"
-};
-
 /**
  * The REST routes for Federated Catalogue.
  * @param baseRouteName Prefix to prepend to the paths.
@@ -123,34 +107,6 @@ export function generateRestRoutesDataSpaceConnector(
 					id: "activityStreamExample",
 					request: {
 						body: activityExample
-					}
-				}
-			]
-		},
-		responseType: [
-			{
-				type: nameof<ICreatedResponse>()
-			},
-			{ type: nameof<IUnprocessableEntityResponse>() }
-		]
-	};
-
-	const createSubscriptionRoute: IRestRoute<ISubscriptionCreateRequest, ICreatedResponse> = {
-		operationId: "subscriptionCreate",
-		summary: "Create a new Subscription",
-		tag: tagsDataSpaceConnector[0].name,
-		method: "POST",
-		path: `${baseRouteName}/${SUBSCRIPTIONS_ROUTE}`,
-		handler: async (httpRequestContext, request) =>
-			subscriptionCreate(baseRouteName, httpRequestContext, factoryServiceName, request),
-		requestType: {
-			mimeType: MimeTypes.JsonLd,
-			type: nameof<ISubscriptionCreateRequest>(),
-			examples: [
-				{
-					id: "subscriptionExample",
-					request: {
-						body: subscriptionExample
 					}
 				}
 			]
@@ -202,7 +158,7 @@ export function generateRestRoutesDataSpaceConnector(
 		]
 	};
 
-	return [notifyActivityStreamRoute, getActivityLogEntryRoute, createSubscriptionRoute];
+	return [notifyActivityStreamRoute, getActivityLogEntryRoute];
 }
 
 /**
@@ -252,34 +208,6 @@ export async function activityLogEntryGet(
 
 	return {
 		body: await service.getActivityLogEntry(id)
-	};
-}
-
-/**
- * Notify a new Activity to the Data Space Connector Activity Stream.
- * @param baseRouteName The base route name.
- * @param httpRequestContext The request context for the API.
- * @param factoryServiceName The name of the service to use in the routes.
- * @param request The request.
- * @returns The response object with additional http response properties.
- */
-export async function subscriptionCreate(
-	baseRouteName: string,
-	httpRequestContext: IHttpRequestContext,
-	factoryServiceName: string,
-	request: ISubscriptionCreateRequest
-): Promise<ICreatedResponse> {
-	Guards.object<ISubscriptionCreateRequest>(ROUTES_SOURCE, nameof(request), request);
-	Guards.stringValue(ROUTES_SOURCE, nameof(request.body), request.body);
-
-	const service = ComponentFactory.get<IDataSpaceConnector>(factoryServiceName);
-	const subscriptionId = await service.subscribe(request.body);
-
-	return {
-		headers: {
-			location: `${baseRouteName}/${ACTIVITY_LOG_ROUTE}/${subscriptionId}`
-		},
-		statusCode: HttpStatusCode.created
 	};
 }
 

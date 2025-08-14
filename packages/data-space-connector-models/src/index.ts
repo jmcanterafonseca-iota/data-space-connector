@@ -3,12 +3,9 @@
 
 export * from "./models/activityProcessingStatus";
 
-export * from "./models/ISubscription";
-
 export * from "./models/IActivityLogDetails";
 export * from "./models/IActivityLogDates";
 export * from "./models/IActivityLogEntry";
-export * from "./models/ISubscriptionEntry";
 export * from "./models/app/IDataSpaceConnectorApp";
 export * from "./models/app/IDataSpaceConnectorAppDescriptor";
 export * from "./models/app/IActivityHandler";
@@ -22,7 +19,6 @@ export * from "./models/api/IActivityLogEntryGetRequest";
 export * from "./models/api/IActivityLogEntryGetResponse";
 
 export * from "./models/api/IActivityStreamRequest";
-export * from "./models/api/ISubscriptionCreateRequest";
 
 export * from "./models/IActivityQuery";
 
