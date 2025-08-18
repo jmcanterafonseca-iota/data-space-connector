@@ -2,6 +2,10 @@
 
 This mono-repository contains the TWIN Data Space Connector.
 
+## Apps
+
+- [data-space-connector-rest-server](apps/data-space-connector-rest-server/README.md) - A REST server implementation support the routes.
+
 ## Packages
 
 - [data-space-connector-models](packages/data-space-connector-models/README.md) - Data Space Connector data models.
