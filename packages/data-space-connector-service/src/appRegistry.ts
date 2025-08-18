@@ -28,23 +28,20 @@ export class AppRegistry {
 	}
 
 	/**
-	 * Returns an App for a (Activity, Object, Target) triple.
-	 * @param activityObjectTargetTriple The triple specified FQN.
+	 * Returns an App for a (Activity, Object, Target).
+	 * @param activityQuery The (Activity, Object, Target) query specified using a FQN.
 	 * @returns The Data Space Connector Apps or empty list if nothing is registered.
 	 */
-	public getAppForActivityObjectTargetTriple(
-		activityObjectTargetTriple: IActivityQuery
-	): IDataSpaceConnectorAppDescriptor[] {
+	public getAppForActivityQuery(activityQuery: IActivityQuery): IDataSpaceConnectorAppDescriptor[] {
 		const matchingElements: IDataSpaceConnectorAppDescriptor[] = [];
 
 		for (const handlerApp of this._activityObjectApps) {
 			const appQuery = handlerApp.activityQuery;
 			if (
-				appQuery.objectType === activityObjectTargetTriple.objectType &&
+				appQuery.objectType === activityQuery.objectType &&
 				(Is.undefined(appQuery.activityType) ||
-					appQuery.activityType === activityObjectTargetTriple.activityType) &&
-				(Is.undefined(appQuery.targetType) ||
-					appQuery.targetType === activityObjectTargetTriple.targetType)
+					appQuery.activityType === activityQuery.activityType) &&
+				(Is.undefined(appQuery.targetType) || appQuery.targetType === activityQuery.targetType)
 			) {
 				matchingElements.push(handlerApp.dataSpaceConnectorApp);
 			}
@@ -55,10 +52,10 @@ export class AppRegistry {
 
 	/**
 	 * Sets a DS Connector App to handle (Activity, Object, Target).
-	 * @param activityQuery The query represented by a triple specified using Fully Qualified Name.
+	 * @param activityQuery The query (Activity, Object, Target) represented using Fully Qualified Name.
 	 * @param dataSpaceConnectorApp The handler as a Data Space Connector App.
 	 */
-	public setAppForActivityObjectTargetTriple(
+	public setAppForActivityQuery(
 		activityQuery: IActivityQuery,
 		dataSpaceConnectorApp: IDataSpaceConnectorAppDescriptor
 	): void {

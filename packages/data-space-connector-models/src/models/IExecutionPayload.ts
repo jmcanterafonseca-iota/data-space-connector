@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 import type { IActivity } from "@twin.org/standards-w3c-activity-streams";
-import type { IDataSpaceConnectorAppDescriptor } from "./app/IDataSpaceConnectorAppDescriptor";
 
 /**
  * Execution payload.
@@ -21,5 +20,5 @@ export interface IExecutionPayload {
 	/**
 	 * The executor App.
 	 */
-	executorApp: IDataSpaceConnectorAppDescriptor["id"];
+	executorApp: string;
 }

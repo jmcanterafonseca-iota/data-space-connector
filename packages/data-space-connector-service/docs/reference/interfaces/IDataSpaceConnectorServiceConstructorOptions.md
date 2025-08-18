@@ -65,5 +65,5 @@ Background task connector.
 #### Default
 
 ```ts
-background-task-4-data-space-connector
+background-task-service
 ```

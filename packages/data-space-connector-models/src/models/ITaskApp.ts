@@ -1,8 +1,6 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IDataSpaceConnectorAppDescriptor } from "./app/IDataSpaceConnectorAppDescriptor";
-
 /**
  * Denotes a task associated with a Data Space Connector App
  */
@@ -15,5 +13,5 @@ export interface ITaskApp {
 	/**
 	 * Data Space Connector App Id.
 	 */
-	dataSpaceConnectorAppId: IDataSpaceConnectorAppDescriptor["id"];
+	dataSpaceConnectorAppId: string;
 }

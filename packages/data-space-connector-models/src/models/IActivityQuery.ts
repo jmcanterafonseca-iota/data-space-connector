@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 /**
- * (Activity,Object,Target) Triple for denoting combinations to be handled by a DS Connector App.
+ * (Activity,Object,Target) query for denoting combinations to be handled by a DS Connector App.
  */
 export interface IActivityQuery {
 	/**

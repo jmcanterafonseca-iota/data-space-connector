@@ -36,7 +36,7 @@ export interface IDataSpaceConnectorServiceConstructorOptions {
 
 	/**
 	 * Background task connector.
-	 * @default background-task-4-data-space-connector
+	 * @default background-task-service
 	 */
 	backgroundTaskConnectorType?: string;
 }

@@ -1,6 +1,6 @@
 # Interface: IActivityQuery
 
-(Activity,Object,Target) Triple for denoting combinations to be handled by a DS Connector App.
+(Activity,Object,Target) query for denoting combinations to be handled by a DS Connector App.
 
 ## Properties
 

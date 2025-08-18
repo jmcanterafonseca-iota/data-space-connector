@@ -1,8 +1,7 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IBackgroundTask } from "@twin.org/background-task-models";
-import type { IDataSpaceConnectorAppDescriptor } from "./app/IDataSpaceConnectorAppDescriptor";
+import type { TaskStatus } from "@twin.org/background-task-models";
 
 /**
  * The status supplied to clients of the Data Space Connector
@@ -25,16 +24,16 @@ export interface IActivityLogStatusNotification {
 		/**
 		 * The task reported.
 		 */
-		taskId: IBackgroundTask["id"];
+		taskId: string;
 
 		/**
 		 * The Data Space Connector App.
 		 */
-		dataSpaceConnectorAppId: IDataSpaceConnectorAppDescriptor["id"];
+		dataSpaceConnectorAppId: string;
 
 		/**
 		 * The status of the task reported. Only terminated and error are reported.
 		 */
-		taskStatus: IBackgroundTask["status"];
+		taskStatus: TaskStatus;
 	};
 }

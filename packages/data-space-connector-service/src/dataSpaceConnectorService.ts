@@ -214,11 +214,11 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		};
 		await this._entityStorageActivityLogs.set(logEntry);
 
-		const triples = await this.calculateTriple(compactedObj);
+		const activityQuerySet = await this.calculateQuerySet(compactedObj);
 
 		const tasksScheduled: ITaskApp[] = [];
-		for (const triple of triples) {
-			const dataSpaceConnectorApps = this._appRegistry.getAppForActivityObjectTargetTriple(triple);
+		for (const query of activityQuerySet) {
+			const dataSpaceConnectorApps = this._appRegistry.getAppForActivityQuery(query);
 
 			for (const dataSpaceConnectorApp of dataSpaceConnectorApps) {
 				const payload: IExecutionPayload = {
@@ -379,11 +379,11 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param app The App to be registered.
 	 */
 	public async registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void> {
-		const activityObjectTargetTriples = app.activitiesHandled;
+		const activityQuerySet = app.activitiesHandled;
 
-		if (Is.arrayValue(activityObjectTargetTriples)) {
-			for (const triple of activityObjectTargetTriples) {
-				this._appRegistry.setAppForActivityObjectTargetTriple(triple, app);
+		if (Is.arrayValue(activityQuerySet)) {
+			for (const query of activityQuerySet) {
+				this._appRegistry.setAppForActivityQuery(query, app);
 			}
 		}
 
@@ -491,12 +491,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	}
 
 	/**
-	 * Calculates the (Activity, Object, Target, Triple).
+	 * Calculates the (Activity, Object, Target) query set.
 	 * @param compactedObj The compactObj representing the Activity.
-	 * @returns the Activity, Object, Target, triple.
+	 * @returns the (Activity, Object, Target) query set.
 	 * @internal
 	 */
-	private async calculateTriple(compactedObj: IActivity): Promise<IActivityQuery[]> {
+	private async calculateQuerySet(compactedObj: IActivity): Promise<IActivityQuery[]> {
 		const expanded = await JsonLdProcessor.expand({
 			"@context": compactedObj["@context"],
 			"@type": compactedObj.type

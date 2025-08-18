@@ -6,7 +6,6 @@ import type { IDataSpaceConnectorAppDescriptor } from "@twin.org/data-space-conn
 /**
  * Data Space Connector service configuration
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IDataSpaceConnectorServiceConfig {
 	/**
 	 * Data Space Connector App Descriptors to be registered initially
