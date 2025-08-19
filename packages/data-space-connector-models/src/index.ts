@@ -9,9 +9,6 @@ export * from "./models/IActivityLogEntry";
 export * from "./models/app/IDataSpaceConnectorApp";
 export * from "./models/app/IDataSpaceConnectorAppDescriptor";
 export * from "./models/app/IActivityHandler";
-export * from "./models/app/IDataResourceHandler";
-
-export * from "./models/IDataSpaceQuery";
 
 export * from "./IDataSpaceConnector";
 

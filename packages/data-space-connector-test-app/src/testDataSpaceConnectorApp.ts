@@ -3,11 +3,7 @@
 
 import { ComponentFactory } from "@twin.org/core";
 import { DataTypeHandlerFactory } from "@twin.org/data-core";
-import type { IJsonLdNodeObject } from "@twin.org/data-json-ld";
-import type {
-	IDataSpaceConnectorApp,
-	IDataSpaceQuery
-} from "@twin.org/data-space-connector-models";
+import type { IDataSpaceConnectorApp } from "@twin.org/data-space-connector-models";
 import type { ILoggingComponent } from "@twin.org/logging-models";
 import { nameof } from "@twin.org/nameof";
 import type { IActivity } from "@twin.org/standards-w3c-activity-streams";
@@ -77,18 +73,5 @@ export class TestDataSpaceConnectorApp implements IDataSpaceConnectorApp {
 		});
 		await new Promise(resolve => setTimeout(resolve, 500));
 		return "1234" as T;
-	}
-
-	/**
-	 * Handle a Data Resource.
-	 * @param dataResourceId Data Resource Id.
-	 * @param query Query.
-	 * @returns Data.
-	 */
-	public async handleDataResource(
-		dataResourceId: string,
-		query?: IDataSpaceQuery
-	): Promise<IJsonLdNodeObject> {
-		return {};
 	}
 }

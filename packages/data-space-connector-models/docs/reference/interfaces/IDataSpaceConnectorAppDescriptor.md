@@ -20,14 +20,6 @@ The activities handled by this Data Space Connector App.
 
 ***
 
-### dataResourceAssetsHandled?
-
-> `optional` **dataResourceAssetsHandled**: `string`[]
-
-FQN of the data resource asset types handled.
-
-***
-
 ### moduleName
 
 > **moduleName**: `string`

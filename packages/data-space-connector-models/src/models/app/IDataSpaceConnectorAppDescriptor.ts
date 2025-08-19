@@ -18,11 +18,6 @@ export interface IDataSpaceConnectorAppDescriptor {
 	activitiesHandled: IActivityQuery[];
 
 	/**
-	 * FQN of the data resource asset types handled.
-	 */
-	dataResourceAssetsHandled?: string[];
-
-	/**
 	 * The module that implements this DS Connector App
 	 */
 	moduleName: string;
