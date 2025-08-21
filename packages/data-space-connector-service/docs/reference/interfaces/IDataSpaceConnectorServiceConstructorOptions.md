@@ -4,27 +4,31 @@ Federated Catalogue service options
 
 ## Properties
 
-### identityResolverComponentType?
-
-> `optional` **identityResolverComponentType**: `string`
-
-The identity resolver component used.
-
-***
-
 ### loggingComponentType?
 
 > `optional` **loggingComponentType**: `string`
 
-Logging component type
+Logging component type.
+
+#### Default
+
+```ts
+logging
+```
 
 ***
 
-### config
+### backgroundTaskConnectorType?
 
-> **config**: [`IDataSpaceConnectorServiceConfig`](IDataSpaceConnectorServiceConfig.md)
+> `optional` **backgroundTaskConnectorType**: `string`
 
-The configuration of the Data Space Connector Service.
+Background task connector.
+
+#### Default
+
+```ts
+background-task
+```
 
 ***
 
@@ -56,14 +60,8 @@ activity-task
 
 ***
 
-### backgroundTaskConnectorType?
+### config
 
-> `optional` **backgroundTaskConnectorType**: `string`
+> **config**: [`IDataSpaceConnectorServiceConfig`](IDataSpaceConnectorServiceConfig.md)
 
-Background task connector.
-
-#### Default
-
-```ts
-background-task-service
-```
+The configuration of the Data Space Connector Service.

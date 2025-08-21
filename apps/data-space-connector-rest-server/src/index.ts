@@ -12,12 +12,7 @@ import {
 } from "@twin.org/data-space-connector-service";
 import { EngineConfigHelper } from "@twin.org/engine";
 import type { IEngineCore, IEngineCoreTypeConfig, IEngineServer } from "@twin.org/engine-models";
-import {
-	type BackgroundTaskConnectorConfig,
-	BackgroundTaskConnectorType,
-	LoggingConnectorType,
-	type IEngineConfig
-} from "@twin.org/engine-types";
+import { LoggingConnectorType, type IEngineConfig } from "@twin.org/engine-types";
 import { EntitySchemaHelper } from "@twin.org/entity";
 import { nameof } from "@twin.org/nameof";
 import { run } from "@twin.org/node-core";
@@ -99,29 +94,10 @@ export async function extendConfig(engineConfig: IEngineConfig): Promise<void> {
 
 /**
  * Extends the engine.
- * @param engine Engine Core
+ * @param engineCore Engine Core
  */
-export async function extendEngine(engine: IEngineCore): Promise<void> {
-	const backgroundTaskConnectorConfig: BackgroundTaskConnectorConfig = {
-		type: BackgroundTaskConnectorType.EntityStorage
-	};
-	const backgroundTaskConnectorTypeConfig: IEngineCoreTypeConfig[] = [
-		{
-			type: BackgroundTaskConnectorType.EntityStorage,
-			options: {
-				loggingConnectorType: LoggingConnectorType.Console,
-				config: backgroundTaskConnectorConfig
-			}
-		}
-	];
-	engine.addTypeInitialiser(
-		"backgroundTaskConnector",
-		backgroundTaskConnectorTypeConfig,
-		"@twin.org/engine-types",
-		"initialiseBackgroundTaskConnector"
-	);
-
-	engine.addTypeInitialiser(
+export async function extendEngine(engineCore: IEngineCore): Promise<void> {
+	engineCore.addTypeInitialiser(
 		DATA_SPACE_CONNECTOR_TYPE,
 		customTypeConfig,
 		`file://${path.join(dirnameStr, "dataSpaceConnector.js")}`,

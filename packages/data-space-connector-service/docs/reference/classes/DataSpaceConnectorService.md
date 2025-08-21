@@ -42,7 +42,7 @@ Runtime name for the class.
 
 ### start()
 
-> **start**(`nodeIdentity`, `nodeLoggingConnectorType?`): `Promise`\<`void`\>
+> **start**(`nodeIdentity`, `nodeLoggingComponentType?`): `Promise`\<`void`\>
 
 Start step. It just registers the Data Space Connector Apps initial descriptors.
 
@@ -54,11 +54,11 @@ Start step. It just registers the Data Space Connector Apps initial descriptors.
 
 Node Identity
 
-##### nodeLoggingConnectorType?
+##### nodeLoggingComponentType?
 
 `string`
 
-Node Logging Connector type.
+Node Logging Component type.
 
 #### Returns
 

@@ -54,7 +54,7 @@ export class TestDataSpaceConnectorApp implements IDataSpaceConnectorApp {
 		}));
 
 		this._loggingService = ComponentFactory.getIfExists<ILoggingComponent>(
-			options.loggingComponentType ?? "logging-service"
+			options.loggingComponentType
 		);
 
 		this._appId = options.config.dataSpaceConnectorAppId;

@@ -14,7 +14,7 @@ import { nameof } from "@twin.org/nameof";
 
 /**
  * Data Space Connector initialiser.
- * @param core The engine core.
+ * @param engineCore The engine core.
  * @param context The context for the engine.
  * @param instanceConfig The instance config.
  * @param instanceConfig.options The instance config options.
@@ -22,13 +22,17 @@ import { nameof } from "@twin.org/nameof";
  * @returns The name of the instance created.
  */
 export function dataSpaceConnectorTypeInitialiser(
-	core: IEngineCore,
+	engineCore: IEngineCore,
 	context: IEngineCoreContext,
 	instanceConfig: { options: IDataSpaceConnectorServiceConstructorOptions },
 	overrideInstanceType: string
 ): string {
 	const componentName = StringHelper.kebabCase(nameof<IDataSpaceConnector>(), true);
-	const dataSpaceConnector = new DataSpaceConnectorService(instanceConfig.options);
+	const dataSpaceConnector = new DataSpaceConnectorService({
+		loggingComponentType: engineCore.getRegisteredInstanceType("loggingComponent"),
+		backgroundTaskConnectorType: engineCore.getRegisteredInstanceType("backgroundTaskConnector"),
+		...instanceConfig.options
+	});
 	ComponentFactory.register(componentName, () => dataSpaceConnector);
 
 	const finalInstanceName = overrideInstanceType ?? componentName;

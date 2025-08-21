@@ -8,19 +8,16 @@ import type { IDataSpaceConnectorServiceConfig } from "./IDataSpaceConnectorServ
  */
 export interface IDataSpaceConnectorServiceConstructorOptions {
 	/**
-	 * The identity resolver component used.
-	 */
-	identityResolverComponentType?: string;
-
-	/**
-	 * Logging component type
+	 * Logging component type.
+	 * @default logging
 	 */
 	loggingComponentType?: string;
 
 	/**
-	 * The configuration of the Data Space Connector Service.
+	 * Background task connector.
+	 * @default background-task
 	 */
-	config: IDataSpaceConnectorServiceConfig;
+	backgroundTaskConnectorType?: string;
 
 	/**
 	 * The entity storage for activity log details.
@@ -35,8 +32,7 @@ export interface IDataSpaceConnectorServiceConstructorOptions {
 	activityTaskEntityStorageType?: string;
 
 	/**
-	 * Background task connector.
-	 * @default background-task-service
+	 * The configuration of the Data Space Connector Service.
 	 */
-	backgroundTaskConnectorType?: string;
+	config: IDataSpaceConnectorServiceConfig;
 }

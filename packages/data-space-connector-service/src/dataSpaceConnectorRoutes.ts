@@ -277,7 +277,7 @@ export function activityLogStatusDisconnected(
 	componentName: string
 ): void {
 	const logger = ComponentFactory.getIfExists<ILoggingConnector>(
-		socketRequestContext.loggingComponentType ?? "logging-service"
+		socketRequestContext.loggingComponentType
 	);
 	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
 
@@ -299,7 +299,7 @@ export function activityLogStatusDisconnected(
  */
 export function activityLogStatusConnected(socketRequestContext: ISocketRequestContext): void {
 	const logger = ComponentFactory.getIfExists<ILoggingConnector>(
-		socketRequestContext.loggingComponentType ?? "logging-service"
+		socketRequestContext.loggingComponentType
 	);
 
 	logger?.log({

@@ -126,7 +126,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param options The options for the connector.
 	 */
 	constructor(options: IDataSpaceConnectorServiceConstructorOptions) {
-		this._loggingComponentType = options?.loggingComponentType ?? "logging-service";
+		this._loggingComponentType = options?.loggingComponentType ?? "logging";
 		this._loggingService = ComponentFactory.getIfExists<ILoggingComponent>(
 			this._loggingComponentType
 		);
@@ -140,7 +140,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		>(options.activityTaskEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityTask>()));
 
 		this._backgroundTaskConnector = BackgroundTaskConnectorFactory.get(
-			options?.backgroundTaskConnectorType ?? "entity-storage"
+			options?.backgroundTaskConnectorType ?? "background-task"
 		);
 		this._appRegistry = new AppRegistry();
 
@@ -156,9 +156,9 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	/**
 	 * Start step. It just registers the Data Space Connector Apps initial descriptors.
 	 * @param nodeIdentity Node Identity
-	 * @param nodeLoggingConnectorType Node Logging Connector type.
+	 * @param nodeLoggingComponentType Node Logging Component type.
 	 */
-	public async start(nodeIdentity: string, nodeLoggingConnectorType?: string): Promise<void> {
+	public async start(nodeIdentity: string, nodeLoggingComponentType?: string): Promise<void> {
 		if (Is.arrayValue(this._initialDataSpaceConnectorApps)) {
 			for (const app of this._initialDataSpaceConnectorApps) {
 				await this.registerDataSpaceConnectorApp(app);
