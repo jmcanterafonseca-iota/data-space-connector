@@ -34,12 +34,12 @@
 	"devDependencies": {
 		"@twin.org/nameof-transformer": "next",
 		"@twin.org/nameof-vitest-plugin": "next",
-		"@types/node": "22.14.1",
+		"@types/node": "24.3.0",
 		"copyfiles": "2.4.1",
 		"rimraf": "6.0.1",
-		"rollup": "4.40.0",
+		"rollup": "4.46.4",
 		"ts-patch": "3.3.0",
-		"typescript": "5.8.3"
+		"typescript": "5.9.2"
 	},
 	"main": "./dist/cjs/index.cjs",
 	"module": "./dist/esm/index.mjs",

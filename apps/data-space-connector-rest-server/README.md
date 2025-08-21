@@ -4,7 +4,7 @@ A REST server implementation support the Data Space Connector routes.
 
 ## Open API
 
-The Open API Spec is [here](./docs/open-api/spec.json)
+The Open API Spec is [spec.json](./docs/open-api/spec.json)
 
 ## Building and running the application
 

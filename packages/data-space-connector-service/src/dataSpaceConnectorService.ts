@@ -126,7 +126,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param options The options for the connector.
 	 */
 	constructor(options: IDataSpaceConnectorServiceConstructorOptions) {
-		this._loggingComponentType = options?.loggingComponentType ?? "logging-service";
+		this._loggingComponentType = options?.loggingComponentType ?? "logging";
 		this._loggingService = ComponentFactory.getIfExists<ILoggingComponent>(
 			this._loggingComponentType
 		);
@@ -140,7 +140,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		>(options.activityTaskEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityTask>()));
 
 		this._backgroundTaskConnector = BackgroundTaskConnectorFactory.get(
-			options?.backgroundTaskConnectorType ?? "background-task-service"
+			options?.backgroundTaskConnectorType ?? "background-task"
 		);
 		this._appRegistry = new AppRegistry();
 
