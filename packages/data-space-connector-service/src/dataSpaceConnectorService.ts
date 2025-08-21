@@ -126,7 +126,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param options The options for the connector.
 	 */
 	constructor(options: IDataSpaceConnectorServiceConstructorOptions) {
-		this._loggingComponentType = options?.loggingComponentType ?? "logging";
+		this._loggingComponentType = options?.loggingComponentType ?? "logging-service";
 		this._loggingService = ComponentFactory.getIfExists<ILoggingComponent>(
 			this._loggingComponentType
 		);
