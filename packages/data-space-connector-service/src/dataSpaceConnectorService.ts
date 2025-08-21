@@ -140,7 +140,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		>(options.activityTaskEntityStorageType ?? StringHelper.kebabCase(nameof<ActivityTask>()));
 
 		this._backgroundTaskConnector = BackgroundTaskConnectorFactory.get(
-			options?.backgroundTaskConnectorType ?? "background-task"
+			options?.backgroundTaskConnectorType ?? "entity-storage"
 		);
 		this._appRegistry = new AppRegistry();
 

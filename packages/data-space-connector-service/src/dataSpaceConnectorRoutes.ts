@@ -61,13 +61,13 @@ const activityExample: IActivity = {
 		"@type": "Consignment",
 		globalId: "24KEP051219453I002610796"
 	},
-	updated: new Date().toISOString()
+	updated: "2025-08-12T12:00:00Z"
 };
 
 const activityLogEntryExample: IActivityLogEntry = {
 	id: "urn:x-activity-log:134567",
-	dateCreated: new Date().toISOString(),
-	dateModified: new Date().toISOString(),
+	dateCreated: "2025-08-12T12:00:00Z",
+	dateModified: "2025-08-12T12:00:00Z",
 	generator: "did:iota:testnet:123456",
 	status: "pending",
 	pendingTasks: [

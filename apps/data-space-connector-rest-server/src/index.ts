@@ -25,8 +25,6 @@ import { run } from "@twin.org/node-core";
 const DATA_SPACE_CONNECTOR_TYPE = "data-space-connector-type";
 const REST_PATH = "data-space-connector";
 
-const BACKGROUND_TASK_TYPE = "background-task-4-data-space-connector";
-
 const filename = fileURLToPath(import.meta.url);
 const dirnameStr = path.dirname(filename);
 
@@ -61,7 +59,6 @@ const customTypeConfig: IEngineCoreTypeConfig[] = [
 		socketPath: REST_PATH,
 		options: {
 			loggingConnectorType: LoggingConnectorType.Console,
-			backgroundTaskConnectorType: BACKGROUND_TASK_TYPE,
 			config: {
 				dataSpaceConnectorAppDescriptors
 			}
@@ -114,8 +111,7 @@ export async function extendEngine(engine: IEngineCore): Promise<void> {
 			options: {
 				loggingConnectorType: LoggingConnectorType.Console,
 				config: backgroundTaskConnectorConfig
-			},
-			overrideInstanceType: BACKGROUND_TASK_TYPE
+			}
 		}
 	];
 	engine.addTypeInitialiser(
