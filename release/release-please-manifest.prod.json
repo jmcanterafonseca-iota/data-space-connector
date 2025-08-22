@@ -1,0 +1,7 @@
+{
+	"packages/data-space-connector-models": "0.0.0",
+	"packages/data-space-connector-app-runner": "0.0.0",
+	"packages/data-space-connector-test-app": "0.0.0",
+	"packages/data-space-connector-service": "0.0.0",
+	"apps/data-space-connector-rest-server": "0.0.0"
+}

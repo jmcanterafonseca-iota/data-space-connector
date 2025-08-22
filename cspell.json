@@ -16,7 +16,8 @@
 		"typedoc.json",
 		".eslintrc.cjs",
 		"**/wordlists/**",
-		"**/*.json"
+		"**/*.json",
+		"changelog.md"
 	],
 	"words": [
 		"bech",

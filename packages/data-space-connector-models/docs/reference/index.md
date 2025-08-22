@@ -3,16 +3,29 @@
 ## Interfaces
 
 - [IDataSpaceConnector](interfaces/IDataSpaceConnector.md)
-- [IActivity](interfaces/IActivity.md)
-- [ISubscription](interfaces/ISubscription.md)
+- [IActivityLogDates](interfaces/IActivityLogDates.md)
+- [IActivityLogDetails](interfaces/IActivityLogDetails.md)
+- [IActivityLogEntry](interfaces/IActivityLogEntry.md)
+- [IActivityLogStatusNotification](interfaces/IActivityLogStatusNotification.md)
+- [IActivityQuery](interfaces/IActivityQuery.md)
+- [IActivityTask](interfaces/IActivityTask.md)
+- [IExecutionPayload](interfaces/IExecutionPayload.md)
+- [ITaskApp](interfaces/ITaskApp.md)
+- [IActivityLogEntryGetRequest](interfaces/IActivityLogEntryGetRequest.md)
+- [IActivityLogEntryGetResponse](interfaces/IActivityLogEntryGetResponse.md)
+- [IActivityLogStatusNotificationPayload](interfaces/IActivityLogStatusNotificationPayload.md)
+- [IActivityLogStatusRequest](interfaces/IActivityLogStatusRequest.md)
+- [IActivityStreamRequest](interfaces/IActivityStreamRequest.md)
+- [IActivityHandler](interfaces/IActivityHandler.md)
+- [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
+- [IDataSpaceConnectorAppConfig](interfaces/IDataSpaceConnectorAppConfig.md)
+- [IDataSpaceConnectorAppConstructorOptions](interfaces/IDataSpaceConnectorAppConstructorOptions.md)
+- [IDataSpaceConnectorAppDescriptor](interfaces/IDataSpaceConnectorAppDescriptor.md)
 
 ## Type Aliases
 
-- [GaiaXContexts](type-aliases/GaiaXContexts.md)
-- [ActivityStreamsLdContextType](type-aliases/ActivityStreamsLdContextType.md)
-- [ActivityStreamsTypes](type-aliases/ActivityStreamsTypes.md)
+- [ActivityProcessingStatus](type-aliases/ActivityProcessingStatus.md)
 
 ## Variables
 
-- [ActivityStreamsContexts](variables/ActivityStreamsContexts.md)
-- [ActivityStreamsTypes](variables/ActivityStreamsTypes.md)
+- [ActivityProcessingStatus](variables/ActivityProcessingStatus.md)

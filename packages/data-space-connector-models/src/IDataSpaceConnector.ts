@@ -1,32 +1,53 @@
 // Copyright 2024 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 
-import type { IJsonLdDocument } from "@twin.org/data-json-ld";
-import type { IActivity } from "./models/IActivity";
-import type { ISubscription } from "./models/ISubscription";
+import type { IComponent } from "@twin.org/core";
+import type { IActivity } from "@twin.org/standards-w3c-activity-streams";
+import type { IDataSpaceConnectorAppDescriptor } from "./models/app/IDataSpaceConnectorAppDescriptor";
+import type { IActivityLogEntry } from "./models/IActivityLogEntry";
+import type { IActivityLogStatusNotification } from "./models/IActivityLogStatusNotification";
 
 /**
- * Data Space Connector service interface
+ * Data Space Connector service interface.
  */
-export interface IDataSpaceConnector {
+export interface IDataSpaceConnector extends IComponent {
 	/**
-	 * Notify an Activity.
+	 * Notify an Activity to the DS Connector Activity Stream.
 	 * @param activity The Activity notified.
-	 * @returns void
+	 * @returns The Activity's identifier.
 	 */
-	notify(activity: IActivity): Promise<void>;
+	notifyActivity(activity: IActivity): Promise<string>;
 
 	/**
-	 * Subscribe to the Data Space Connector.
-	 * @param subscription The subscription
-	 * @returns void
+	 * Subscribes to the activity log.
+	 * @param callback The callback to be called when Activity Log is called.
+	 * @param subscriptionId The subscription Id.
+	 * @returns The subscription Id.
 	 */
-	subscribe(subscription: ISubscription): Promise<void>;
+	subscribeToActivityLog(
+		callback: (notification: IActivityLogStatusNotification) => Promise<void>,
+		subscriptionId?: string
+	): string;
 
 	/**
-	 * Gets data associated with a Service Offering.
-	 * @param serviceOfferingId The Service Offering Id as registered on the Fed Catalogue.
-	 * @returns a JSON-LD document with the data
+	 * Unsubscribes to the activity log.
+	 * @param subscriptionId The subscription Id.
+	 * @returns The subscription Id.
 	 */
-	getData(serviceOfferingId: string): Promise<IJsonLdDocument>;
+	unSubscribeToActivityLog(subscriptionId: string): void;
+
+	/**
+	 * Returns Activity Log Entry which contains the Activity processing details.
+	 * @param logEntryId The Id of the Activity Log Entry (a URI).
+	 * @returns the Activity Log Entry with the processing details.
+	 * @throws NotFoundError if activity log entry is not known.
+	 */
+	getActivityLogEntry(logEntryId: string): Promise<IActivityLogEntry>;
+
+	/**
+	 * Registers a Data Space Connector App.
+	 * @param app The descriptor of the App to be registered.
+	 * @returns nothing.
+	 */
+	registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void>;
 }

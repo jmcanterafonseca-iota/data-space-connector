@@ -1,69 +1,127 @@
 # Interface: IDataSpaceConnector
 
-Data Space Connector service interface
+Data Space Connector service interface.
+
+## Extends
+
+- `IComponent`
 
 ## Methods
 
-### notify()
+### notifyActivity()
 
-> **notify**(`activity`): `Promise`\<`void`\>
+> **notifyActivity**(`activity`): `Promise`\<`string`\>
 
-Notify an Activity.
+Notify an Activity to the DS Connector Activity Stream.
 
 #### Parameters
 
 ##### activity
 
-[`IActivity`](IActivity.md)
+`IActivity`
 
 The Activity notified.
 
 #### Returns
 
-`Promise`\<`void`\>
+`Promise`\<`string`\>
 
-void
-
-***
-
-### subscribe()
-
-> **subscribe**(`subscription`): `Promise`\<`void`\>
-
-Subscribe to the Data Space Connector.
-
-#### Parameters
-
-##### subscription
-
-[`ISubscription`](ISubscription.md)
-
-The subscription
-
-#### Returns
-
-`Promise`\<`void`\>
-
-void
+The Activity's identifier.
 
 ***
 
-### getData()
+### subscribeToActivityLog()
 
-> **getData**(`serviceOfferingId`): `Promise`\<`IJsonLdDocument`\>
+> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `string`
 
-Gets data associated with a Service Offering.
+Subscribes to the activity log.
 
 #### Parameters
 
-##### serviceOfferingId
+##### callback
+
+(`notification`) => `Promise`\<`void`\>
+
+The callback to be called when Activity Log is called.
+
+##### subscriptionId?
 
 `string`
 
-The Service Offering Id as registered on the Fed Catalogue.
+The subscription Id.
 
 #### Returns
 
-`Promise`\<`IJsonLdDocument`\>
+`string`
 
-a JSON-LD document with the data
+The subscription Id.
+
+***
+
+### unSubscribeToActivityLog()
+
+> **unSubscribeToActivityLog**(`subscriptionId`): `void`
+
+Unsubscribes to the activity log.
+
+#### Parameters
+
+##### subscriptionId
+
+`string`
+
+The subscription Id.
+
+#### Returns
+
+`void`
+
+The subscription Id.
+
+***
+
+### getActivityLogEntry()
+
+> **getActivityLogEntry**(`logEntryId`): `Promise`\<[`IActivityLogEntry`](IActivityLogEntry.md)\>
+
+Returns Activity Log Entry which contains the Activity processing details.
+
+#### Parameters
+
+##### logEntryId
+
+`string`
+
+The Id of the Activity Log Entry (a URI).
+
+#### Returns
+
+`Promise`\<[`IActivityLogEntry`](IActivityLogEntry.md)\>
+
+the Activity Log Entry with the processing details.
+
+#### Throws
+
+NotFoundError if activity log entry is not known.
+
+***
+
+### registerDataSpaceConnectorApp()
+
+> **registerDataSpaceConnectorApp**(`app`): `Promise`\<`void`\>
+
+Registers a Data Space Connector App.
+
+#### Parameters
+
+##### app
+
+[`IDataSpaceConnectorAppDescriptor`](IDataSpaceConnectorAppDescriptor.md)
+
+The descriptor of the App to be registered.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+nothing.

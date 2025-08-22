@@ -1,11 +1,11 @@
-# Federated Catalogue Models
+# Data Space Connector Models
 
-Models which define the structure of the Federated Catalogue.
+Models which define the structure of the Data Space Connector.
 
 ## Installation
 
 ```shell
-npm install @twin.org/federated-catalogue-models
+npm install @twin.org/data-space-connector-models
 ```
 
 ## Examples

@@ -1,0 +1,93 @@
+{
+	"name": "@twin.org/data-space-connector-service",
+	"version": "0.0.1-next.1",
+	"description": "Data Space Connector contract implementation and REST endpoint definitions",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/twinfoundation/data-space-connector.git",
+		"directory": "packages/data-space-connector-service"
+	},
+	"author": "jose.cantera@iota.org",
+	"license": "Apache-2.0",
+	"type": "module",
+	"engines": {
+		"node": ">=20.0.0"
+	},
+	"scripts": {
+		"clean": "rimraf dist coverage docs/reference",
+		"build": "tsc",
+		"dev": "nodemon --watch src --ext ts --exec \"npm run build && npm run bundle:esm\"",
+		"test": "vitest --run --config ./vitest.config.ts --no-cache",
+		"coverage": "vitest --run --coverage --config ./vitest.config.ts --no-cache",
+		"bundle:esm": "rollup --config rollup.config.mjs --environment MODULE:esm",
+		"bundle:cjs": "rollup --config rollup.config.mjs --environment MODULE:cjs",
+		"bundle": "npm run bundle:esm && npm run bundle:cjs",
+		"docs:clean": "rimraf docs/reference",
+		"docs:generate": "typedoc",
+		"docs:api": "ts-to-openapi ./ts-to-openapi.json ./docs/open-api/spec.json",
+		"docs": "npm run docs:clean && npm run docs:generate && npm run docs:api",
+		"dist": "npm run clean && npm run build && npm run test && npm run bundle && npm run docs",
+		"dist:no-test": "npm run clean && npm run build && npm run bundle && npm run docs",
+		"prepare": "ts-patch install -s"
+	},
+	"dependencies": {
+		"@twin.org/api-models": "next",
+		"@twin.org/core": "next",
+		"@twin.org/modules": "next",
+		"@twin.org/data-core": "next",
+		"@twin.org/entity": "next",
+		"@twin.org/entity-storage-models": "next",
+		"@twin.org/nameof": "next",
+		"@twin.org/data-space-connector-models": "0.0.1-next.1",
+		"@twin.org/web": "next",
+		"@twin.org/logging-models": "next",
+		"@twin.org/identity-models": "next",
+		"@twin.org/identity-service": "next",
+		"@twin.org/standards-schema-org": "next",
+		"@twin.org/standards-w3c-odrl": "next",
+		"@twin.org/standards-w3c-activity-streams": "next",
+		"@twin.org/crypto": "next",
+		"@twin.org/data-json-ld": "next",
+		"@twin.org/background-task-models": "next",
+		"@twin.org/background-task-connector-entity-storage": "next",
+		"@twin.org/engine-models": "next",
+		"@twin.org/engine-types": "next"
+	},
+	"devDependencies": {
+		"@twin.org/standards-ld-contexts": "next",
+		"@twin.org/modules": "next",
+		"@twin.org/nameof-transformer": "next",
+		"@twin.org/nameof-vitest-plugin": "next",
+		"@twin.org/ts-to-openapi": "next",
+		"@types/node": "24.3.0",
+		"@vitest/coverage-v8": "3.2.4",
+		"copyfiles": "2.4.1",
+		"rimraf": "6.0.1",
+		"rollup": "4.46.4",
+		"ts-patch": "3.3.0",
+		"tsc-watch": "7.1.1",
+		"typedoc": "0.28.10",
+		"typedoc-plugin-markdown": "4.8.1",
+		"typescript": "5.9.2",
+		"vitest": "3.2.4",
+		"@twin.org/entity-storage-connector-file": "next"
+	},
+	"main": "./dist/cjs/index.cjs",
+	"module": "./dist/esm/index.mjs",
+	"types": "./dist/types/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/types/index.d.ts",
+			"require": "./dist/cjs/index.cjs",
+			"import": "./dist/esm/index.mjs"
+		},
+		"./locales/*.json": "./locales/*.json"
+	},
+	"files": [
+		"dist/cjs",
+		"dist/esm",
+		"dist/types",
+		"locales",
+		"docs"
+	]
+}

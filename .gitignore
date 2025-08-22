@@ -19,3 +19,5 @@ packages/federated-catalogue-service/tests/**/.env.*
 .local-data-docker
 
 .DS_Store
+
+data-space-connector-apps.json
