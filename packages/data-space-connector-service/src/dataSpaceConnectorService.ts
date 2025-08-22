@@ -3,10 +3,12 @@
 
 import {
 	BackgroundTaskConnectorFactory,
+	type IScheduledTaskTime,
 	TaskStatus,
 	type IBackgroundTask,
 	type IBackgroundTaskConnector
 } from "@twin.org/background-task-models";
+import { TaskSchedulerService } from "@twin.org/background-task-scheduler";
 import {
 	Is,
 	type IValidationFailure,
@@ -67,6 +69,12 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		nameof<IDataSpaceConnectorApp>();
 
 	/**
+	 * The default cleanup interval in minutes. (1 hour)
+	 * @internal
+	 */
+	private static readonly _DEFAULT_CLEANUP_INTERVAL: number = 60;
+
+	/**
 	 * Runtime name for the class.
 	 */
 	public readonly CLASS_NAME: string = nameof<DataSpaceConnectorService>();
@@ -122,6 +130,18 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	};
 
 	/**
+	 * Task retention. -1 retain forever.
+	 * @internal
+	 */
+	private readonly _retainTasksFor: number;
+
+	/**
+	 * Activity Log Entry retention. -1 retain forever.
+	 * @internal
+	 */
+	private readonly _retainActivityLogsFor: number;
+
+	/**
 	 * Create a new instance of FederatedCatalogue service.
 	 * @param options The options for the connector.
 	 */
@@ -151,6 +171,64 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		this._initialDataSpaceConnectorApps = options.config.dataSpaceConnectorAppDescriptors;
 
 		this._activityLogStatusCallbacks = {};
+
+		this._retainTasksFor = -1;
+		this._retainActivityLogsFor = -1;
+
+		const validationErrors: IValidationFailure[] = [];
+		if (!Is.undefined(options?.config?.retainActivityLogsFor)) {
+			Guards.integer(
+				this.CLASS_NAME,
+				nameof(options.config.retainActivityLogsFor),
+				options.config.retainActivityLogsFor
+			);
+			Validation.integer(
+				nameof(options.config.retainActivityLogsFor),
+				options.config.retainActivityLogsFor,
+				validationErrors,
+				undefined,
+				{ minValue: 1 }
+			);
+			// Retention of internal tasks launched (it has to be expressed in milliseconds)
+			// 5 minutes of margin with respect to the Activity Log Entry to ensure proper removal
+			this._retainTasksFor = (options.config.retainActivityLogsFor + 5) * 60 * 1000;
+			this._retainActivityLogsFor = options.config.retainActivityLogsFor;
+		}
+
+		let cleanUpInterval = DataSpaceConnectorService._DEFAULT_CLEANUP_INTERVAL;
+		if (!Is.undefined(options?.config?.activityLogsCleanUpInterval)) {
+			Guards.integer(
+				this.CLASS_NAME,
+				nameof(options.config.activityLogsCleanUpInterval),
+				options.config.activityLogsCleanUpInterval
+			);
+			Validation.integer(
+				nameof(options.config.activityLogsCleanUpInterval),
+				options.config.activityLogsCleanUpInterval,
+				validationErrors,
+				undefined,
+				{ minValue: 1 }
+			);
+			cleanUpInterval = options.config.activityLogsCleanUpInterval;
+		}
+		Validation.asValidationError(this.CLASS_NAME, nameof(options?.config), validationErrors);
+
+		// Only we have a task scheduler if there is a retention different than -1
+		if (this._retainActivityLogsFor !== -1) {
+			const taskScheduler = new TaskSchedulerService();
+			const taskTime: IScheduledTaskTime[] = [
+				{
+					nextTriggerTime: Date.now() + 1000,
+					...this.calculateCleaningTaskSchedule(cleanUpInterval)
+				}
+			];
+
+			console.log("Task Scheduler with this config", taskTime);
+
+			taskScheduler.addTask("data-space-connector-cleanup", taskTime, async () => {
+				console.log("scheduled");
+			});
+		}
 	}
 
 	/**
@@ -233,7 +311,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 					taskType,
 					payload,
 					{
-						retainFor: -1
+						retainFor: this._retainTasksFor
 					}
 				);
 
@@ -487,6 +565,27 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 					}
 				});
 			}
+
+			// Now let's see if the full activity processing has completed, if so the entry must be marked for retention
+			if (this._retainActivityLogsFor !== -1) {
+				console.log("here!!!!!!!");
+
+				const entry = await this.getActivityLogEntry(payload.activityLogEntryId);
+				if (
+					entry.status === ActivityProcessingStatus.Completed ||
+					entry.status === ActivityProcessingStatus.Error
+				) {
+					const retainUntil = Date.now() + this._retainActivityLogsFor * 60 * 1000;
+					this._entityStorageActivityLogs.set({
+						id: entry.id,
+						activityId: entry.activityId,
+						generator: entry.generator,
+						dateCreated: entry.dateCreated,
+						dateModified: entry.dateModified,
+						retainUntil
+					});
+				}
+			}
 		}
 	}
 
@@ -561,5 +660,22 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Calculates the cleaning task schedule.
+	 * @param minutes The number of minutes.
+	 * @returns The cleaning task schedule.
+	 */
+	private calculateCleaningTaskSchedule(minutes: number): IScheduledTaskTime {
+		let minutesRemain = minutes;
+
+		const days = Math.floor(minutesRemain / (24 * 60));
+		minutesRemain %= 24 * 60;
+
+		const hours = Math.floor(minutesRemain / 60);
+		minutesRemain %= 60;
+
+		return { intervalDays: days, intervalHours: hours, intervalMinutes: minutesRemain };
 	}
 }

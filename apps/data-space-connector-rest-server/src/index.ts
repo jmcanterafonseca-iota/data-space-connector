@@ -55,7 +55,9 @@ const customTypeConfig: IEngineCoreTypeConfig[] = [
 		options: {
 			loggingConnectorType: LoggingConnectorType.Console,
 			config: {
-				dataSpaceConnectorAppDescriptors
+				dataSpaceConnectorAppDescriptors,
+				retainActivityLogsFor: 1,
+				activityLogsCleanUpInterval: 1
 			}
 		}
 	}
