@@ -148,7 +148,7 @@ describe("data-space-connector-tests", () => {
 		await sleep(800);
 
 		const entry = await dataSpaceConnectorService.getActivityLogEntry(activityLogEntryId);
-		console.log(entry);
+		console.log(JSON.stringify(entry, null, 2));
 		assertActivityLog(entry);
 	});
 
