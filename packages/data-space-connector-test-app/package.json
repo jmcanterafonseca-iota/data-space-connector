@@ -4,7 +4,7 @@
 	"description": "Data Space Connector Test App",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/twinfoundation/data-space-connector.git",
+		"url": "git+https://github.com/twinfoundation/data-space-connector.git",
 		"directory": "packages/data-space-connector-test-app"
 	},
 	"author": "jose.cantera@iota.org",

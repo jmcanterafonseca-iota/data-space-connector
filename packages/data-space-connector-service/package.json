@@ -4,7 +4,7 @@
 	"description": "Data Space Connector contract implementation and REST endpoint definitions",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/twinfoundation/data-space-connector.git",
+		"url": "git+https://github.com/twinfoundation/data-space-connector.git",
 		"directory": "packages/data-space-connector-service"
 	},
 	"author": "jose.cantera@iota.org",

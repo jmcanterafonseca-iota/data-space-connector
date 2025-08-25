@@ -4,7 +4,7 @@
 	"description": "Data Space Connector",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/twinfoundation/data-space-connector.git"
+		"url": "git+https://github.com/twinfoundation/data-space-connector.git",
 	},
 	"author": "jose.cantera@iota.org",
 	"license": "Apache-2.0",
