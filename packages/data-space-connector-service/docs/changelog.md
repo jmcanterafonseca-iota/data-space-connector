@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.0.1-next.1](https://github.com/twinfoundation/data-space-connector/compare/data-space-connector-rest-server-v0.0.1-next.0...data-space-connector-rest-server-v0.0.1-next.1) (2025-08-25)
+## [0.0.1-next.1](https://github.com/twinfoundation/data-space-connector/compare/data-space-connector-service-v0.0.1-next.0...data-space-connector-service-v0.0.1-next.1) (2025-08-25)
 
 
 ### Features
@@ -14,6 +14,3 @@
 * The following workspace dependencies were updated
   * dependencies
     * @twin.org/data-space-connector-models bumped from 0.0.1-next.0 to 0.0.1-next.1
-    * @twin.org/data-space-connector-service bumped from 0.0.1-next.0 to 0.0.1-next.1
-
-## Changelog
