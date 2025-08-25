@@ -32,6 +32,6 @@ export async function setupTestEnv(): Promise<void> {
  */
 export async function cleanupTestEnv(): Promise<void> {
 	try {
-		fs.rmdirSync(path.join(__dirname, ".tmp"), { recursive: true });
+		fs.rmSync(path.join(__dirname, ".tmp"), { recursive: true });
 	} catch {}
 }
