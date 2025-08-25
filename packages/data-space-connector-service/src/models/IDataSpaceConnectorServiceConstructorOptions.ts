@@ -34,5 +34,5 @@ export interface IDataSpaceConnectorServiceConstructorOptions {
 	/**
 	 * The configuration of the Data Space Connector Service.
 	 */
-	config: IDataSpaceConnectorServiceConfig;
+	config?: IDataSpaceConnectorServiceConfig;
 }

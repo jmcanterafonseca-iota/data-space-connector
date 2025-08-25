@@ -60,8 +60,8 @@ activity-task
 
 ***
 
-### config
+### config?
 
-> **config**: [`IDataSpaceConnectorServiceConfig`](IDataSpaceConnectorServiceConfig.md)
+> `optional` **config**: [`IDataSpaceConnectorServiceConfig`](IDataSpaceConnectorServiceConfig.md)
 
 The configuration of the Data Space Connector Service.

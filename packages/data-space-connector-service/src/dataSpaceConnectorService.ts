@@ -148,7 +148,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 		ActivityStreamsDataTypes.registerTypes();
 		SchemaOrgDataTypes.registerRedirects();
 
-		this._initialDataSpaceConnectorApps = options.config.dataSpaceConnectorAppDescriptors;
+		this._initialDataSpaceConnectorApps = options.config?.dataSpaceConnectorAppDescriptors;
 
 		this._activityLogStatusCallbacks = {};
 	}
