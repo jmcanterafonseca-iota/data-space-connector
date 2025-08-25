@@ -48,6 +48,32 @@ Runtime name for the class.
 
 ## Methods
 
+### notifyActivity()
+
+> **notifyActivity**(`activity`): `Promise`\<`string`\>
+
+Notify an Activity to the DS Connector Activity Stream - implemented in REST Client.
+
+#### Parameters
+
+##### activity
+
+`IActivity`
+
+The Activity notified.
+
+#### Returns
+
+`Promise`\<`string`\>
+
+The Activity's identifier.
+
+#### Implementation of
+
+`IDataSpaceConnector.notifyActivity`
+
+***
+
 ### subscribeToActivityLog()
 
 > **subscribeToActivityLog**(`callback`, `subscriptionId?`): `Promise`\<`string`\>
@@ -103,6 +129,62 @@ The subscription Id.
 #### Implementation of
 
 `IDataSpaceConnector.unSubscribeToActivityLog`
+
+***
+
+### getActivityLogEntry()
+
+> **getActivityLogEntry**(`logEntryId`): `Promise`\<`IActivityLogEntry`\>
+
+Returns Activity Log Entry which contains the Activity processing details - implemented in REST Client.
+
+#### Parameters
+
+##### logEntryId
+
+`string`
+
+The Id of the Activity Log Entry (a URI).
+
+#### Returns
+
+`Promise`\<`IActivityLogEntry`\>
+
+the Activity Log Entry with the processing details.
+
+#### Throws
+
+NotFoundError if activity log entry is not known.
+
+#### Implementation of
+
+`IDataSpaceConnector.getActivityLogEntry`
+
+***
+
+### registerDataSpaceConnectorApp()
+
+> **registerDataSpaceConnectorApp**(`app`): `Promise`\<`void`\>
+
+Registers a Data Space Connector App - Not available from client.
+
+#### Parameters
+
+##### app
+
+`IDataSpaceConnectorAppDescriptor`
+
+The descriptor of the App to be registered.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+nothing.
+
+#### Implementation of
+
+`IDataSpaceConnector.registerDataSpaceConnectorApp`
 
 ***
 

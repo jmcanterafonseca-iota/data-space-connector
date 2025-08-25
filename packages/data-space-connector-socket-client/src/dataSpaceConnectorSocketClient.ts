@@ -83,10 +83,9 @@ export class DataSpaceConnectorSocketClient
 	}
 
 	/**
-	 * Notify an Activity to the DS Connector Activity Stream.
+	 * Notify an Activity to the DS Connector Activity Stream - implemented in REST Client.
 	 * @param activity The Activity notified.
 	 * @returns The Activity's identifier.
-	 * @internal
 	 */
 	public async notifyActivity(activity: IActivity): Promise<string> {
 		// This method is in the REST client
@@ -186,11 +185,10 @@ export class DataSpaceConnectorSocketClient
 	}
 
 	/**
-	 * Returns Activity Log Entry which contains the Activity processing details.
+	 * Returns Activity Log Entry which contains the Activity processing details - implemented in REST Client.
 	 * @param logEntryId The Id of the Activity Log Entry (a URI).
 	 * @returns the Activity Log Entry with the processing details.
 	 * @throws NotFoundError if activity log entry is not known.
-	 * @internal
 	 */
 	public async getActivityLogEntry(logEntryId: string): Promise<IActivityLogEntry> {
 		// This method is in the REST client
@@ -198,10 +196,9 @@ export class DataSpaceConnectorSocketClient
 	}
 
 	/**
-	 * Registers a Data Space Connector App.
+	 * Registers a Data Space Connector App - Not available from client.
 	 * @param app The descriptor of the App to be registered.
 	 * @returns nothing.
-	 * @internal
 	 */
 	public async registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void> {
 		// This method is in the REST client

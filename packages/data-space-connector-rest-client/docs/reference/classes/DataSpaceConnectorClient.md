@@ -74,6 +74,64 @@ The Activity's identifier.
 
 ***
 
+### subscribeToActivityLog()
+
+> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `Promise`\<`string`\>
+
+Subscribes to the activity log - implemented in Socket Client.
+
+#### Parameters
+
+##### callback
+
+(`notification`) => `Promise`\<`void`\>
+
+The callback to be called when Activity Log is called.
+
+##### subscriptionId?
+
+`string`
+
+The subscription Id.
+
+#### Returns
+
+`Promise`\<`string`\>
+
+The subscription Id.
+
+#### Implementation of
+
+`IDataSpaceConnector.subscribeToActivityLog`
+
+***
+
+### unSubscribeToActivityLog()
+
+> **unSubscribeToActivityLog**(`subscriptionId`): `Promise`\<`void`\>
+
+Unsubscribes to the activity log - implemented in Socket Client.
+
+#### Parameters
+
+##### subscriptionId
+
+`string`
+
+The subscription Id.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+The subscription Id.
+
+#### Implementation of
+
+`IDataSpaceConnector.unSubscribeToActivityLog`
+
+***
+
 ### getActivityLogEntry()
 
 > **getActivityLogEntry**(`logEntryId`): `Promise`\<`IActivityLogEntry`\>
@@ -101,3 +159,29 @@ NotFoundError if activity log entry is not known.
 #### Implementation of
 
 `IDataSpaceConnector.getActivityLogEntry`
+
+***
+
+### registerDataSpaceConnectorApp()
+
+> **registerDataSpaceConnectorApp**(`app`): `Promise`\<`void`\>
+
+Registers a Data Space Connector App.
+
+#### Parameters
+
+##### app
+
+`IDataSpaceConnectorAppDescriptor`
+
+The descriptor of the App to be registered.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+nothing.
+
+#### Implementation of
+
+`IDataSpaceConnector.registerDataSpaceConnectorApp`

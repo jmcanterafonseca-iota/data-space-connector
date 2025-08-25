@@ -51,11 +51,10 @@ export class DataSpaceConnectorClient extends BaseRestClient implements IDataSpa
 	}
 
 	/**
-	 * Subscribes to the activity log.
+	 * Subscribes to the activity log - implemented in Socket Client.
 	 * @param callback The callback to be called when Activity Log is called.
 	 * @param subscriptionId The subscription Id.
 	 * @returns The subscription Id.
-	 * @internal
 	 */
 	public async subscribeToActivityLog(
 		callback: (notification: IActivityLogStatusNotification) => Promise<void>,
@@ -66,10 +65,9 @@ export class DataSpaceConnectorClient extends BaseRestClient implements IDataSpa
 	}
 
 	/**
-	 * Unsubscribes to the activity log.
+	 * Unsubscribes to the activity log - implemented in Socket Client.
 	 * @param subscriptionId The subscription Id.
 	 * @returns The subscription Id.
-	 * @internal
 	 */
 	public async unSubscribeToActivityLog(subscriptionId: string): Promise<void> {
 		// This is in the socket client
@@ -99,7 +97,6 @@ export class DataSpaceConnectorClient extends BaseRestClient implements IDataSpa
 	 * Registers a Data Space Connector App.
 	 * @param app The descriptor of the App to be registered.
 	 * @returns nothing.
-	 * @internal
 	 */
 	public async registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void> {
 		// Don't want client to be able to register apps remotely
