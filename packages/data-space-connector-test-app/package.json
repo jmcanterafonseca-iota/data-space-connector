@@ -27,7 +27,6 @@
 		"@twin.org/data-space-connector-models": "0.0.1-next.1",
 		"@twin.org/logging-models": "next",
 		"@twin.org/engine-models": "next",
-		"@twin.org/data-json-ld": "next",
 		"@twin.org/data-core": "next",
 		"@twin.org/core": "next",
 		"@twin.org/nameof": "next",
@@ -39,7 +38,7 @@
 		"@types/node": "24.3.0",
 		"copyfiles": "2.4.1",
 		"rimraf": "6.0.1",
-		"rollup": "4.46.4",
+		"rollup": "4.48.1",
 		"ts-patch": "3.3.0",
 		"typescript": "5.9.2"
 	},

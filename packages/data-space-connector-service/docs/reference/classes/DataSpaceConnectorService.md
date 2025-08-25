@@ -98,7 +98,7 @@ The Activity's Log Entry identifier.
 
 ### subscribeToActivityLog()
 
-> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `string`
+> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `Promise`\<`string`\>
 
 Subscribes to the activity log.
 
@@ -118,7 +118,7 @@ The Subscription Id.
 
 #### Returns
 
-`string`
+`Promise`\<`string`\>
 
 The subscription Id.
 
@@ -130,7 +130,7 @@ The subscription Id.
 
 ### unSubscribeToActivityLog()
 
-> **unSubscribeToActivityLog**(`subscriptionId`): `void`
+> **unSubscribeToActivityLog**(`subscriptionId`): `Promise`\<`void`\>
 
 Subscribes to the activity log.
 
@@ -144,7 +144,7 @@ The Subscription Id.
 
 #### Returns
 
-`void`
+`Promise`\<`void`\>
 
 #### Implementation of
 

@@ -8,37 +8,37 @@ import {
 	type IBackgroundTaskConnector
 } from "@twin.org/background-task-models";
 import {
+	ComponentFactory,
+	ConflictError,
+	Converter,
+	GuardError,
+	Guards,
 	Is,
-	type IValidationFailure,
 	NotFoundError,
+	RandomHelper,
 	StringHelper,
 	Validation,
-	Converter,
-	ConflictError,
 	type IError,
-	Guards,
-	RandomHelper,
-	ComponentFactory,
-	GuardError
+	type IValidationFailure
 } from "@twin.org/core";
 import { Blake2b } from "@twin.org/crypto";
 import {
+	JsonLdDataTypes,
 	JsonLdHelper,
 	JsonLdProcessor,
-	JsonLdDataTypes,
 	type IJsonLdNodeObject
 } from "@twin.org/data-json-ld";
 import {
-	type IDataSpaceConnector,
-	type IActivityLogEntry,
 	ActivityProcessingStatus,
-	type IActivityQuery,
-	type IDataSpaceConnectorAppDescriptor,
 	type IActivityLogDetails,
-	type ITaskApp,
-	type IExecutionPayload,
+	type IActivityLogEntry,
+	type IActivityLogStatusNotification,
+	type IActivityQuery,
+	type IDataSpaceConnector,
 	type IDataSpaceConnectorApp,
-	type IActivityLogStatusNotification
+	type IDataSpaceConnectorAppDescriptor,
+	type IExecutionPayload,
+	type ITaskApp
 } from "@twin.org/data-space-connector-models";
 import { EngineCoreFactory, type IEngineCoreTypeConfig } from "@twin.org/engine-models";
 import {
@@ -172,6 +172,8 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @returns The Activity's Log Entry identifier.
 	 */
 	public async notifyActivity(activity: IActivity): Promise<string> {
+		Guards.object<IActivity>(this.CLASS_NAME, nameof(activity), activity);
+
 		this._loggingService?.log({
 			level: "debug",
 			source: this.CLASS_NAME,
@@ -279,10 +281,10 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param subscriptionId The Subscription Id.
 	 * @returns The subscription Id.
 	 */
-	public subscribeToActivityLog(
+	public async subscribeToActivityLog(
 		callback: (notification: IActivityLogStatusNotification) => Promise<void>,
 		subscriptionId?: string
-	): string {
+	): Promise<string> {
 		Guards.function(this.CLASS_NAME, nameof(callback), callback);
 
 		const theSubscriptionId = Is.stringValue(subscriptionId)
@@ -297,7 +299,8 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * Subscribes to the activity log.
 	 * @param subscriptionId The Subscription Id.
 	 */
-	public unSubscribeToActivityLog(subscriptionId: string): void {
+	public async unSubscribeToActivityLog(subscriptionId: string): Promise<void> {
+		Guards.stringValue(this.CLASS_NAME, nameof(subscriptionId), subscriptionId);
 		delete this._activityLogStatusCallbacks[subscriptionId];
 	}
 
@@ -308,6 +311,8 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @throws NotFoundError if activity log entry is not known.
 	 */
 	public async getActivityLogEntry(logEntryId: string): Promise<IActivityLogEntry> {
+		Guards.stringValue(this.CLASS_NAME, nameof(logEntryId), logEntryId);
+
 		const result = await this._entityStorageActivityLogs.get(logEntryId);
 		if (Is.undefined(result)) {
 			throw new NotFoundError(this.CLASS_NAME, "activityLogEntryNotFound", logEntryId);
@@ -379,6 +384,8 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param app The App to be registered.
 	 */
 	public async registerDataSpaceConnectorApp(app: IDataSpaceConnectorAppDescriptor): Promise<void> {
+		Guards.objectValue<IDataSpaceConnectorAppDescriptor>(this.CLASS_NAME, nameof(app), app);
+
 		const activityQuerySet = app.activitiesHandled;
 
 		if (Is.arrayValue(activityQuerySet)) {
@@ -422,21 +429,22 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	 * @param activity The activity.
 	 * @returns The generator's identity.
 	 * @throws General Error if no identity is found.
+	 * @internal
 	 */
 	private calculateActivityGeneratorIdentity(activity: IActivity): string {
-		if (Is.string(activity.generator)) {
+		if (Is.stringValue(activity.generator)) {
 			return activity.generator;
 		}
 
-		if (Is.object<IJsonLdNodeObject>(activity.generator) && Is.string(activity.generator.id)) {
+		if (Is.object<IJsonLdNodeObject>(activity.generator) && Is.stringValue(activity.generator.id)) {
 			return activity.generator.id;
 		}
 
-		if (Is.string(activity.actor)) {
+		if (Is.stringValue(activity.actor)) {
 			return activity.actor;
 		}
 
-		if (Is.object<IJsonLdNodeObject>(activity.actor) && Is.string(activity.actor.id)) {
+		if (Is.object<IJsonLdNodeObject>(activity.actor) && Is.stringValue(activity.actor.id)) {
 			return activity.actor.id;
 		}
 
@@ -459,7 +467,7 @@ export class DataSpaceConnectorService implements IDataSpaceConnector {
 	private async finaliseTask(task: IBackgroundTask<IExecutionPayload, unknown>): Promise<void> {
 		const payload = task.payload;
 
-		if (Is.undefined(payload)) {
+		if (Is.empty(payload)) {
 			return;
 		}
 

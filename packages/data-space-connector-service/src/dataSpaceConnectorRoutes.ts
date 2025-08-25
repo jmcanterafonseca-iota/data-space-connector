@@ -5,22 +5,17 @@ import type {
 	IHttpRequestContext,
 	INotFoundResponse,
 	IRestRoute,
-	ISocketRequestContext,
-	ISocketRoute,
 	ITag,
 	IUnprocessableEntityResponse
 } from "@twin.org/api-models";
 import { ComponentFactory, Guards } from "@twin.org/core";
 import type {
-	IDataSpaceConnector,
+	IActivityLogEntry,
 	IActivityLogEntryGetRequest,
 	IActivityLogEntryGetResponse,
-	IActivityStreamRequest,
-	IActivityLogEntry,
-	IActivityLogStatusRequest,
-	IActivityLogStatusNotificationPayload
+	IActivityStreamNotifyRequest,
+	IDataSpaceConnector
 } from "@twin.org/data-space-connector-models";
-import type { ILoggingConnector } from "@twin.org/logging-models";
 import { nameof } from "@twin.org/nameof";
 import { ActivityStreamsContexts, type IActivity } from "@twin.org/standards-w3c-activity-streams";
 import { HttpStatusCode, MimeTypes } from "@twin.org/web";
@@ -38,7 +33,7 @@ const ACTIVITY_STREAM_ROUTE = "notify";
 /**
  * Activity processing details route.
  */
-const ACTIVITY_LOG_ROUTE = "activity-logs";
+export const ACTIVITY_LOG_ROUTE = "activity-logs";
 
 /**
  * The tag to associate with the routes.
@@ -91,7 +86,7 @@ export function generateRestRoutesDataSpaceConnector(
 	baseRouteName: string,
 	factoryServiceName: string
 ): IRestRoute[] {
-	const notifyActivityStreamRoute: IRestRoute<IActivityStreamRequest, ICreatedResponse> = {
+	const notifyActivityStreamRoute: IRestRoute<IActivityStreamNotifyRequest, ICreatedResponse> = {
 		operationId: "activityStreamNotify",
 		summary: "Notify of a new Activity",
 		tag: tagsDataSpaceConnector[0].name,
@@ -101,10 +96,10 @@ export function generateRestRoutesDataSpaceConnector(
 			activityStreamNotify(baseRouteName, httpRequestContext, factoryServiceName, request),
 		requestType: {
 			mimeType: MimeTypes.JsonLd,
-			type: nameof<IActivityStreamRequest>(),
+			type: nameof<IActivityStreamNotifyRequest>(),
 			examples: [
 				{
-					id: "activityStreamExample",
+					id: "activityStreamNotifyExample",
 					request: {
 						body: activityExample
 					}
@@ -173,9 +168,9 @@ export async function activityStreamNotify(
 	baseRouteName: string,
 	httpRequestContext: IHttpRequestContext,
 	factoryServiceName: string,
-	request: IActivityStreamRequest
+	request: IActivityStreamNotifyRequest
 ): Promise<ICreatedResponse> {
-	Guards.object<IActivityStreamRequest>(ROUTES_SOURCE, nameof(request), request);
+	Guards.object<IActivityStreamNotifyRequest>(ROUTES_SOURCE, nameof(request), request);
 	Guards.object<IActivity>(ROUTES_SOURCE, nameof(request.body), request.body);
 
 	const service = ComponentFactory.get<IDataSpaceConnector>(factoryServiceName);
@@ -201,113 +196,17 @@ export async function activityLogEntryGet(
 	factoryServiceName: string,
 	request: IActivityLogEntryGetRequest
 ): Promise<IActivityLogEntryGetResponse | INotFoundResponse> {
+	Guards.object<IActivityLogEntryGetRequest>(ROUTES_SOURCE, nameof(request), request);
+	Guards.object<IActivityLogEntryGetRequest["pathParams"]>(
+		ROUTES_SOURCE,
+		nameof(request.pathParams),
+		request.pathParams
+	);
+	Guards.stringValue(ROUTES_SOURCE, nameof(request.pathParams.id), request.pathParams.id);
+
 	const service = ComponentFactory.get<IDataSpaceConnector>(factoryServiceName);
 
-	const id = request?.pathParams.id;
-	Guards.stringValue(ROUTES_SOURCE, nameof(id), id);
-
 	return {
-		body: await service.getActivityLogEntry(id)
+		body: await service.getActivityLogEntry(request.pathParams.id)
 	};
-}
-
-/**
- * The socket routes for the Data Space Connector.
- * @param baseRouteName Prefix to prepend to the paths.
- * @param componentName The name of the component to use in the routes stored in the ComponentFactory.
- * @returns The generated routes.
- */
-export function generateSocketRoutesDataSpaceConnector(
-	baseRouteName: string,
-	componentName: string
-): ISocketRoute[] {
-	const activityLogStatusWsRoute: ISocketRoute<
-		IActivityLogStatusRequest,
-		IActivityLogStatusNotificationPayload
-	> = {
-		operationId: "statusQuery",
-		path: `${baseRouteName}/${ACTIVITY_LOG_ROUTE}/status`,
-		handler: async (socketRequestContext, request, emitter) =>
-			activityLogStatusUpdate(socketRequestContext, componentName, request, emitter),
-		connected: async socketRequestContext => activityLogStatusConnected(socketRequestContext),
-		disconnected: async socketRequestContext =>
-			activityLogStatusDisconnected(socketRequestContext, componentName)
-	};
-
-	return [activityLogStatusWsRoute];
-}
-
-/**
- * Provides an status update.
- * @param socketRequestContext The request context for the API.
- * @param componentName The name of the component to use in the routes.
- * @param request The request.
- * @param emitter The emitter to send message back.
- * @returns The response object with additional http response properties.
- */
-export async function activityLogStatusUpdate(
-	socketRequestContext: ISocketRequestContext,
-	componentName: string,
-	request: IActivityLogStatusRequest,
-	emitter: (topic: string, response: IActivityLogStatusNotificationPayload) => Promise<void>
-): Promise<void> {
-	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
-
-	switch (request.body.operation) {
-		case "subscribe":
-			component.subscribeToActivityLog(async event => {
-				await emitter("publish", {
-					body: event
-				});
-			}, socketRequestContext.socketId);
-			break;
-		case "unsubscribe":
-			component.unSubscribeToActivityLog(socketRequestContext.socketId);
-			break;
-	}
-}
-
-/**
- * Executes when there is a disconnection.
- * @param socketRequestContext Socket Request Context
- * @param componentName Component name.
- */
-export function activityLogStatusDisconnected(
-	socketRequestContext: ISocketRequestContext,
-	componentName: string
-): void {
-	const logger = ComponentFactory.getIfExists<ILoggingConnector>(
-		socketRequestContext.loggingComponentType
-	);
-	const component = ComponentFactory.get<IDataSpaceConnector>(componentName);
-
-	logger?.log({
-		source: ROUTES_SOURCE,
-		level: "debug",
-		message: "activityLogStatusDisconnected",
-		data: {
-			socketId: socketRequestContext.socketId
-		}
-	});
-
-	component.unSubscribeToActivityLog(socketRequestContext.socketId);
-}
-
-/**
- * Executes when there is a disconnection.
- * @param socketRequestContext Socket Request Context
- */
-export function activityLogStatusConnected(socketRequestContext: ISocketRequestContext): void {
-	const logger = ComponentFactory.getIfExists<ILoggingConnector>(
-		socketRequestContext.loggingComponentType
-	);
-
-	logger?.log({
-		source: ROUTES_SOURCE,
-		level: "debug",
-		message: "activityLogStatusConnected",
-		data: {
-			socketId: socketRequestContext.socketId
-		}
-	});
 }

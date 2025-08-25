@@ -15,7 +15,7 @@
 - [IActivityLogEntryGetResponse](interfaces/IActivityLogEntryGetResponse.md)
 - [IActivityLogStatusNotificationPayload](interfaces/IActivityLogStatusNotificationPayload.md)
 - [IActivityLogStatusRequest](interfaces/IActivityLogStatusRequest.md)
-- [IActivityStreamRequest](interfaces/IActivityStreamRequest.md)
+- [IActivityStreamNotifyRequest](interfaces/IActivityStreamNotifyRequest.md)
 - [IActivityHandler](interfaces/IActivityHandler.md)
 - [IDataSpaceConnectorApp](interfaces/IDataSpaceConnectorApp.md)
 - [IDataSpaceConnectorAppConfig](interfaces/IDataSpaceConnectorAppConfig.md)

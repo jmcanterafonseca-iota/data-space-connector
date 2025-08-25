@@ -32,7 +32,7 @@ The Activity's identifier.
 
 ### subscribeToActivityLog()
 
-> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `string`
+> **subscribeToActivityLog**(`callback`, `subscriptionId?`): `Promise`\<`string`\>
 
 Subscribes to the activity log.
 
@@ -52,7 +52,7 @@ The subscription Id.
 
 #### Returns
 
-`string`
+`Promise`\<`string`\>
 
 The subscription Id.
 
@@ -60,7 +60,7 @@ The subscription Id.
 
 ### unSubscribeToActivityLog()
 
-> **unSubscribeToActivityLog**(`subscriptionId`): `void`
+> **unSubscribeToActivityLog**(`subscriptionId`): `Promise`\<`void`\>
 
 Unsubscribes to the activity log.
 
@@ -74,7 +74,7 @@ The subscription Id.
 
 #### Returns
 
-`void`
+`Promise`\<`void`\>
 
 The subscription Id.
 

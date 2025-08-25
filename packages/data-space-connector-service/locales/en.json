@@ -17,7 +17,7 @@
 		"dataSpaceConnectorService": {
 			"newActivity": "New Activity of type \"{activityType}\" notified by \"{generator}\""
 		},
-		"dataSpaceConnectorRoutes": {
+		"dataSpaceConnectorSocketRoutes": {
 			"activityLogStatusConnected": "Web Socket Connected: Socket Id: \"{socketId}\"",
 			"activityLogStatusDisconnected": "Web Socket disconnected: Socket Id: \"{socketId}\""
 		}

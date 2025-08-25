@@ -12,8 +12,8 @@ This mono-repository contains the TWIN Data Space Connector.
 - [data-space-connector-service](packages/data-space-connector-service/README.md) - Data Space Connector business logic.
 - [data-space-connector-app-runner](packages/data-space-connector-app-runner/README.md) - Data Space Connector App Runner.
 - [data-space-connector-test-app](packages/data-space-connector-test-app/README.md) - Data Space Connector Test App.
-
-- [data-space-connector-rest-client](packages/federated-catalogue-rest-client/README.md) - Data Space Connector REST Client.
+- [data-space-connector-rest-client](packages/data-space-connector-rest-client/README.md) - Data Space Connector REST Client.
+- [data-space-connector-socket-client](packages/data-space-connector-socket-client/README.md) - Data Space Connector Socket Client.
 
 ## Contributing
 

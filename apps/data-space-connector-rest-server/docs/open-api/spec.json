@@ -415,7 +415,7 @@
 					}
 				],
 				"requestBody": {
-					"description": "Activity Stream Request.",
+					"description": "Activity Stream Notify Request.",
 					"required": true,
 					"content": {
 						"application/ld+json": {
@@ -423,7 +423,7 @@
 								"$ref": "#/components/schemas/Activity"
 							},
 							"examples": {
-								"activityStreamExample": {
+								"activityStreamNotifyExample": {
 									"value": {
 										"@context": "https://www.w3.org/ns/activitystreams",
 										"type": "Add",
@@ -1138,11 +1138,17 @@
 						"enum": [
 							"subscribe",
 							"unsubscribe"
-						]
+						],
+						"description": "The operation to perform."
+					},
+					"subscriptionId": {
+						"type": "string",
+						"description": "The subscription Id."
 					}
 				},
 				"required": [
-					"operation"
+					"operation",
+					"subscriptionId"
 				],
 				"additionalProperties": false,
 				"description": "Empty body."

@@ -30,6 +30,16 @@
 			"changelog-path": "docs/changelog.md",
 			"extra-files": ["src/index.ts"]
 		},
+		"packages/data-space-connector-rest-client": {
+			"package-name": "data-space-connector-rest-client",
+			"changelog-path": "docs/changelog.md",
+			"extra-files": ["src/index.ts"]
+		},
+		"packages/data-space-connector-socket-client": {
+			"package-name": "data-space-connector-socket-client",
+			"changelog-path": "docs/changelog.md",
+			"extra-files": ["src/index.ts"]
+		},
 		"apps/data-space-connector-rest-server": {
 			"package-name": "data-space-connector-rest-server",
 			"changelog-path": "docs/changelog.md",
@@ -46,6 +56,8 @@
 				"data-space-connector-app-runner",
 				"data-space-connector-test-app",
 				"data-space-connector-service",
+				"data-space-connector-rest-client",
+				"data-space-connector-socket-client",
 				"data-space-connector-rest-server"
 			]
 		}

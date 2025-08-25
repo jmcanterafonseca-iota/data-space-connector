@@ -4,9 +4,9 @@
 import type { IActivity } from "@twin.org/standards-w3c-activity-streams";
 
 /**
- * Activity Stream Request.
+ * Activity Stream Notify Request.
  */
-export interface IActivityStreamRequest {
+export interface IActivityStreamNotifyRequest {
 	/**
 	 * The Activity sent to the Stream.
 	 */

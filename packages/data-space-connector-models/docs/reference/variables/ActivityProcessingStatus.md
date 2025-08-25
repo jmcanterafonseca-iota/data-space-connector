@@ -4,7 +4,7 @@
 
 Activity processing statuses.
 
-## Type declaration
+## Type Declaration
 
 ### Pending
 

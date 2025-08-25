@@ -26,7 +26,7 @@ The name of the service to use in the routes.
 
 ### request
 
-`IActivityStreamRequest`
+`IActivityStreamNotifyRequest`
 
 The request.
 

@@ -1,6 +1,6 @@
-# Interface: IActivityStreamRequest
+# Interface: IActivityStreamNotifyRequest
 
-Activity Stream Request.
+Activity Stream Notify Request.
 
 ## Properties
 

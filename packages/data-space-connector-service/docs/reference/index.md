@@ -13,8 +13,10 @@
 
 ## Variables
 
+- [ACTIVITY\_LOG\_ROUTE](variables/ACTIVITY_LOG_ROUTE.md)
 - [tagsDataSpaceConnector](variables/tagsDataSpaceConnector.md)
 - [restEntryPoints](variables/restEntryPoints.md)
+- [socketEntryPoints](variables/socketEntryPoints.md)
 
 ## Functions
 
