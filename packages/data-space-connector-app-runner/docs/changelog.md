@@ -14,6 +14,3 @@
 * The following workspace dependencies were updated
   * dependencies
     * @twin.org/data-space-connector-models bumped from 0.0.1-next.1 to 0.0.1
-    * @twin.org/data-space-connector-service bumped from 0.0.1-next.1 to 0.0.1
-
-## Changelog
