@@ -7,10 +7,7 @@
 	"servers": ["http://localhost:3010"],
 	"restRoutes": [
 		{
-			"package": "@twin.org/api-service"
-		},
-		{
-			"package": "@twin.org/data-space-connector-service"
+			"packageRoot": "./"
 		}
 	],
 	"authMethods": ["jwtBearer"]
